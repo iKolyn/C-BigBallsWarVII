@@ -41,4 +41,5 @@ namespace BigBallsWarVII
             }
         }
     }
+    //現在需要的是敵人，敵人需要生成器、也要它的Manager偵測誰是第一個。
 }
