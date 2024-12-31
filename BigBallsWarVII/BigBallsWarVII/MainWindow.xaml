@@ -7,6 +7,113 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <Canvas Name="backGroundCanva">
+            <Rectangle Name="Sky" Width="800" Height="433" HorizontalAlignment="Center" VerticalAlignment="Top">
+                <Rectangle.Fill>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Color="SkyBlue" Offset="1.0"/>
+                        <GradientStop Color="LightBlue" Offset="0.3"/>
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+            </Rectangle>
+            <Rectangle Name="Ground" Width="800" Height="205" HorizontalAlignment="Center" VerticalAlignment="Top"
+                       Canvas.Top="230">
+                <Rectangle.Fill>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" Opacity="0.9">
+                        <GradientStop Color="LightSkyBlue" Offset="0"/>
+                        <GradientStop Color="Goldenrod" Offset="0.1"/>
+                        <GradientStop Color="SeaGreen" Offset="0.2"/>
+                        <GradientStop Color="Green" Offset="0.5"/>
+                    </LinearGradientBrush>
 
+                </Rectangle.Fill>
+            </Rectangle>
+            <Image Name="cloud1" Source= "/CloundIMG.png" HorizontalAlignment="Left"  VerticalAlignment="Top" Canvas.Left="526" Canvas.Top="22" Height="133" Width="264"/>
+            <Image Name="cloud2" Source= "/CloundIMG.png" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="2" Canvas.Top="-30" Height="160" Width="317"/>
+            <Image Name="cloud3" Source= "/CloundIMG.png" HorizontalAlignment="Left"  VerticalAlignment="Center" Canvas.Left="394" Canvas.Top="22" Height="133" Width="264"/>
+            <Image Name="cloud4" Source= "/CloundIMG.png" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="2" Canvas.Top="-30" Height="160" Width="317"/>
+            <!--#region 敵人城堡與血條數值-->
+            <Rectangle Name="enemyCastle" Width="75" Height="120" HorizontalAlignment="Center" VerticalAlignment="Top"
+                       Canvas.Top="157" Canvas.Left="45">
+                <Rectangle.Fill>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Color="DarkRed" Offset="1.0"/>
+                        <GradientStop Color="Red" Offset="0.0"/>
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+            </Rectangle>
+            <Rectangle Name="enemyHPBarBackGround" Width = "120" Height="20" Canvas.Top="130" Canvas.Left="45" Fill="Black" Opacity="0.5"/>
+            <Rectangle Name="enemyHPBar" Width = "120" Height="20" Canvas.Top="130" Canvas.Left="45" Fill="Red" Opacity="0.5"/>
+            <TextBlock Name="enemyHPText" Canvas.Left="66" Canvas.Top="132" FontSize="12" Width="84" TextAlignment="Right" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Run Name="enemyHPCurrent" Text="10000"/>
+                <Run Text="/ 10000"/>
+                <TextBlock.Foreground>
+                    <SolidColorBrush Color="White"/>
+                </TextBlock.Foreground>
+            </TextBlock>
+            <!--#endregion-->
+            <!--#region 玩家城堡與血條數值-->
+            <Rectangle x:Name="myCastle" Width="75" Height="120"
+                Canvas.Top="157" Canvas.Left="680" HorizontalAlignment="Center" VerticalAlignment="Top">
+                <Rectangle.Fill>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Color="Blue" Offset="1.0"/>
+                        <GradientStop Color="DeepSkyBlue" Offset="0.0"/>
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+            </Rectangle>
+            <Rectangle Name="myHPBarBackGround" Width = "120" Height="20" Canvas.Top="130" Canvas.Left="635" Fill="Black" Opacity="0.5" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <Rectangle Name="myHPBar" Width = "120" Height="20" Canvas.Top="130" Canvas.Left="635" Fill="Blue" Opacity="0.5" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <TextBlock Name="myHPText" Canvas.Right="658" Canvas.Top="132" FontSize="12" TextAlignment="Right" Canvas.Left="658" Width="84" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <Run Name="MyHPCurrent" Text="10000"/>
+                <Run Text="/ 10000"/>
+                <TextBlock.Foreground>
+                    <SolidColorBrush Color="White"/>
+                </TextBlock.Foreground>
+            </TextBlock>
+            <!--#endregion-->
+            <Ellipse Name="moneyBackGround" Width="277" Height="200" Fill="Black" Opacity="0.7" HorizontalAlignment="Left" Canvas.Left="557" VerticalAlignment="Center" Canvas.Top="-90"/>
+        </Canvas>
+        <Canvas Name="mainCanva">
+            <!--所有新增出來的球都會在這裡出現。-->
+            <Rectangle Name="buttonBackground" Width="800" Height="120" Canvas.Bottom="0">
+                <Rectangle.Fill>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" Opacity="0.7">
+                        <GradientStop Color="LightGoldenrodYellow" Offset="1.0"/>
+                        <GradientStop Color="Black" Offset="0"/>
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+            </Rectangle>
+            <TextBlock Name="myMoney" FontSize="20" Canvas.Left="620" Canvas.Top="30" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <Run Text="金錢："/>
+                <Run Name="currentMoney" Text="15000"/>
+                <TextBlock.Foreground>
+                    <SolidColorBrush Color="White"/>
+                </TextBlock.Foreground>
+
+            </TextBlock>
+            <!--放按鈕的StackPanel-->
+            <StackPanel Name="ballStackPanel" Orientation="Horizontal" Height="100" Width="780" 
+                        Canvas.Right="10" Canvas.Bottom="10" FlowDirection="RightToLeft">
+                <Button Name="testBotton" Width="90" Height="90" Content="TestBotton" Click="testBotton_Click" Margin="10,0,0,0"/>
+            </StackPanel>
+        </Canvas>
     </Grid>
+    <Window.Resources>
+        <Storyboard x:Key="cloud1Move">
+            <DoubleAnimation Storyboard.TargetName="cloud1" Storyboard.TargetProperty="(Canvas.Left)" 
+                             From="400" To="-264" Duration="0:0:40" RepeatBehavior="1"/>
+            <DoubleAnimation Storyboard.TargetName="cloud2" Storyboard.TargetProperty="(Canvas.Left)" 
+                             From="2" To="-330" Duration="0:0:25" RepeatBehavior="1" />
+            <DoubleAnimation Storyboard.TargetName="cloud3" Storyboard.TargetProperty="(Canvas.Left)" 
+                             From="900" To="-330" Duration="0:1:30" RepeatBehavior="Forever" />
+            <DoubleAnimation Storyboard.TargetName="cloud4" Storyboard.TargetProperty="(Canvas.Left)" 
+                             From="800" To="-330" Duration="0:1:10" RepeatBehavior="Forever" />
+        </Storyboard>
+    </Window.Resources>
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Window.Loaded">
+            <BeginStoryboard Storyboard="{StaticResource cloud1Move}"/>
+        </EventTrigger>
+    </Window.Triggers>
 </Window>
