@@ -31,6 +31,8 @@ namespace BigBallsWarVII
             cdTimer.Interval = TimeSpan.FromMilliseconds(16);//60FPS
             cdTimer.Tick += CdTimer_Tick;
             cdTimer.Start();
+            BallsManager.CountChange += ChangeCountText;
+            ChangeCountText();
         }
         /// <summary>
         /// 負責處理CD的計時器
@@ -94,6 +96,10 @@ namespace BigBallsWarVII
             {
                 rect.Width = 0;
             }
+        }
+        void ChangeCountText()
+        {
+            myBallsCount.Text = BallsManager.BallCount.ToString();
         }
     }
 }

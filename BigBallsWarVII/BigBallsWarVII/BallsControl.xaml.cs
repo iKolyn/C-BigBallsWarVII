@@ -38,6 +38,7 @@ namespace BigBallsWarVII
             ballsLevel = level;
             StartBallsControl(ballsLevel);//賦予球體數值
             CreateBall();//創造球體本身
+            BallsManager.AddBall(this);
             Loaded += BallsConrolLoaded;//初始化的時候
         }
         private void BallsConrolLoaded(object? sender, RoutedEventArgs e)
@@ -89,11 +90,18 @@ namespace BigBallsWarVII
             lastTime = currentTime;
             double newX =Canvas.GetLeft(ball) + -ballProperties.SPEED * deltaTime;
             Canvas.SetLeft(ball,newX);
-
-            if (Canvas.GetLeft(ball) < 20 - ball.Width)//測試過程只要超出邊界就給他消失
+            BallsManager.UpdateBallPosition();
+            if (Canvas.GetLeft(ball) < 20 - ball.Width)
             {
-                ballCanva.Children.Remove(this);
+                BallsManager.RemoveBall(this);
+                EndBallsControl();
             }
+        }
+        private void EndBallsControl()
+        {
+            if (this.Parent is Panel parentPanel) { parentPanel.Children.Remove(this); }
+            moveTimer.Stop();
+            moveTimer.Tick -= MoveTimer_Tick;
         }
     }
 }
