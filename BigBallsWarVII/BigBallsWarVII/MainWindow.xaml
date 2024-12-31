@@ -7,7 +7,15 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Canvas Name="backGroundCanva">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="7*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="55*"/>
+            <RowDefinition Height="32*"/>
+        </Grid.RowDefinitions>
+        <Canvas Name="backGroundCanva" Grid.RowSpan="2" Grid.ColumnSpan="2">
             <Rectangle Name="Sky" Width="800" Height="433" HorizontalAlignment="Center" VerticalAlignment="Top">
                 <Rectangle.Fill>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
@@ -21,8 +29,8 @@
                 <Rectangle.Fill>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" Opacity="0.9">
                         <GradientStop Color="LightSkyBlue" Offset="0"/>
-                        <GradientStop Color="Goldenrod" Offset="0.1"/>
-                        <GradientStop Color="SeaGreen" Offset="0.2"/>
+                        <GradientStop Color="Goldenrod" Offset="0.2"/>
+                        <GradientStop Color="SeaGreen" Offset="0.3"/>
                         <GradientStop Color="Green" Offset="0.5"/>
                     </LinearGradientBrush>
 
@@ -32,6 +40,7 @@
             <Image Name="cloud2" Source= "/CloundIMG.png" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="2" Canvas.Top="-30" Height="160" Width="317"/>
             <Image Name="cloud3" Source= "/CloundIMG.png" HorizontalAlignment="Left"  VerticalAlignment="Center" Canvas.Left="394" Canvas.Top="22" Height="133" Width="264"/>
             <Image Name="cloud4" Source= "/CloundIMG.png" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="2" Canvas.Top="-30" Height="160" Width="317"/>
+            <Image Name="cloud5" Source= "/CloundIMG.png" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="0" Canvas.Top="0" Height="160" Width="317"/>
             <!--#region 敵人城堡與血條數值-->
             <Rectangle Name="enemyCastle" Width="75" Height="120" HorizontalAlignment="Center" VerticalAlignment="Top"
                        Canvas.Top="157" Canvas.Left="45">
@@ -53,8 +62,8 @@
             </TextBlock>
             <!--#endregion-->
             <!--#region 玩家城堡與血條數值-->
-            <Rectangle x:Name="myCastle" Width="75" Height="120"
-                Canvas.Top="157" Canvas.Left="680" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <Rectangle x:Name="myCastle" Width="75" Height="120" HorizontalAlignment="Center" VerticalAlignment="Top"
+                Canvas.Top="157" Canvas.Left="680" >
                 <Rectangle.Fill>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                         <GradientStop Color="Blue" Offset="1.0"/>
@@ -74,15 +83,9 @@
             <!--#endregion-->
             <Ellipse Name="moneyBackGround" Width="277" Height="200" Fill="Black" Opacity="0.7" HorizontalAlignment="Left" Canvas.Left="557" VerticalAlignment="Center" Canvas.Top="-90"/>
         </Canvas>
-        <Canvas Name="mainCanva">
+        <Canvas Name="mainCanva" Grid.RowSpan="2" Grid.ColumnSpan="2">
             <!--所有新增出來的球都會在這裡出現。-->
-            <Rectangle Name="buttonBackground" Width="800" Height="120" Canvas.Bottom="0">
-                <Rectangle.Fill>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" Opacity="0.7">
-                        <GradientStop Color="LightGoldenrodYellow" Offset="1.0"/>
-                        <GradientStop Color="Black" Offset="0"/>
-                    </LinearGradientBrush>
-                </Rectangle.Fill>
+            <Rectangle Name="buttonBackground" Width="800" Height="120" Canvas.Bottom="0" Fill="Black" Opacity="0.4">
             </Rectangle>
             <TextBlock Name="myMoney" FontSize="20" Canvas.Left="620" Canvas.Top="30" HorizontalAlignment="Left" VerticalAlignment="Center">
                 <Run Text="金錢："/>
@@ -94,21 +97,25 @@
             </TextBlock>
             <!--放按鈕的StackPanel-->
             <StackPanel Name="ballStackPanel" Orientation="Horizontal" Height="100" Width="780" 
-                        Canvas.Right="10" Canvas.Bottom="10" FlowDirection="RightToLeft">
-                <Button Name="testBotton" Width="90" Height="90" Content="TestBotton" Click="testBotton_Click" Margin="10,0,0,0"/>
+                        Canvas.Right="10" Canvas.Bottom="10" FlowDirection="RightToLeft" Background="Tan" Opacity="0.9">
+                <Button Name="largeBotton" Width="90" Height="90" Content="500$" Click="largeBotton_Click" Margin="10,0,0,0" FontSize="24"/>
+                <Button Name="mediumBotton" Width="90" Height="90" Content="150$" Click="mediumBotton_Click" Margin="10,0,0,0" FontSize="24"/>
+                <Button Name="smallBotton" Width="90" Height="90" Content="50$" Click="smallBotton_Click" Margin="10,0,0,0" FontSize="24"/>
             </StackPanel>
         </Canvas>
     </Grid>
     <Window.Resources>
         <Storyboard x:Key="cloud1Move">
             <DoubleAnimation Storyboard.TargetName="cloud1" Storyboard.TargetProperty="(Canvas.Left)" 
-                             From="400" To="-264" Duration="0:0:40" RepeatBehavior="1"/>
+                             From="400" To="-400" Duration="0:0:40"/>
             <DoubleAnimation Storyboard.TargetName="cloud2" Storyboard.TargetProperty="(Canvas.Left)" 
-                             From="2" To="-330" Duration="0:0:25" RepeatBehavior="1" />
+                             From="2" To="-400" Duration="0:0:25"/>
             <DoubleAnimation Storyboard.TargetName="cloud3" Storyboard.TargetProperty="(Canvas.Left)" 
-                             From="900" To="-330" Duration="0:1:30" RepeatBehavior="Forever" />
+                             From="900" To="-400" Duration="0:1:30" RepeatBehavior="Forever" />
             <DoubleAnimation Storyboard.TargetName="cloud4" Storyboard.TargetProperty="(Canvas.Left)" 
-                             From="800" To="-330" Duration="0:1:10" RepeatBehavior="Forever" />
+                             From="800" To="-400" Duration="0:1:10" RepeatBehavior="Forever" />
+            <DoubleAnimation Storyboard.TargetName="cloud5" Storyboard.TargetProperty="(Canvas.Left)" 
+                             From="1200" To="-400" Duration="0:1:40" RepeatBehavior="Forever" />
         </Storyboard>
     </Window.Resources>
     <Window.Triggers>
