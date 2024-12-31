@@ -98,9 +98,18 @@
             <!--放按鈕的StackPanel-->
             <StackPanel Name="ballStackPanel" Orientation="Horizontal" Height="100" Width="780" 
                         Canvas.Right="10" Canvas.Bottom="10" FlowDirection="RightToLeft" Background="Tan" Opacity="0.9">
-                <Button Name="largeBotton" Width="90" Height="90" Content="500$" Click="largeBotton_Click" Margin="10,0,0,0" FontSize="24"/>
-                <Button Name="mediumBotton" Width="90" Height="90" Content="150$" Click="mediumBotton_Click" Margin="10,0,0,0" FontSize="24"/>
-                <Button Name="smallBotton" Width="90" Height="90" Content="50$" Click="smallBotton_Click" Margin="10,0,0,0" FontSize="24"/>
+                <Grid>
+                    <Button Name="largeBotton" Width="90" Height="90" Content="500$" Click="largeBotton_Click" Margin="10,0,0,0" FontSize="24"/>
+                    <Rectangle Name="largeBottonSlider" Width="0" Height="90" HorizontalAlignment="Right" Opacity="0.5" Fill="black"/>
+                </Grid>
+                <Grid>
+                    <Button Name="mediumBotton" Width="90" Height="90" Content="150$" Click="mediumBotton_Click" Margin="10,0,0,0" FontSize="24"/>
+                    <Rectangle Name="mediumBottonSlider" Width="0" Height="90" HorizontalAlignment="Right" Opacity="0.5" Fill="black"/>
+                </Grid>
+                <Grid>
+                    <Button Name="smallBotton" Width="90" Height="90" Content="50$" Click="smallBotton_Click" Margin="10,0,0,0" FontSize="24"/>
+                    <Rectangle Name="smallBottonSlider" Width="0" Height="90" HorizontalAlignment="Right" Opacity="0.5" Fill="black"/> 
+                </Grid>
             </StackPanel>
         </Canvas>
     </Grid>

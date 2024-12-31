@@ -28,18 +28,20 @@ namespace BigBallsWarVII
         private DateTime currentTime;//計算deltaTime用的
 
         private BallStruct ballProperties;//包含ATK,HP,COST跟SPEED。
-        private BallsLevel ballsLevel;
+        private BallsLevel ballsLevel;        
         private Ellipse ball;
+
+
         public BallsControl(BallsLevel level)
         {
             InitializeComponent();
-            ballsLevel = level; 
+            ballsLevel = level;
+            StartBallsControl(ballsLevel);//賦予球體數值
+            CreateBall();//創造球體本身
             Loaded += BallsConrolLoaded;//初始化的時候
         }
         private void BallsConrolLoaded(object? sender, RoutedEventArgs e)
-        {
-            CreateBall();//創造球體本身
-            StartBallsControl(ballsLevel);//賦予球體數值
+        {  
             TimerAwake();//初始化timer
         }
         //計時器們初始化
@@ -70,19 +72,15 @@ namespace BigBallsWarVII
             switch (level)
             {
                 case BallsLevel.Small:
-                    ballProperties = new(1, 10, 50, 80, 2);
+                    ballProperties = new(1, 10, 50, 80);
                     break;
                 case BallsLevel.Medium:
-                    ballProperties = new(2, 20, 150, 50, 6);
+                    ballProperties = new(2, 20, 150, 50);
                     break;
                 case BallsLevel.Large:
-                    ballProperties = new(5, 50, 300, 30, 15);
+                    ballProperties = new(5, 50, 300, 30);
                     break;
             }
-        }
-        public int GetCD()
-        {
-            return ballProperties.CD;
         }
         private void MoveTimer_Tick(object? sender, EventArgs e)
         {
@@ -91,6 +89,11 @@ namespace BigBallsWarVII
             lastTime = currentTime;
             double newX =Canvas.GetLeft(ball) + -ballProperties.SPEED * deltaTime;
             Canvas.SetLeft(ball,newX);
+
+            if (Canvas.GetLeft(ball) < 20 - ball.Width)//測試過程只要超出邊界就給他消失
+            {
+                ballCanva.Children.Remove(this);
+            }
         }
     }
 }
@@ -107,13 +110,11 @@ public struct BallStruct
     public int HP;
     public int COST;
     public int SPEED;
-    public int CD;
-    public BallStruct(int atk, int hp, int cost, int speed,int cd)
+    public BallStruct(int atk, int hp, int cost, int speed)
     {
         ATK = atk;
         HP = hp;
         COST = cost;
         SPEED = speed;
-        CD = cd;
     }
 }
