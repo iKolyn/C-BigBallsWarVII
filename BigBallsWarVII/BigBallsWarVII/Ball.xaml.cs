@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using System.Reflection.Emit;
@@ -25,8 +26,9 @@ namespace BigBallsWarVII
     public partial class Ball : UserControl
     {
         private DispatcherTimer moveTimer;
-        private DateTime lastTime;//計算deltaTime用的
-        private DateTime currentTime;//計算deltaTime用的
+        private Stopwatch _stopWatch;//現在的時間。
+        private double lastTime = 0;//上次的時間
+        private double currentTime = 0;//經過的時間
 
         private Team team;
         private BallStruct ballProperties;//包含ATK,HP,COST跟SPEED。
@@ -40,7 +42,6 @@ namespace BigBallsWarVII
             team = Team.Blue;
             StartBallsControl(ballsLevel);//賦予球體數值
             CreateBall();//創造球體本身
-            lastTime = DateTime.Now;
             BallsManager.AddBall(this);
             Loaded += BallsConrolLoaded;
         }
@@ -48,9 +49,11 @@ namespace BigBallsWarVII
         private void BallsConrolLoaded(object sender, RoutedEventArgs e)
         {
             moveTimer = new();
+            _stopWatch = new();
             moveTimer.Interval = TimeSpan.FromMilliseconds(16);//60FPS
             moveTimer.Tick += MoveTimer_Tick;
             moveTimer.Start();
+            _stopWatch.Start();
         }
         #region 生成blue球體
         private void StartBallsControl(BallsLevel level)
@@ -58,10 +61,10 @@ namespace BigBallsWarVII
             switch (level)
             {
                 case BallsLevel.Small:
-                    ballProperties = new(1, 10, -80, 35);
+                    ballProperties = new(1, 10, -60, 35);
                     break;
                 case BallsLevel.Medium:
-                    ballProperties = new(2, 20, -50, 55);
+                    ballProperties = new(2, 20, -45, 55);
                     break;
                 case BallsLevel.Large:
                     ballProperties = new(5, 50, -30, 75);
@@ -99,7 +102,6 @@ namespace BigBallsWarVII
                 MessageBox.Show("你沒給敵人顏色啦！");
             }
             CreateEnemyBall();//創造球體本身
-            lastTime = DateTime.Now;
         }
         void CreateEnemyBall()
         {
@@ -118,9 +120,10 @@ namespace BigBallsWarVII
         //Remove DispatcherTimer and use Update() instead.Manage Will call this Method.
         private void MoveTimer_Tick(object? sender,EventArgs e)
         {
-            currentTime = DateTime.Now;
-            double deltaTime = (currentTime - lastTime).TotalSeconds;
+            currentTime = _stopWatch.ElapsedMilliseconds;
+            double deltaTime = (currentTime - lastTime) / 1000;
             lastTime = currentTime;
+
             double newX = Canvas.GetLeft(ball) + ballProperties.SPEED * deltaTime;
             Canvas.SetLeft(ball, newX);
 
@@ -148,6 +151,7 @@ namespace BigBallsWarVII
         {
             if (this.Parent is Panel parentPanel) { parentPanel.Children.Remove(this); }//在整個panel刪除
             moveTimer.Stop();
+            _stopWatch.Stop();
             moveTimer.Tick -= MoveTimer_Tick;
             Loaded -= BallsConrolLoaded;//退訂事件
         }

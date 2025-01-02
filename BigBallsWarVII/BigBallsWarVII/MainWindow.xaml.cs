@@ -34,7 +34,7 @@ namespace BigBallsWarVII
             cdTimer.Tick += CdTimer_Tick;
             cdTimer.Start();
             BallsManager.CountChange += ChangeCountText;
-            EnemyBallsSpawner.addBallToCanva += addEnemyToCanva;
+            EnemyBallsSpawner.addBallToCanva += AddEnemyToCanva;
             ChangeCountText();
         }
         /// <summary>
@@ -42,6 +42,7 @@ namespace BigBallsWarVII
         /// </summary>
         private void CdTimer_Tick(object? sender, EventArgs e)
         {
+            elapsedTimeText.Text = enemyBallsSpawner.ElapsedTime.ToString();
             DateTime now = DateTime.Now;
             UpdateCooldownTime(smallBottonSlider, smallCD, smallLastTime, now, isSmallSpawned);
             UpdateCooldownTime(mediumBottonSlider, mediumCD, mediumLastTime, now, isMideumSpawned);
@@ -104,7 +105,7 @@ namespace BigBallsWarVII
         {
             myBallsCount.Text = BallsManager.BallCount.ToString();
         }
-        void addEnemyToCanva(Ball ball)
+        void AddEnemyToCanva(Ball ball)
         {
             mainCanva.Children.Add(ball);
         }

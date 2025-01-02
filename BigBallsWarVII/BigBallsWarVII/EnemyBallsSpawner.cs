@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
@@ -27,14 +28,15 @@ namespace BigBallsWarVII
         public Ball? firstBall;
         private BallStruct[] ballsType = new[]
         {
-            new BallStruct { ATK = 1, HP = 10, SPEED = 30, Radius = 35, Color = Brushes.Green },
-            new BallStruct { ATK = 2, HP = 20, SPEED = 20, Radius = 55, Color = Brushes.Blue },
-            new BallStruct { ATK = 3, HP = 30, SPEED = 10, Radius = 75, Color = Brushes.Red },
+            new BallStruct { ATK = 1, HP = 10, SPEED = 60, Radius = 35, Color = Brushes.Green },
+            new BallStruct { ATK = 2, HP = 20, SPEED = 45, Radius = 55, Color = Brushes.Blue },
+            new BallStruct { ATK = 3, HP = 30, SPEED = 30, Radius = 75, Color = Brushes.Red },
         };
         public BallQueue BallQueue { get;private set; }
 
         private DispatcherTimer _dispatcherTimer;
         private double elapsedTime;
+        private Stopwatch _stopWatch;
         public static Action<Ball>? addBallToCanva;
         public EnemyBallsSpawner()
         {
@@ -47,7 +49,8 @@ namespace BigBallsWarVII
             };
             _dispatcherTimer.Tick += DispatcherTimer_Tick;
             _dispatcherTimer.Start();
-            elapsedTime = 0;
+            _stopWatch = new();
+            _stopWatch.Start();
         }
 
         public int BallCount
@@ -89,7 +92,7 @@ namespace BigBallsWarVII
                 _smallBallCDTime = value < 0 ? 0 : value;//不讓CD時間變成負數
             }
         }
-        double _smallBallCDTime = 2000;//小球的CD時間;
+        double _smallBallCDTime = 5000;//小球的CD時間;
         //中球的CD時間設定功能
         public double MediumBallCDTime
         {
@@ -99,12 +102,16 @@ namespace BigBallsWarVII
                 _mediumBallCDTime = value < 0 ? 0 : value;//不讓CD時間變成負數
             }
         }
-        private double _mediumBallCDTime = 6000;//中球的CD時間;
+        private double _mediumBallCDTime = 12000;//中球的CD時間;
         double[] 指定的CD生成時間 = new double[20];
         #endregion
+        public double ElapsedTime
+        {
+            get { return _stopWatch.ElapsedMilliseconds; }
+        }
         private void DispatcherTimer_Tick(object? sender, EventArgs e)
         {
-            elapsedTime += 16;
+            elapsedTime = _stopWatch.ElapsedMilliseconds;
             //生成普通狀態球的邏輯們
             //如果我是普通生成，我有五種怪物。我想要其中三種怪物可以依照各自不同的CD時間生成。CD就由manager創造。
             if (elapsedTime > lastSmallBallSpawnTime + SmallBallCDTime)//如果現在的時間經過了

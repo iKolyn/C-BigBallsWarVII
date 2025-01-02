@@ -87,6 +87,7 @@
                     <SolidColorBrush Color="Aquamarine" Opacity="1"/>
                 </TextBlock.Foreground>
             </TextBlock>
+            <TextBlock Name="elapsedTimeText" Canvas.Left="45" TextWrapping="Wrap" Text="TextBlock" Canvas.Top="65" FontSize="20" />
         </Canvas>
         <Canvas Name="mainCanva" Grid.RowSpan="2" Grid.ColumnSpan="3">
             <!--所有新增出來的球都會在這裡出現。-->
