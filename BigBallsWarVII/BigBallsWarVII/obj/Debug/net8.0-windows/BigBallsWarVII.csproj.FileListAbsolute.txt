@@ -42,3 +42,5 @@ C:\Users\stu71\OneDrive\桌面\GitHub\C-BigBallsWarVII\BigBallsWarVII\BigBallsWa
 C:\Users\stu71\OneDrive\桌面\GitHub\C-BigBallsWarVII\BigBallsWarVII\BigBallsWarVII\obj\Debug\net8.0-windows\ref\BigBallsWarVII.dll
 C:\Users\stu71\OneDrive\桌面\GitHub\C-BigBallsWarVII\BigBallsWarVII\BigBallsWarVII\obj\Debug\net8.0-windows\BallsControl.g.cs
 C:\Users\stu71\OneDrive\桌面\GitHub\C-BigBallsWarVII\BigBallsWarVII\BigBallsWarVII\obj\Debug\net8.0-windows\BallsControl.baml
+D:\GitHub\C-BigBallsWarVII\BigBallsWarVII\BigBallsWarVII\obj\Debug\net8.0-windows\BallsControl.g.cs
+D:\GitHub\C-BigBallsWarVII\BigBallsWarVII\BigBallsWarVII\obj\Debug\net8.0-windows\BallsControl.baml

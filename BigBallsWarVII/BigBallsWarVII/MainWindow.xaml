@@ -8,14 +8,15 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="7*"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="6*"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="55*"/>
             <RowDefinition Height="32*"/>
         </Grid.RowDefinitions>
-        <Canvas Name="backGroundCanva" Grid.RowSpan="2" Grid.ColumnSpan="2">
+        <Canvas Name="backGroundCanva" Grid.RowSpan="2" Grid.ColumnSpan="3">
             <Rectangle Name="Sky" Width="800" Height="433" HorizontalAlignment="Center" VerticalAlignment="Top">
                 <Rectangle.Fill>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
@@ -87,7 +88,7 @@
                 </TextBlock.Foreground>
             </TextBlock>
         </Canvas>
-        <Canvas Name="mainCanva" Grid.RowSpan="2" Grid.ColumnSpan="2">
+        <Canvas Name="mainCanva" Grid.RowSpan="2" Grid.ColumnSpan="3">
             <!--所有新增出來的球都會在這裡出現。-->
             <Rectangle Name="buttonBackground" Width="800" Height="120" Canvas.Bottom="0" Fill="Black" Opacity="0.4"/>
             <TextBlock Name="myMoney" FontSize="20" Canvas.Left="620" Canvas.Top="30" HorizontalAlignment="Left" VerticalAlignment="Center">
@@ -110,12 +111,13 @@
                 </Grid>
                 <Grid>
                     <Button Name="smallBotton" Width="90" Height="90" Content="50$" Click="smallBotton_Click" Margin="10,0,0,0" FontSize="24"/>
-                    <Rectangle Name="smallBottonSlider" Width="0" Height="90" HorizontalAlignment="Right" Opacity="0.5" Fill="black"/> 
+                    <Rectangle Name="smallBottonSlider" Width="0" Height="90" HorizontalAlignment="Right" Opacity="0.5" Fill="black"/>
                 </Grid>
             </StackPanel>
         </Canvas>
     </Grid>
     <Window.Resources>
+        <!--動畫-->
         <Storyboard x:Key="cloud1Move">
             <DoubleAnimation Storyboard.TargetName="cloud1" Storyboard.TargetProperty="(Canvas.Left)" 
                              From="400" To="-400" Duration="0:0:40"/>
@@ -130,6 +132,7 @@
         </Storyboard>
     </Window.Resources>
     <Window.Triggers>
+        <!--新增事件，windowLoaded之後觸發trigger，開始clound1Move這個故事版-->
         <EventTrigger RoutedEvent="Window.Loaded">
             <BeginStoryboard Storyboard="{StaticResource cloud1Move}"/>
         </EventTrigger>
