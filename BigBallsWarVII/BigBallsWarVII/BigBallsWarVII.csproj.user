@@ -7,7 +7,7 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="BallsControl.xaml.cs">
+    <Compile Update="Ball.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

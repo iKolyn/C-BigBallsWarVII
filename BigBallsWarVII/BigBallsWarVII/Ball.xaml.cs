@@ -22,7 +22,7 @@ namespace BigBallsWarVII
     /// <summary>
     /// BallsControl.xaml 的互動邏輯
     /// </summary>
-    public partial class BallsControl : UserControl
+    public partial class Ball : UserControl
     {
         private DispatcherTimer moveTimer;
         private DateTime lastTime;//計算deltaTime用的
@@ -33,7 +33,7 @@ namespace BigBallsWarVII
         private BallsLevel ballsLevel;        
         private Ellipse ball;
 
-        public BallsControl(BallsLevel level)
+        public Ball(BallsLevel level)
         {
             InitializeComponent();
             ballsLevel = level;
@@ -51,7 +51,6 @@ namespace BigBallsWarVII
             moveTimer.Interval = TimeSpan.FromMilliseconds(16);//60FPS
             moveTimer.Tick += MoveTimer_Tick;
             moveTimer.Start();
-
         }
         #region 生成blue球體
         private void StartBallsControl(BallsLevel level)
@@ -88,9 +87,10 @@ namespace BigBallsWarVII
         /// 生成敵方球體用的
         /// </summary>
         /// <param name="ballStruct">敵方屬性，要包含HP,ATK,SPEED,COLOR跟RADIUS</param>
-        public BallsControl(BallStruct ballStruct)//用於敵人生成
+        public Ball(BallStruct ballStruct)//用於敵人生成
         {
             InitializeComponent();
+            BallsConrolLoaded(this,new RoutedEventArgs());//計時器的初始化
             team = Team.Red;
             ballProperties = ballStruct;
             if(ballProperties.Color == null)
@@ -100,7 +100,6 @@ namespace BigBallsWarVII
             }
             CreateEnemyBall();//創造球體本身
             lastTime = DateTime.Now;
-            BallsManager.AddBall(this);
         }
         void CreateEnemyBall()
         {
@@ -138,7 +137,7 @@ namespace BigBallsWarVII
                 case Team.Red:
                     if (Canvas.GetLeft(ball) > 780 + ball.Width)
                     {
-                        BallsManager.RemoveBall(this);
+                        //EnemySpawnManager需要一個static靜態功能來將count--
                         EndBallsControl();
                     }
                     break;

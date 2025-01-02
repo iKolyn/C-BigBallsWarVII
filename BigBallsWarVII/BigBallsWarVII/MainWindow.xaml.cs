@@ -25,6 +25,8 @@ namespace BigBallsWarVII
         private DateTime smallLastTime, mediumLastTime, largeLastTime;//上次生成的時間
         private double smallCD = 2, mediumCD = 6, largeCD = 20;//冷卻時間
         private bool isSmallSpawned, isMideumSpawned, isLargeSpawned;
+        private EnemyBallsSpawner enemyBallsSpawner = new();
+        
         public MainWindow()
         {
             InitializeComponent();
@@ -32,6 +34,7 @@ namespace BigBallsWarVII
             cdTimer.Tick += CdTimer_Tick;
             cdTimer.Start();
             BallsManager.CountChange += ChangeCountText;
+            EnemyBallsSpawner.addBallToCanva += addEnemyToCanva;
             ChangeCountText();
         }
         /// <summary>
@@ -61,7 +64,7 @@ namespace BigBallsWarVII
             if (isSmallSpawned) return;
             
             isSmallSpawned = true;
-            BallsControl ball = new(BallsLevel.Small);
+            Ball ball = new(BallsLevel.Small);
             smallLastTime = DateTime.Now + TimeSpan.FromSeconds(smallCD);
             mainCanva.Children.Add(ball);
         }
@@ -70,7 +73,7 @@ namespace BigBallsWarVII
             if (isMideumSpawned) return;
 
             isMideumSpawned = true;
-            BallsControl ball = new BallsControl(BallsLevel.Medium);
+            Ball ball = new Ball(BallsLevel.Medium);
             mediumLastTime = DateTime.Now + TimeSpan.FromSeconds(mediumCD);
             mainCanva.Children.Add(ball);
 
@@ -80,7 +83,7 @@ namespace BigBallsWarVII
             if (isLargeSpawned) return;
 
             isLargeSpawned = true;
-            BallsControl ball = new BallsControl(BallsLevel.Large);
+            Ball ball = new Ball(BallsLevel.Large);
             largeLastTime = DateTime.Now + TimeSpan.FromSeconds(largeCD);
             mainCanva.Children.Add(ball);
         }
@@ -100,6 +103,10 @@ namespace BigBallsWarVII
         void ChangeCountText()
         {
             myBallsCount.Text = BallsManager.BallCount.ToString();
+        }
+        void addEnemyToCanva(Ball ball)
+        {
+            mainCanva.Children.Add(ball);
         }
     }
 }

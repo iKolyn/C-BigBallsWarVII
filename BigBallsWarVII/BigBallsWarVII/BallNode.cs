@@ -9,12 +9,14 @@ namespace BigBallsWarVII
 {
     public class BallNode
     {
-        public BallsControl Data;//資料本身
+        public Ball Data;//資料本身
         public int Priority;//優先級，越大越優先。
+        public double CD;//生成CD
         public BallNode? Next;//下一個球體
-        public BallNode(BallsControl data, int priority)
+        public BallNode(Ball data,double cd, int priority)
         {
             Data = data;
+            CD = cd;
             Priority = priority;
             Next = null;
         }

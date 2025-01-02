@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.DirectoryServices.ActiveDirectory;
+using System.Dynamic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -22,6 +23,7 @@ namespace BigBallsWarVII
         private BallNode? Tail;//尾節點
         private const int MAX_BALLS = 20;//佇列最多可存放的數量
         public int Count { get; private set; }//球體數量
+        public double cd;
         public BallQueue()
         {
             Head = null;
@@ -33,7 +35,7 @@ namespace BigBallsWarVII
         /// </summary>
         /// <param name="data">球體本身的資料</param>
         /// <param name="priority">優先級</param>
-        public void Enqueue(BallsControl data, int priority = 0)
+        public void Enqueue(Ball data, double cd = 2, int priority = 0)
         {
             //如果球體數量已經達到上限，就不要再放入了。
             if (Count >= MAX_BALLS)
@@ -41,7 +43,7 @@ namespace BigBallsWarVII
                 Console.WriteLine("佇列已經滿囉");
                 return;
             }
-            BallNode newNode = new(data, priority);
+            BallNode newNode = new(data,cd , priority);
 
             //如果Head是空的，就把Head換掉。
             if (Head == null)
@@ -73,14 +75,14 @@ namespace BigBallsWarVII
         /// 將佇列中的球體取出。請使用計時器or按鈕click事件呼叫他。
         /// </summary>
         /// <returns></returns>
-        public BallsControl? Dequeue()
+        public Ball? Dequeue()
         {
             if (Count <= 0)
             {
                 Console.WriteLine("佇列已空");
                 return null;
             }
-            BallsControl data = Tail.Data;
+            Ball data = Tail.Data;
             Tail = Tail.Next;
 
             if (Tail == null)
@@ -92,7 +94,7 @@ namespace BigBallsWarVII
         /// <summary>
         /// 獲得下一個球體是誰，一顆球都沒有就回傳null。
         /// </summary>
-        public BallsControl? GetNext()
+        public Ball? GetNext()
         {
             if (Tail == null)
             {
@@ -100,7 +102,16 @@ namespace BigBallsWarVII
                 return null;
             }
             else//有就回傳下一個。
+            {
+                GetNextCD();
                 return Tail.Data;
+            }
+        }
+        private double? GetNextCD()
+        {
+            if (Tail != null)
+                return Tail.CD;
+            else return null;//為了不讓他跳綠底才這樣寫，這個功能被呼叫的時候已經確定Tail不是null。
         }
         /// <summary>
         /// 清空所有queue，用於重製關卡
