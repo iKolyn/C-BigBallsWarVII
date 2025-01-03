@@ -25,15 +25,18 @@ namespace BigBallsWarVII
     /// </summary>
     public partial class Ball : UserControl
     {
+        private MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
         private DispatcherTimer moveTimer;
+        private DispatcherTimer atkTimer;
         private Stopwatch _stopWatch;//現在的時間。
         private double lastTime = 0;//上次的時間
         private double currentTime = 0;//經過的時間
 
         private Team team;
         private BallStruct ballProperties;//包含ATK,HP,COST跟SPEED。
-        private BallsLevel ballsLevel;        
+        private BallsLevel ballsLevel;
         private Ellipse ball;
+        private double newX;
 
         public Ball(BallsLevel level)
         {
@@ -49,10 +52,14 @@ namespace BigBallsWarVII
         private void BallsConrolLoaded(object sender, RoutedEventArgs e)
         {
             moveTimer = new();
+            atkTimer = new();
             _stopWatch = new();
             moveTimer.Interval = TimeSpan.FromMilliseconds(16);//60FPS
             moveTimer.Tick += MoveTimer_Tick;
             moveTimer.Start();
+            //依照攻擊除以特定數字來計算速度，攻擊力越高打越慢。
+            atkTimer.Interval = TimeSpan.FromSeconds((int)Math.ILogB(ballProperties.ATK + 1.5));
+            //
             _stopWatch.Start();
         }
         #region 生成blue球體
@@ -123,30 +130,49 @@ namespace BigBallsWarVII
             currentTime = _stopWatch.ElapsedMilliseconds;
             double deltaTime = (currentTime - lastTime) / 1000;
             lastTime = currentTime;
-
-            double newX = Canvas.GetLeft(ball) + ballProperties.SPEED * deltaTime;
+            newX = Canvas.GetLeft(ball) + ballProperties.SPEED * deltaTime;
             Canvas.SetLeft(ball, newX);
-
+            if (CollistionEvent())//如果球碰到敵人就攻擊
+            {
+                moveTimer.Stop();
+                _stopWatch.Stop();
+                //開始攻擊
+            }
+        }
+        private bool CollistionEvent()
+        {            
+            double enemyX;
             switch (team)//要通知不同管理器增加球到它們自己的列表，以及碰撞偵測需要。
             {
                 case Team.Blue:
-                    BallsManager.UpdateBallPosition();
-                    if (Canvas.GetLeft(ball) < 20 - ball.Width)
+                    BallsManager.UpdateBallPosition(this);//更新第一個球是誰(攻擊目標)
+                    if (EnemyBallsSpawner.firstBall != null)
                     {
-                        BallsManager.RemoveBall(this);
-                        EndBallsControl();
+                        enemyX = Canvas.GetLeft(EnemyBallsSpawner.firstBall) + EnemyBallsSpawner.firstBall.ballProperties.Radius;
+                    }
+                    else
+                        enemyX = 0;
+                    if (newX <= enemyX)//Collision Event
+                    {
+                        return true;
                     }
                     break;
                 case Team.Red:
-                    if (Canvas.GetLeft(ball) > 780 + ball.Width)
+                    EnemyBallsSpawner.UpdateEnemyBallPosition(this);//更新第一個球是誰(攻擊目標)
+                    if (BallsManager.firstBall != null)
                     {
-                        //EnemySpawnManager需要一個static靜態功能來將count--
-                        EndBallsControl();
+                        enemyX = Canvas.GetLeft(BallsManager.firstBall) + BallsManager.firstBall.ballProperties.Radius;
+                    }
+                    else
+                        enemyX = double.MaxValue;
+                    if (newX >= enemyX)//Collision Event
+                    {
+                        return true;
                     }
                     break;
             }
+            return false;
         }
-
         private void EndBallsControl()
         {
             if (this.Parent is Panel parentPanel) { parentPanel.Children.Remove(this); }//在整個panel刪除

@@ -24,8 +24,8 @@ namespace BigBallsWarVII
     public class EnemyBallsSpawner
     {
         //因為希望有不同關卡，所以不用Staitc;
-        List<Ball> balls;        
-        public Ball? firstBall;
+        public static List<Ball> balls;        
+        public static Ball? firstBall;
         private BallStruct[] ballsType = new[]
         {
             new BallStruct { ATK = 1, HP = 10, SPEED = 60, Radius = 35, Color = Brushes.Green },
@@ -53,12 +53,12 @@ namespace BigBallsWarVII
             _stopWatch.Start();
         }
 
-        public int BallCount
+        public static int BallCount
         {
             get { return _ballCount; }
             private set { _ballCount = value; }
         }
-        int _ballCount = 0;
+        private static int _ballCount = 0;
         public void AddBall(Ball ball)
         {
             balls.Add(ball);
@@ -66,19 +66,16 @@ namespace BigBallsWarVII
             BallCount++;
             if(firstBall == null || Canvas.GetLeft(ball) < Canvas.GetLeft(firstBall)) firstBall = ball;
         }
-        public void RemoveBall(Ball ball)
+        public static void RemoveBall(Ball ball)
         {
             balls.Remove(ball);
             BallCount--;
         }
-        public void UpdateEnemyBallPosition()
+        public static void UpdateEnemyBallPosition(Ball ball)
         {
-            foreach (var ball in balls)
-            {
-                double newX = Canvas.GetLeft(ball);
-                if (newX < Canvas.GetLeft(firstBall))
-                    firstBall = ball;
-            }
+            double newX = Canvas.GetLeft(ball);
+            if (firstBall != null && newX > Canvas.GetLeft(firstBall))
+                firstBall = ball;
         }
         //處理生成邏輯
         #region 生成CD的數值們
@@ -109,7 +106,7 @@ namespace BigBallsWarVII
         {
             get { return _stopWatch.ElapsedMilliseconds; }
         }
-        private void DispatcherTimer_Tick(object? sender, EventArgs e)
+        private void DispatcherTimer_Tick(object? sender, EventArgs e)//CD計時器
         {
             elapsedTime = _stopWatch.ElapsedMilliseconds;
             //生成普通狀態球的邏輯們

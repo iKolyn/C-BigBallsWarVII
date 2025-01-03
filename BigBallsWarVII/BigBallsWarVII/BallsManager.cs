@@ -11,10 +11,14 @@ namespace BigBallsWarVII
     public static class BallsManager
     {
         static List<Ball> balls = new();//記錄所有自己的球。
-        static Ball firstBall = null;
+        public static Ball firstBall//封裝看看是否比較好
+        { get { return _firstBall; } private set { } }
+        static Ball _firstBall = null;
+
         public static int BallCount
         {
-            get { return _ballCount; }private set {  _ballCount = value; }
+            get { return _ballCount; }
+            private set { _ballCount = value; }
         }
         static int _ballCount = 0;
         public static Action CountChange;
@@ -23,7 +27,7 @@ namespace BigBallsWarVII
             balls.Add(ball);
             BallCount++;
             CountChange?.Invoke();
-            if (firstBall == null || Canvas.GetLeft(ball) < Canvas.GetLeft(firstBall)) firstBall = ball;
+            if (_firstBall == null || Canvas.GetLeft(ball) < Canvas.GetLeft(_firstBall)) _firstBall = ball;
         }
         public static void RemoveBall(Ball ball)
         {
@@ -31,13 +35,12 @@ namespace BigBallsWarVII
             BallCount--;
             CountChange?.Invoke();
         }
-        public static void UpdateBallPosition()
+        public static void UpdateBallPosition(Ball ball)
         {
-            foreach (var ball in balls)
-            { 
-                double newX = Canvas.GetLeft(ball);
-                if (newX > Canvas.GetLeft(firstBall))
-                    firstBall = ball;
+            double newX = Canvas.GetLeft(ball);
+            if (_firstBall != null && newX > Canvas.GetLeft(_firstBall))
+            {
+                _firstBall = ball;
             }
         }
     }

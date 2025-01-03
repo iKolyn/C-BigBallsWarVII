@@ -1,5 +1,7 @@
 ﻿using System.Data;
+using System.Diagnostics;
 using System.Numerics;
+using System.Security.Policy;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -22,8 +24,10 @@ namespace BigBallsWarVII
     public partial class MainWindow : Window
     {
         DispatcherTimer cdTimer = new();
-        private DateTime smallLastTime, mediumLastTime, largeLastTime;//上次生成的時間
-        private double smallCD = 2, mediumCD = 6, largeCD = 20;//冷卻時間
+        Stopwatch _stopWatch = new();
+        private double elapsedTime;
+        private double smallLastTime, mediumLastTime, largeLastTime;//上次生成的時間
+        private double smallCD = 2000, mediumCD = 6000, largeCD = 20000;//冷卻時間(毫秒)
         private bool isSmallSpawned, isMideumSpawned, isLargeSpawned;
         private EnemyBallsSpawner enemyBallsSpawner = new();
         
@@ -33,6 +37,7 @@ namespace BigBallsWarVII
             cdTimer.Interval = TimeSpan.FromMilliseconds(16);//60FPS
             cdTimer.Tick += CdTimer_Tick;
             cdTimer.Start();
+            _stopWatch.Start();
             BallsManager.CountChange += ChangeCountText;
             EnemyBallsSpawner.addBallToCanva += AddEnemyToCanva;
             ChangeCountText();
@@ -43,19 +48,22 @@ namespace BigBallsWarVII
         private void CdTimer_Tick(object? sender, EventArgs e)
         {
             elapsedTimeText.Text = enemyBallsSpawner.ElapsedTime.ToString();
-            DateTime now = DateTime.Now;
-            UpdateCooldownTime(smallBottonSlider, smallCD, smallLastTime, now, isSmallSpawned);
-            UpdateCooldownTime(mediumBottonSlider, mediumCD, mediumLastTime, now, isMideumSpawned);
-            UpdateCooldownTime(largeBottonSlider, largeCD, largeLastTime, now, isLargeSpawned);
-            if (isSmallSpawned && now > smallLastTime)
+            myFirstBallPosition.Text = BallsManager.firstBall == null ? "0" : Canvas.GetLeft(BallsManager.firstBall).ToString();
+            enemyFirstBallPosition.Text = EnemyBallsSpawner.firstBall == null ? "0" : Canvas.GetLeft(EnemyBallsSpawner.firstBall).ToString();
+            elapsedTime = _stopWatch.ElapsedMilliseconds;//更精準判斷經過的時間。
+            UpdateCooldownTime(smallBottonSlider, smallCD, smallLastTime, isSmallSpawned);
+            UpdateCooldownTime(mediumBottonSlider, mediumCD, mediumLastTime, isMideumSpawned);
+            UpdateCooldownTime(largeBottonSlider, largeCD, largeLastTime, isLargeSpawned);
+            if (isSmallSpawned && elapsedTime > smallLastTime + smallCD)
             {
                 isSmallSpawned = false;
+                MessageBox.Show("被關掉了");
             }
-            if (isMideumSpawned && now > mediumLastTime)
+            if (isMideumSpawned && elapsedTime > mediumLastTime + mediumCD)
             {
                 isMideumSpawned = false;
             }
-            if (isLargeSpawned && now > largeLastTime)
+            if (isLargeSpawned && elapsedTime > largeLastTime + largeCD)
             {
                 isLargeSpawned = false;
             }
@@ -66,7 +74,7 @@ namespace BigBallsWarVII
             
             isSmallSpawned = true;
             Ball ball = new(BallsLevel.Small);
-            smallLastTime = DateTime.Now + TimeSpan.FromSeconds(smallCD);
+            smallLastTime = _stopWatch.ElapsedMilliseconds;
             mainCanva.Children.Add(ball);
         }
         private void mediumBotton_Click(object sender, RoutedEventArgs e)
@@ -75,7 +83,7 @@ namespace BigBallsWarVII
 
             isMideumSpawned = true;
             Ball ball = new Ball(BallsLevel.Medium);
-            mediumLastTime = DateTime.Now + TimeSpan.FromSeconds(mediumCD);
+            mediumLastTime = _stopWatch.ElapsedMilliseconds;
             mainCanva.Children.Add(ball);
 
         }
@@ -85,16 +93,17 @@ namespace BigBallsWarVII
 
             isLargeSpawned = true;
             Ball ball = new Ball(BallsLevel.Large);
-            largeLastTime = DateTime.Now + TimeSpan.FromSeconds(largeCD);
+            largeLastTime = _stopWatch.ElapsedMilliseconds;
             mainCanva.Children.Add(ball);
         }
-        void UpdateCooldownTime(Rectangle rect, double cd,DateTime lastTime,DateTime now,bool isSpawned)
+        void UpdateCooldownTime(Rectangle rect, double cd, double lastTime, bool isSpawned)
         {
+            double now = _stopWatch.ElapsedMilliseconds;
             if (isSpawned)
             {
-                double elapsedTime = (lastTime - now).TotalSeconds;
-                double newID = Math.Max(0, 90 * (elapsedTime / cd));
-                rect.Width = newID;
+                double elapsed = (lastTime + cd) - now;
+                double lerp = Math.Max(0, 90 * (elapsed / cd));
+                rect.Width = lerp;
             }
             else
             {
