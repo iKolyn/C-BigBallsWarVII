@@ -45,6 +45,10 @@ namespace BigBallsWarVII
         private static double elapsedTime;
         private static Stopwatch _stopWatch;//高精度的當前執行時間
         public static Action<Ball>? addBallToCanva;//將球體數量用委派顯示到畫布上。
+        public static double GetFirstBallPosition()
+        {
+            return FirstBall != null && FirstBall.SHAPE != null ? Canvas.GetLeft(FirstBall.SHAPE) : 0;
+        }
         static EnemyBallsSpawner()
         {
             balls = [];//new的意思
@@ -71,43 +75,34 @@ namespace BigBallsWarVII
             balls.Add(ball);
             addBallToCanva?.Invoke(ball);
             if (_firstBall == null)
-                FirstBall = ball;
+                _firstBall = ball;
             BallCount++;
         }
         public static void RemoveBall(Ball ball)
         {
             balls.Remove(ball);
+            FirstBall = null;
             BallCount--;
         }
         public static void UpdateEnemyBallPosition(Ball ball,double myX)
         {
-            //如果我是第一顆球，或者我比第一顆球前面，就取代第一顆球。
-            if (_firstBall != null && _firstBall.Shape != null && myX < Canvas.GetLeft(_firstBall.Shape))
-                _firstBall = ball;
+            if (_firstBall == null)
+            {
+                FirstBall = ball;//如果firstBall是空的，就直接取代。
+            }
+            //如果已經有第一顆球，而且我比他前面，就取代他。+1是避免過於接近而短期間互換太多次。。
+            if (_firstBall != null && _firstBall.SHAPE != null && myX > Canvas.GetLeft(_firstBall.SHAPE) + 1)
+            {
+                FirstBall = ball;
+            }
         }
         //處理生成邏輯
         #region 生成CD的數值們
         private static double lastSmallBallSpawnTime, lastMediumBallSpawnTime = 0;//小球上次生成的時間
-        //小球的CD時間設定功能
-        public static double SmallBallCDTime
-        {
-            get { return _smallBallCDTime; }
-            set
-            {
-                _smallBallCDTime = value < 0 ? 0 : value;//不讓CD時間變成負數
-            }
-        }
-        private static double _smallBallCDTime = 5000;//小球的CD時間;
-        //中球的CD時間設定功能
-        public static double MediumBallCDTime
-        {
-            get { return _mediumBallCDTime; }
-            set
-            {
-                _mediumBallCDTime = value < 0 ? 0 : value;//不讓CD時間變成負數
-            }
-        }
-        private static double _mediumBallCDTime = 12000;//中球的CD時間;
+        //小球的CD時間設定功能(毫秒)
+        private static double _smallBallCDTime = 6000;
+        //中球的CD時間設定功能(毫秒)
+        private static double _mediumBallCDTime = 12000;
         static double[] 指定的CD生成時間 = new double[20];
         #endregion
         public static double ElapsedTime
@@ -119,13 +114,13 @@ namespace BigBallsWarVII
             elapsedTime = _stopWatch.ElapsedMilliseconds;
             //生成普通狀態球的邏輯們
             //如果我是普通生成，我有五種怪物。我想要其中三種怪物可以依照各自不同的CD時間生成。CD就由manager創造。
-            if (elapsedTime > lastSmallBallSpawnTime + SmallBallCDTime)//如果現在的時間經過了
+            if (elapsedTime > lastSmallBallSpawnTime + _smallBallCDTime)//如果現在的時間經過了
             {
                 Ball ball = new(ballsType[(int)ballType.Small]);
                 AddBall(ball);
                 lastSmallBallSpawnTime = elapsedTime;
             }
-            if (elapsedTime > lastMediumBallSpawnTime + MediumBallCDTime)
+            if (elapsedTime > lastMediumBallSpawnTime + _mediumBallCDTime)
             {
                 Ball ball = new(ballsType[(int)ballType.Medium]);
                 AddBall(ball);

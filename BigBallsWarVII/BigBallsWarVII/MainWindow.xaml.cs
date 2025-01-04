@@ -47,8 +47,8 @@ namespace BigBallsWarVII
         private void CdTimer_Tick(object? sender, EventArgs e)
         {
             elapsedTimeText.Text = EnemyBallsSpawner.ElapsedTime.ToString();
-            myFirstBallPosition.Text = BallsManager.FirstBall == null ? "0" : Canvas.GetLeft(BallsManager.FirstBall).ToString();
-            enemyFirstBallPosition.Text = EnemyBallsSpawner.FirstBall == null ? "0" : Canvas.GetLeft(EnemyBallsSpawner.FirstBall).ToString();
+            myFirstBallPosition.Text = BallsManager.GetFirstBallPosition().ToString();
+            enemyFirstBallPosition.Text = EnemyBallsSpawner.GetFirstBallPosition().ToString();
             elapsedTime = _stopWatch.ElapsedMilliseconds;//更精準判斷經過的時間。
             UpdateCooldownTime(smallBottonSlider, smallCD, smallLastTime, isSmallSpawned);
             UpdateCooldownTime(mediumBottonSlider, mediumCD, mediumLastTime, isMideumSpawned);
@@ -56,7 +56,6 @@ namespace BigBallsWarVII
             if (isSmallSpawned && elapsedTime > smallLastTime + smallCD)
             {
                 isSmallSpawned = false;
-                MessageBox.Show("被關掉了");
             }
             if (isMideumSpawned && elapsedTime > mediumLastTime + mediumCD)
             {
@@ -75,7 +74,6 @@ namespace BigBallsWarVII
             Ball ball = new(BallsLevel.Small);
             smallLastTime = _stopWatch.ElapsedMilliseconds;
             mainCanva.Children.Add(ball);
-            BallsManager.AddBall(ball);
         }
         private void mediumBotton_Click(object sender, RoutedEventArgs e)
         {
@@ -85,8 +83,6 @@ namespace BigBallsWarVII
             Ball ball = new Ball(BallsLevel.Medium);
             mediumLastTime = _stopWatch.ElapsedMilliseconds;
             mainCanva.Children.Add(ball);
-            BallsManager.AddBall(ball);
-
         }
         private void largeBotton_Click(object sender, RoutedEventArgs e)
         {
@@ -96,7 +92,6 @@ namespace BigBallsWarVII
             Ball ball = new Ball(BallsLevel.Large);
             largeLastTime = _stopWatch.ElapsedMilliseconds;
             mainCanva.Children.Add(ball);
-            BallsManager.AddBall(ball);
         }
         void UpdateCooldownTime(Rectangle rect, double cd, double lastTime, bool isSpawned)
         {

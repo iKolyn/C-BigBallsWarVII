@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using System.Reflection.Emit;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
@@ -33,9 +34,14 @@ namespace BigBallsWarVII
         private double currentTime = 0;//經過的時間
 
         private Team team;
-        private BallStruct ballProperties;//包含ATK,HP,COST跟SPEED。
-        private BallsLevel ballsLevel;
-        public UIElement Shape//自己的形狀
+        public BallStruct ballStruct
+        {
+            get { return _ballProperties; }
+            private set { }
+        }
+        private BallStruct _ballProperties;//包含ATK,HP,COST跟SPEED。
+        private BallsLevel ballsLevel;//從按鈕生成後，選擇要生成哪種本體用的列舉。
+        public UIElement? SHAPE//自己的形狀
         {
             get; private set;
         }
@@ -57,29 +63,30 @@ namespace BigBallsWarVII
             switch (level)
             {
                 case BallsLevel.Small:
-                    ballProperties = new(1, 10, -60, 35);
+                    _ballProperties = new(1, 10, -60, 35);
                     break;
                 case BallsLevel.Medium:
-                    ballProperties = new(2, 20, -45, 55);
+                    _ballProperties = new(2, 20, -45, 55);
                     break;
                 case BallsLevel.Large:
-                    ballProperties = new(5, 50, -30, 75);
+                    _ballProperties = new(5, 50, -30, 75);
                     break;
             }
         }
         void CreateBall()
         {
-            double radius = ballProperties.Radius;
+            double radius = _ballProperties.Radius;
             _ball = ballsLevel switch
             {
                 BallsLevel.Small => new Ellipse() { Width = radius, Height = radius, Fill = Brushes.Green },
                 BallsLevel.Medium => new Ellipse() { Width = radius, Height = radius, Fill = Brushes.Blue },
                 BallsLevel.Large => new Ellipse() { Width = radius, Height = radius, Fill = Brushes.Orange },
             };
-            Shape = _ball;
+            SHAPE = _ball;
             ballCanva.Children.Add(_ball);//將球載入畫布中。
             Canvas.SetLeft(_ball, 700 - _ball.Width);//初始位置，可以跟主程式拿當前城堡的座標
             Canvas.SetTop(_ball, 275 - _ball.Height);
+            BallsManager.AddBall(this);//通知管理器增加球到自己的列表
         }
         #endregion
         #region 生成敵方球體
@@ -92,10 +99,10 @@ namespace BigBallsWarVII
             InitializeComponent();
             BallsConrolLoaded(this,new RoutedEventArgs());//計時器的初始化
             team = Team.Red;
-            ballProperties = ballStruct;
-            if(ballProperties.Color == null)
+            _ballProperties = ballStruct;
+            if(_ballProperties.Color == null)
             {
-                ballProperties.Color = Brushes.Black;
+                _ballProperties.Color = Brushes.Black;
                 MessageBox.Show("你沒給敵人顏色啦！");
             }
             CreateEnemyBall();//創造球體本身
@@ -105,11 +112,11 @@ namespace BigBallsWarVII
             //因為沒有固定球體，由生成器決定要生成哪種類型的敵人。
             _ball = new Ellipse()
             {
-                Width = ballProperties.Radius,
-                Height = ballProperties.Radius,
-                Fill = ballProperties.Color,
+                Width = _ballProperties.Radius,
+                Height = _ballProperties.Radius,
+                Fill = _ballProperties.Color,
             };
-            Shape = _ball;
+            SHAPE = _ball;
             ballCanva.Children.Add(_ball);
             Canvas.SetLeft(_ball, 100 - _ball.Width);//初始位置，可以跟主程式拿當前城堡的座標
             Canvas.SetTop(_ball, 275 - _ball.Height);
@@ -124,22 +131,30 @@ namespace BigBallsWarVII
             moveTimer.Tick += MoveTimer_Tick;
             moveTimer.Start();
             //依照攻擊除以特定數字來計算速度，攻擊力越高打越慢。
-            atkTimer.Interval = TimeSpan.FromSeconds((int)Math.ILogB(ballProperties.ATK + 1.5));
+            atkTimer.Interval = TimeSpan.FromSeconds((int)Math.ILogB(_ballProperties.ATK + 1.5));
             //
             _stopWatch.Start();
         }
         //Remove DispatcherTimer and use Update() instead.Manage Will call this Method.
-        private void MoveTimer_Tick(object? sender,EventArgs e)
+        private async void MoveTimer_Tick(object? sender,EventArgs e)
         {
             currentTime = _stopWatch.ElapsedMilliseconds;
             double deltaTime = (currentTime - lastTime) / 1000;
             lastTime = currentTime;
-            _newX = Canvas.GetLeft(_ball) + ballProperties.SPEED * deltaTime;
+            _newX = Canvas.GetLeft(_ball) + _ballProperties.SPEED * deltaTime;
             Canvas.SetLeft(_ball, _newX);
             if (CollistionEvent())//如果球碰到敵人就攻擊
             {
+                _ball.Fill = Brushes.Gold;//碰到就變色
                 moveTimer.Stop();
                 _stopWatch.Stop();
+                //invoke
+                await Task.Delay(2000);//等待2秒
+                EndBallsControl();
+                if (team == Team.Blue)
+                    BallsManager.RemoveBall(this);
+                else
+                    EnemyBallsSpawner.RemoveBall(this);
                 //開始攻擊
             }
         }
@@ -150,32 +165,33 @@ namespace BigBallsWarVII
             {
                 case Team.Blue:
                     BallsManager.UpdateBallPosition(this, _newX);//更新第一個球是誰(攻擊目標)
-                    if (EnemyBallsSpawner.FirstBall != null)
+                    if (EnemyBallsSpawner.FirstBall != null && EnemyBallsSpawner.FirstBall.SHAPE != null)
                     {
-                        enemyX = Canvas.GetLeft(EnemyBallsSpawner.FirstBall.Shape) + EnemyBallsSpawner.FirstBall.ballProperties.Radius;
-                        Debug.WriteLine($"EnemyX : {enemyX}");
+                        //注意長寬都是直徑不是半徑。
+                        enemyX = Canvas.GetLeft(EnemyBallsSpawner.FirstBall.SHAPE) + (EnemyBallsSpawner.FirstBall.ballStruct.Radius);
                     }
                     else
                         enemyX = 0;
                     if (_newX <= enemyX)//Collision Event
                     {
-                        Debug.WriteLine("碰到敵人了");
+                        Debug.WriteLine("我死了，死掉的位置在:" + _newX + "\n你碰到我的位置在：" + enemyX + "。");
                         return true;
-                    }
+                    }     
                     break;
                 case Team.Red:
                     EnemyBallsSpawner.UpdateEnemyBallPosition(this, _newX);//更新第一個球是誰(攻擊目標)
-                    if (BallsManager.FirstBall != null)
+                    if (BallsManager.FirstBall != null && BallsManager.FirstBall.SHAPE != null)
                     {
-                        enemyX = Canvas.GetLeft(BallsManager.FirstBall.Shape) - BallsManager.FirstBall.ballProperties.Radius;
-                        Debug.WriteLine($"myX : {enemyX}");
+                        //注意長寬都是直徑不是半徑。
+                        enemyX = Canvas.GetLeft(BallsManager.FirstBall.SHAPE);
                     }
                     else
                         enemyX = double.MaxValue;
-                    if (_newX >= enemyX)//Collision Event
+                    if (_newX + ballStruct.Radius >= enemyX)//Collision Event
                     {
+                        Debug.WriteLine("我死了，死掉的位置在:" + _newX + "\n你碰到我的位置在：" + enemyX + "。");
                         return true;
-                    }
+                    }  
                     break;
             }
             return false;
@@ -187,12 +203,11 @@ namespace BigBallsWarVII
             _stopWatch.Stop();
             moveTimer.Tick -= MoveTimer_Tick;
             Loaded -= BallsConrolLoaded;//退訂事件
-
             // 確保所有資源都被釋放
             moveTimer = null;
             _stopWatch = null;
             _ball = null;
-            Shape = null;
+            SHAPE = null;
         }
         enum Team
         {
