@@ -23,7 +23,6 @@ namespace BigBallsWarVII
     //擁有不同的生成佇列，同時會訂閱敵方城堡的當前血量。
     public static class EnemyBallsSpawner
     {
-        //因為希望有不同關卡，所以不用Staitc;
         public static List<Ball> balls;        
         public static Ball? FirstBall 
         {
@@ -35,9 +34,9 @@ namespace BigBallsWarVII
         //敵人們的種類
         private static BallStruct[] ballsType =
         [
-            new BallStruct { ATK = 1, HP = 10, SPEED = 60, Radius = 35, Color = Brushes.Green },
-            new BallStruct { ATK = 2, HP = 20, SPEED = 45, Radius = 55, Color = Brushes.Blue },
-            new BallStruct { ATK = 3, HP = 30, SPEED = 30, Radius = 75, Color = Brushes.Red },
+            new BallStruct { ATK = 1, HP = 12, SPEED = 60, Radius = 35, Color = Brushes.Green },
+            new BallStruct { ATK = 4, HP = 40, SPEED = 45, Radius = 55, Color = Brushes.Blue },
+            new BallStruct { ATK = 9, HP = 60, SPEED = 30, Radius = 75, Color = Brushes.Red },
         ];
         public static BallQueue BallQueue { get;private set; }//不同城堡血量的生成佇列
 
@@ -45,6 +44,10 @@ namespace BigBallsWarVII
         private static double elapsedTime;
         private static Stopwatch _stopWatch;//高精度的當前執行時間
         public static Action<Ball>? addBallToCanva;//將球體數量用委派顯示到畫布上。
+        /// <summary>
+        /// 通知對方管理員第一顆球死了，讓所有對方的球可以移動。
+        /// </summary>
+        public static Action isFirstBallDie;
         public static double GetFirstBallPosition()
         {
             return FirstBall != null && FirstBall.SHAPE != null ? Canvas.GetLeft(FirstBall.SHAPE) : 0;
@@ -62,8 +65,8 @@ namespace BigBallsWarVII
             _dispatcherTimer.Start();
             _stopWatch = new();
             _stopWatch.Start();
+            BallsManager.isFirstBallDie += ResumeTimer;
         }
-
         public static int BallCount
         {
             get { return _ballCount; }
@@ -82,7 +85,12 @@ namespace BigBallsWarVII
         {
             balls.Remove(ball);
             FirstBall = null;
+            isFirstBallDie?.Invoke();
             BallCount--;
+        }
+        public static List<Ball> GetAllBalls()
+        {
+            return balls;
         }
         public static void UpdateEnemyBallPosition(Ball ball,double myX)
         {
@@ -96,14 +104,21 @@ namespace BigBallsWarVII
                 FirstBall = ball;
             }
         }
+        public static void ResumeTimer()
+        {
+            foreach(Ball ball in balls)
+            {
+                ball.ResumeTimer();
+            }
+        }
         //處理生成邏輯
         #region 生成CD的數值們
         private static double lastSmallBallSpawnTime, lastMediumBallSpawnTime = 0;//小球上次生成的時間
         //小球的CD時間設定功能(毫秒)
-        private static double _smallBallCDTime = 6000;
+        private static double _smallBallCDTime = 4500;
         //中球的CD時間設定功能(毫秒)
         private static double _mediumBallCDTime = 12000;
-        static double[] 指定的CD生成時間 = new double[20];
+        static double[] 指定的CD生成時間 = new double[20];//還沒用到所以用中文沒差
         #endregion
         public static double ElapsedTime
         {

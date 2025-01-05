@@ -11,6 +11,11 @@ namespace BigBallsWarVII
 {
     public static class BallsManager
     {
+        static BallsManager()
+        {
+            EnemyBallsSpawner.isFirstBallDie += ResumeTimer;
+            Debug.WriteLine("訂閱成功");
+        }
         static List<Ball> balls = new();//記錄所有自己的球。
         public static Ball? FirstBall//預計讓mainCanva可以顯示當前第一顆球是誰。
         {
@@ -32,11 +37,14 @@ namespace BigBallsWarVII
         }
         static int _ballCount = 0;
         public static Action? CountChange;
+        /// <summary>
+        /// 通知對方管理員第一顆球死了，讓所有對方的球可以移動。
+        /// </summary>
+        public static Action isFirstBallDie;
         public static double GetFirstBallPosition()
         {
             return FirstBall != null && FirstBall.SHAPE != null ? Canvas.GetLeft(FirstBall.SHAPE) : 0;
         }
-
         public static void AddBall(Ball ball)
         {
             balls.Add(ball);
@@ -56,6 +64,10 @@ namespace BigBallsWarVII
             BallCount--;
             CountChange?.Invoke();
         }
+        public static List<Ball> GetAllBalls()
+        {
+            return balls;
+        }
         /// <summary>
         /// 每一顆球會偵測自己跟firstBall的位置，自己比較前面，就取代firstBall。
         /// </summary>
@@ -73,6 +85,13 @@ namespace BigBallsWarVII
             {
                 Debug.WriteLine("被超過了！第一顆球取代");
                 _firstBall = ball;
+            }
+        }
+        public static void ResumeTimer()
+        {
+            foreach (Ball ball in balls)
+            {
+                ball.ResumeTimer();
             }
         }
     }
