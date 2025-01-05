@@ -26,7 +26,7 @@ namespace BigBallsWarVII
     /// <summary>
     /// Ball的控制器，負責控制球體的生成，移動，攻擊等。
     /// <br>如要生成我方球體，請傳入BallsLevel列舉。</br>
-    /// <br>如要生成敵方球體，請傳入BallStruct結構。</br>
+    /// <br>如要生成敵方球體，請傳入BallStruct結構跟BallsType列舉。</br>
     /// </summary>
     public partial class Ball : UserControl, ILive
     {
@@ -34,6 +34,7 @@ namespace BigBallsWarVII
         private MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
         private DispatcherTimer moveTimer;
         private DispatcherTimer atkTimer;
+        private DispatcherTimer cdTimer;
         private Stopwatch _stopWatch;//現在的時間。
         private double lastTime = 0;//上次的時間
         private double currentTime = 0;//經過的時間
@@ -46,6 +47,7 @@ namespace BigBallsWarVII
         }//給對方看的屬性
         private BallStruct _ballProperties;//包含ATK,HP,COST跟SPEED。
         private BallsLevel ballsLevel;//從按鈕生成後，選擇要生成哪種本體用的列舉。
+        private BallsType ballsType;//敵方球體的種類，用於CashManager。
         public UIElement? SHAPE//自己的形狀，不限於球體
         {
             get; private set;
@@ -53,6 +55,7 @@ namespace BigBallsWarVII
         private Ellipse _ball;//自己的本體(球)
         private Rectangle HPBackGround;//血條背景
         private Rectangle HPBar;//血條
+        private Rectangle CDBar;//CD條
         /// <summary>
         /// 扣除血量的同時操控HPBar的寬度，請扣除血量時一定要使用此變數扣除。
         /// </summary>
@@ -61,10 +64,18 @@ namespace BigBallsWarVII
             get { return _ballProperties.HP; }
             set
             {
-                if(value >= 0)
+                /*不要這樣寫，如果血量沒剛好扣成0，你or對方就無敵了。
+                 *if(value >= 0)
+                 *_ballProperties.HP = value:*/
+                if (value <= 0)
+                    _ballProperties.HP = 0;
+                else
                     _ballProperties.HP = value;
-                HPBar.Width = (_ballProperties.HP / maxHp) * (_ballProperties.Radius + 5);
-                Debug.WriteLine("現在的HRBar是" + HPBar.Width + "，現在的血量是" + _ballProperties.HP);
+                if (HPBar != null)
+                {
+                    HPBar.Width = (_ballProperties.HP / maxHp) * (_ballProperties.Radius + 5);
+                    Debug.WriteLine("現在的HRBar是" + HPBar.Width + "，現在的血量是" + _ballProperties.HP);
+                }
             }
         }
         private double maxHp;//宣告時請註冊最大血量。
@@ -74,10 +85,12 @@ namespace BigBallsWarVII
         public double MyX
         { get { return _newX; } }
         private double _newX;//自己的新位置
+        private double atkCD;//攻擊的冷卻時間
         /// <summary>
         /// 碰撞緩衝空間 = 10;
         /// </summary>
         private const double collisionBufferSpace = 10;
+        public bool isAtkCastle { get; private set; } = false;//是否在攻擊城堡;
         bool isEnd = false;//球體是否正在刪除。
         #endregion
         #region 生成我方球體
@@ -99,13 +112,13 @@ namespace BigBallsWarVII
             switch (level)
             {
                 case BallsLevel.Small:
-                    _ballProperties = new(1, 10, -60, 35);
+                    _ballProperties = new(10, 50, -60, 35);
                     break;
                 case BallsLevel.Medium:
-                    _ballProperties = new(5, 20, -45, 55);
+                    _ballProperties = new(25, 100, -45, 55);
                     break;
                 case BallsLevel.Large:
-                    _ballProperties = new(10, 50, -30, 75);
+                    _ballProperties = new(40, 300, -30, 75);
                     break;
             }
             maxHp = _ballProperties.HP;
@@ -121,18 +134,24 @@ namespace BigBallsWarVII
             };
             SHAPE = _ball;
             ballCanva.Children.Add(_ball);//將球載入畫布中。
-            Canvas.SetLeft(_ball, 700 - _ball.Width);//初始位置
+            Canvas.SetLeft(_ball, 700 - 5);//初始位置
             Canvas.SetTop(_ball, 275 - _ball.Height);
-
+            //血條背景
             HPBackGround = new Rectangle() { Width = radius + 5, Height = 6, Fill = Brushes.Black, Opacity = 0.7 };
             ballCanva.Children.Add(HPBackGround);//將球載入畫布中。
-            Canvas.SetLeft(HPBackGround, 700 - _ball.Width);//初始位置
+            Canvas.SetLeft(HPBackGround, 700 - 5);//初始位置
             Canvas.SetTop(HPBackGround, 275 - _ball.Height - 8);
-
+            //血條本身
             HPBar = new Rectangle() { Width = radius + 5, Height = 5, Fill = Brushes.Red, Opacity = 0.7 };
             ballCanva.Children.Add(HPBar);//將球載入畫布中。
-            Canvas.SetLeft(HPBar, 700 - _ball.Width);//初始位置
+            Canvas.SetLeft(HPBar, 700 - 5);//初始位置
             Canvas.SetTop(HPBar, 275 - _ball.Height - 8);
+            //CD條
+            CDBar = new Rectangle() { Width = 0, Height = 5, Fill = Brushes.Black, Opacity = 0.5 };
+            ballCanva.Children.Add(CDBar);//將球載入畫布中。
+            Canvas.SetLeft(CDBar, 700 - 5);//初始位置
+            Canvas.SetTop(CDBar, 275 - _ball.Height - 15);
+
             BallsManager.AddBall(this);//通知管理器增加球到自己的列表
         }
         #endregion
@@ -141,11 +160,13 @@ namespace BigBallsWarVII
         /// 生成敵方球體用的，請傳入BallStruct結構
         /// </summary>
         /// <param name="ballStruct">敵方屬性，要包含HP,ATK,SPEED,COLOR跟RADIUS</param>
-        public Ball(BallStruct ballStruct)//用於敵人生成
+        /// <<param name="level">該敵方球體種類的列舉，CashManager需要他。</param>
+        public Ball(BallStruct ballStruct, BallsType level)//用於敵人生成
         {
             InitializeComponent();
             team = Team.Red;
             _ballProperties = ballStruct;
+            ballsType = level;
             if (_ballProperties.Color == null)
             {
                 _ballProperties.Color = Brushes.Black;
@@ -169,36 +190,49 @@ namespace BigBallsWarVII
             ballCanva.Children.Add(_ball);//將球載入畫布
             Canvas.SetLeft(_ball, 100 - _ball.Width);//初始位置
             Canvas.SetTop(_ball, 275 - _ball.Height);
-
+            //血條背景
             HPBackGround = new() { Width = _ballProperties.Radius + 5, Height = 6, Fill = Brushes.Black, Opacity = 0.7 };
             ballCanva.Children.Add(HPBackGround);
             Canvas.SetLeft(HPBackGround, 100 - _ball.Width);
             Canvas.SetTop(HPBackGround, 275 - _ball.Height - 8);
-
+            //血條本身
             HPBar = new() { Width = _ballProperties.Radius + 5, Height = 5, Fill = Brushes.Blue, Opacity = 0.7 };
             ballCanva.Children.Add(HPBar);
             Canvas.SetLeft(HPBar, 100 - _ball.Width);
             Canvas.SetTop(HPBar, 275 - _ball.Height - 8);
+            //CD條
+            CDBar = new Rectangle() { Width = 0, Height = 5, Fill = Brushes.Black, Opacity = 0.5 };
+            ballCanva.Children.Add(CDBar);//將球載入畫布中。
+            Canvas.SetLeft(CDBar, 100 - _ball.Width);//初始位置
+            Canvas.SetTop(CDBar, 275 - _ball.Height - 15);
         }
         #endregion
-        //當準備顯示時，初始化計時器。
+        /// <summary>
+        /// 當準備顯示時，初始化計時器。
+        /// </summary>
         private void BallsConrolLoaded(object sender, RoutedEventArgs e)
         {
             moveTimer = new();
             atkTimer = new();
+            cdTimer = new();
             _stopWatch = new();
             moveTimer.Interval = TimeSpan.FromMilliseconds(16);//60FPS
             moveTimer.Tick += MoveTimer_Tick;
             moveTimer.Start();
             //依照攻擊除以特定數字來計算速度，攻擊力越高打越慢。
-            atkTimer.Interval = TimeSpan.FromSeconds((int)Math.Log2(_ballProperties.ATK + 1.5));
+            //攻擊冷卻時間被限定在整數秒。
+            atkCD = (int)Math.Log2(_ballProperties.ATK * 0.25) * 1000;
+            atkTimer.Interval = TimeSpan.FromSeconds((int)atkCD * 0.001);
             atkTimer.Tick += AtkTimer_Tick;
-            //
             _stopWatch.Start();
-        }
+            //單純這顆球攻擊後的冷卻時間，這是為了美觀。
+            cdTimer.Interval = TimeSpan.FromMilliseconds(20);//50FPS
+            cdTimer.Tick += CDTimer_Tick;
+            }
+
         private void MoveTimer_Tick(object? sender, EventArgs e)
         {
-            //移動
+            //移動，其實應該移動整個Canvas，但這又要測試一段時間。
             currentTime = _stopWatch.ElapsedMilliseconds;
             double deltaTime = (currentTime - lastTime) * 0.001;
             lastTime = currentTime;
@@ -206,26 +240,26 @@ namespace BigBallsWarVII
             Canvas.SetLeft(_ball, _newX);
             Canvas.SetLeft(HPBackGround, _newX);
             Canvas.SetLeft(HPBar, _newX);
+            Canvas.SetLeft(CDBar, _newX);
 
             //是否碰撞
             if (CollistionEvent())//如果球碰到敵人就攻擊
             {
-                //敵人會一直回傳True一直扁我，這不正常。
+                //開始先攻擊一次
                 Attack();
-                if (target.ballStruct.HP <= 0)
+                //攻擊後就開始計算CD
+                cdTimer.Start();
+                cdWatch.Start();
+                endCD = cdWatch.ElapsedMilliseconds + atkCD;
+                if (target != null && target.ballStruct.HP <= 0)
                 {
                     target = null;
                     Debug.WriteLine("對方被我碰到就死了");
                 }
-                else
-                {
-                    moveTimer.Stop();
-                    _stopWatch.Stop();
-                    //開始先攻擊一次
-                    //然後再開啟攻擊計時器，依照log2(攻擊力+1.5)決定攻擊頻率。
-                    atkTimer.Start();
-                    Debug.WriteLine("碰到了");
-                }
+                moveTimer.Stop();
+                _stopWatch.Stop();
+                //然後再開啟攻擊計時器，依照log2(攻擊力*0.25)決定攻擊頻率。
+                atkTimer.Start();
             }
         }
         /// <summary>
@@ -233,7 +267,6 @@ namespace BigBallsWarVII
         /// <br>只要碰到就會存入，對方死亡為止都不會變更。</br>
         /// </summary>
         private Ball target = null;
-
         /// <summary>
         /// 是否碰到對方的功能，已放棄firtBall偵測。
         /// </summary>
@@ -250,12 +283,19 @@ namespace BigBallsWarVII
                     {
                         //如果敵人還存在，且我已經要扁到他了。
                         double range = enemy.MyX + enemy.ballStruct.Radius;
-                        if (enemy is ILive enemyTarget && (_newX <= range && _newX > range - collisionBufferSpace)) 
+                        if (_newX <= range && _newX > range - collisionBufferSpace)
                         {
                             //它就變成我的攻擊目標，然後回傳True碰到了。
                             target = enemy;
+                            isAtkCastle = false;
                             return true;
                         }
+                    }
+                    if (_newX <= 115)//城堡實際在120
+                    {
+                        Debug.WriteLine("碰到城堡了");
+                        isAtkCastle = true;//要攻擊城堡
+                        return true;//碰到城堡就攻擊城堡
                     }
                     break;
                 case Team.Red://敵方
@@ -266,12 +306,18 @@ namespace BigBallsWarVII
                         //如果敵人還存在，且我已經要扁到他了。
                         //**********這裡寫法很重要，卡很久了**************
                         double range = enemy.MyX - _ballProperties.Radius;
-                        if (enemy is ILive enemyTarget && (_newX >= range && _newX < range + collisionBufferSpace))
+                        if (_newX >= range && _newX < range + collisionBufferSpace)
                         {
                             //它就變成我的攻擊目標，然後回傳True碰到了。
                             target = enemy;
+                            isAtkCastle = false;
                             return true;
                         }
+                    }
+                    if (_newX >= 675 - _ballProperties.Radius)//城堡實際在680
+                    {
+                        isAtkCastle = true;//要攻擊城堡
+                        return true;//碰到城堡就攻擊城堡
                     }
                     break;
             }
@@ -282,6 +328,9 @@ namespace BigBallsWarVII
         /// </summary>
         private void AtkTimer_Tick(object? sender, EventArgs e)
         {
+            endCD = cdWatch.ElapsedMilliseconds + atkCD;
+            cdTimer.Start();
+            cdWatch.Start();
             Attack();
         }
         /// <summary>
@@ -295,9 +344,46 @@ namespace BigBallsWarVII
                 Debug.WriteLine("攻擊了，我是" + team + " 的" + ballsLevel.ToString());
                 target?.TakeDamage(this);//只要傳傷害就好。
             }
+            else if (isAtkCastle)
+            {
+                switch (team)
+                {
+                    case Team.Blue:
+                        EnemyBallsSpawner.RedCastleHP -= _ballProperties.ATK;
+                        break;
+                    case Team.Red:
+                        BallsManager.BlueCastleHP -= _ballProperties.ATK;
+                        break;
+                }
+            }
+            else ResumeTimer();
+        }
+        double endCD;
+       
+        Stopwatch cdWatch = new();
+        /// <summary>
+        /// 單純的顯示攻擊者的CD時間。
+        /// </summary>
+        private void CDTimer_Tick(object? sender, EventArgs e)
+        {
+            double elapsedTime = -1 * (cdWatch.ElapsedMilliseconds - endCD);
+            double percent = (elapsedTime / atkCD) * (_ballProperties.Radius + 5);
+            if (percent > 0)
+                CDBar.Width = percent;
+            else
+            {
+                CDBar.Width = 0;
+                cdTimer.Stop();
+                cdWatch.Stop();
+            }
         }
         public void ResumeTimer()
         {
+            //只要開始移動，就代表不會攻擊了。關閉CD時間。
+            CDBar.Width = 0;
+            cdTimer.Stop();
+            cdWatch.Stop();
+
             moveTimer.Start();
             _stopWatch.Start();
             atkTimer.Stop();
@@ -308,25 +394,36 @@ namespace BigBallsWarVII
         /// <param name="ballProperties">對方的數據結構體</param>
         public void TakeDamage(Ball damager)
         {
-            Action remove = team switch
+            Action remove = team switch//根據不同的隊伍，在管理員刪除自己;
             {
                 Team.Blue => () => BallsManager.RemoveBall(this),
                 Team.Red => () => EnemyBallsSpawner.RemoveBall(this),
                 _ => () => { }
             };
-            Action resumeTimer = team switch
+            Action resumeTimer = team switch//根據不同的隊伍，讓對方繼續移動;
             {
                 Team.Blue => () => EnemyBallsSpawner.ResumeTimer(),
-                Team.Red =>  () => BallsManager.ResumeTimer(),
+                Team.Red => () => BallsManager.ResumeTimer(),
                 _ => () => { }
             };
             HP -= damager._ballProperties.ATK;
             if (HP <= 0 && !isEnd)
             {
                 isEnd = true;
-                //damager.ResumeTimer();//讓攻擊者繼續移動。
+                //damager.ResumeTimer();//讓攻擊者繼續移動，先保留看以後用不用得到。
                 resumeTimer.Invoke();
                 remove.Invoke();
+                Debug.WriteLine($"我是{team}，我死了");
+                if(team == Team.Red)
+                {
+                    int cash = ballsType switch
+                    { BallsType.Small => 10,
+                        BallsType.Medium => 50,
+                        BallsType.Large => 500,
+                        _ => 0
+                    };
+                    CashSystem.IncreaseCash(cash);
+                }
                 EndBallsControl();
             }
         }
@@ -338,6 +435,8 @@ namespace BigBallsWarVII
             moveTimer.Tick -= MoveTimer_Tick;
             atkTimer.Stop();
             atkTimer.Tick -= AtkTimer_Tick;
+            cdTimer.Stop();
+            cdTimer.Tick -= CDTimer_Tick;
             Loaded -= BallsConrolLoaded;//退訂事件
 
             //確保所有資源都被釋放
@@ -369,7 +468,7 @@ public struct BallStruct
     public int ATK;
     public int HP;
     public int SPEED;
-    public BallStruct(int atk, int hp, int speed,double radius)
+    public BallStruct(int atk, int hp, int speed, double radius)
     {
         ATK = atk;
         HP = hp;

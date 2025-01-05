@@ -11,25 +11,36 @@ namespace BigBallsWarVII
 {
     public static class BallsManager
     {
-        static BallsManager()
-        {
-            EnemyBallsSpawner.isFirstBallDie += ResumeTimer;
-            Debug.WriteLine("訂閱成功");
-        }
+        #region 數值們
         static List<Ball> balls = new();//記錄所有自己的球。
-        public static Ball? FirstBall//預計讓mainCanva可以顯示當前第一顆球是誰。
-        {
-            get
-            { return _firstBall; }
-            set
-            {
-                FirstBallChangeEvent?.Invoke();//只要firstBall改變，就觸發事件。訂閱者模式。
-            }
-        }
         static Ball? _firstBall = null;
         public static Action? FirstBallChangeEvent;//問號?是允許值為空，不想讓他一直跳綠底很煩
+        //城堡相關
+        public static Action BlueCastleChanged;
+        public static double BlueCastleHP
+        {
+            get { return _blueCastleHP; }
+            set
+            {
+                if (value <= 0)
+                    _blueCastleHP = 0;
+                else
+                    _blueCastleHP = value;
+                BlueCastleChanged?.Invoke();
+            }
+        }
+        private static double _blueCastleHP;
+        public static double MaxBlueCastleHP
+        {
+            get { return _maxBlueCastleHP; }
+            set
+            {
+                _maxBlueCastleHP = value;
+                BlueCastleChanged?.Invoke();
+            }
+        }
+        private static double _maxBlueCastleHP;
         //位置相關
-        public static Action<Ball>? addBallToCanva;//將球體數量用委派顯示到畫布上。
         public static int BallCount
         {
             get { return _ballCount; }
@@ -41,14 +52,14 @@ namespace BigBallsWarVII
         /// 通知對方管理員第一顆球死了，讓所有對方的球可以移動。
         /// </summary>
         public static Action isFirstBallDie;
-        public static double GetFirstBallPosition()
+        #endregion
+        static BallsManager()
         {
-            return FirstBall != null && FirstBall.SHAPE != null ? Canvas.GetLeft(FirstBall.SHAPE) : 0;
+            EnemyBallsSpawner.isFirstBallDie += ResumeTimer;
         }
         public static void AddBall(Ball ball)
         {
             balls.Add(ball);
-            addBallToCanva?.Invoke(ball);
             if (_firstBall == null)
             {
                 Debug.WriteLine("我是剛生成的第一顆球");
@@ -91,7 +102,8 @@ namespace BigBallsWarVII
         {
             foreach (Ball ball in balls)
             {
-                ball.ResumeTimer();
+                if (!ball.isAtkCastle)
+                    ball.ResumeTimer();
             }
         }
     }

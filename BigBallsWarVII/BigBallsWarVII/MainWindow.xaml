@@ -53,9 +53,10 @@
             </Rectangle>
             <Rectangle Name="enemyHPBarBackGround" Width = "120" Height="20" Canvas.Top="130" Canvas.Left="45" Fill="Black" Opacity="0.5"/>
             <Rectangle Name="enemyHPBar" Width = "120" Height="20" Canvas.Top="130" Canvas.Left="45" Fill="Red" Opacity="0.5"/>
-            <TextBlock Name="enemyHPText" Canvas.Left="66" Canvas.Top="132" FontSize="12" Width="84" TextAlignment="Right" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Run Name="enemyHPCurrent" Text="10000"/>
-                <Run Text="/ 10000"/>
+            <TextBlock Name="enemyCastleHPText" Canvas.Left="66" Canvas.Top="132" FontSize="12" Width="84" TextAlignment="Right" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Run Name="enemyHPCurrent" Text="15000"/>
+                <Run Text=" /"/>
+                <Run Name="enemyMaxHPCurrent" Text="15000"/>
                 <TextBlock.Foreground>
                     <SolidColorBrush Color="White"/>
                 </TextBlock.Foreground>
@@ -73,9 +74,10 @@
             </Rectangle>
             <Rectangle Name="myHPBarBackGround" Width = "120" Height="20" Canvas.Top="130" Canvas.Left="635" Fill="Black" Opacity="0.5" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <Rectangle Name="myHPBar" Width = "120" Height="20" Canvas.Top="130" Canvas.Left="635" Fill="Blue" Opacity="0.5" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <TextBlock Name="myHPText" Canvas.Right="658" Canvas.Top="132" FontSize="12" TextAlignment="Right" Canvas.Left="658" Width="84" HorizontalAlignment="Left" VerticalAlignment="Center">
-                <Run Name="MyHPCurrent" Text="10000"/>
-                <Run Text="/ 10000"/>
+            <TextBlock Name="myCastleText" Canvas.Right="658" Canvas.Top="132" FontSize="12" TextAlignment="Right" Canvas.Left="658" Width="84" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <Run Name="myHPCurrent" Text="10000"/>
+                <Run Text=" /"/>
+                <Run Name ="myMaxHPCurrent" Text="10000"/>
                 <TextBlock.Foreground>
                     <SolidColorBrush Color="White"/>
                 </TextBlock.Foreground>
@@ -88,32 +90,36 @@
                 </TextBlock.Foreground>
             </TextBlock>
             <TextBlock Name="elapsedTimeText" Canvas.Left="45" TextWrapping="Wrap" Text="TextBlock" Canvas.Top="65" FontSize="20" />
-            <TextBlock Name="myFirstBallPosition" Canvas.Left="613" TextWrapping="Wrap" Text="TextBlock" Canvas.Top="282" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Top" />
-            <TextBlock Name="enemyFirstBallPosition" Canvas.Left="105" TextWrapping="Wrap" Text="TextBlock" Canvas.Top="282" FontSize="20" />
         </Canvas>
         <Canvas Name="mainCanva" Grid.RowSpan="2" Grid.ColumnSpan="3">
             <!--所有新增出來的球都會在這裡出現。-->
             <Rectangle Name="buttonBackground" Width="800" Height="120" Canvas.Bottom="0" Fill="Black" Opacity="0.4"/>
             <TextBlock Name="myMoney" FontSize="20" Canvas.Left="620" Canvas.Top="30" HorizontalAlignment="Left" VerticalAlignment="Center">
-                <Run Text="金錢："/>
-                <Run Name="currentMoney" Text="15000"/>
+                <Run Text="金錢 :"/> 
+                <Run Name="currentMoney" Text="5000"/>
+                <Run Name="isLimited" Text="(Limit)"/>
                 <TextBlock.Foreground>
                     <SolidColorBrush Color="White"/>
+                </TextBlock.Foreground>
+            </TextBlock>
+            <TextBlock Name="isCashEnough" Text="錢不夠！" FontSize="30" Canvas.Left="355" Canvas.Top="120" FontFamily="Arial Black">
+                <TextBlock.Foreground>
+                    <SolidColorBrush Color="Red"/>
                 </TextBlock.Foreground>
             </TextBlock>
             <!--放按鈕的StackPanel-->
             <StackPanel Name="ballStackPanel" Orientation="Horizontal" Height="100" Width="780" 
                         Canvas.Right="10" Canvas.Bottom="10" FlowDirection="RightToLeft" Background="Tan" Opacity="0.9">
                 <Grid>
-                    <Button Name="largeBotton" Width="90" Height="90" Content="500$" Click="largeBotton_Click" Margin="10,0,0,0" FontSize="24"/>
+                    <Button Name="largeBotton" Width="90" Height="90" Content="200$" Click="largeBotton_Click" Margin="10,0,0,0" FontSize="24"/>
                     <Rectangle Name="largeBottonSlider" Width="0" Height="90" HorizontalAlignment="Right" Opacity="0.5" Fill="black"/>
                 </Grid>
                 <Grid>
-                    <Button Name="mediumBotton" Width="90" Height="90" Content="150$" Click="mediumBotton_Click" Margin="10,0,0,0" FontSize="24"/>
+                    <Button Name="mediumBotton" Width="90" Height="90" Content="75$" Click="mediumBotton_Click" Margin="10,0,0,0" FontSize="24"/>
                     <Rectangle Name="mediumBottonSlider" Width="0" Height="90" HorizontalAlignment="Right" Opacity="0.5" Fill="black"/>
                 </Grid>
                 <Grid>
-                    <Button Name="smallBotton" Width="90" Height="90" Content="50$" Click="smallBotton_Click" Margin="10,0,0,0" FontSize="24"/>
+                    <Button Name="smallBotton" Width="90" Height="90" Content="10$" Click="smallBotton_Click" Margin="10,0,0,0" FontSize="24"/>
                     <Rectangle Name="smallBottonSlider" Width="0" Height="90" HorizontalAlignment="Right" Opacity="0.5" Fill="black"/>
                 </Grid>
             </StackPanel>
