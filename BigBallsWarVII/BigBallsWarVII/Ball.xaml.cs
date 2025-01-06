@@ -43,7 +43,7 @@ namespace BigBallsWarVII
         public BallStruct ballStruct
         {
             get { return _ballProperties; }
-            private set { }
+            set { _ballProperties = value; }
         }//給對方看的屬性
         private BallStruct _ballProperties;//包含ATK,HP,COST跟SPEED。
         private BallsLevel ballsLevel;//從按鈕生成後，選擇要生成哪種本體用的列舉。
@@ -53,6 +53,7 @@ namespace BigBallsWarVII
             get; private set;
         }
         private Ellipse _ball;//自己的本體(球)
+        private Image _image;//自己的本體(三角形圖片)
         private Rectangle HPBackGround;//血條背景
         private Rectangle HPBar;//血條
         private Rectangle CDBar;//CD條
@@ -90,7 +91,10 @@ namespace BigBallsWarVII
         /// 碰撞緩衝空間 = 10;
         /// </summary>
         private const double collisionBufferSpace = 10;
-        public bool isAtkCastle { get; private set; } = false;//是否在攻擊城堡;
+        /// <summary>
+        /// 是否在攻擊城堡，用來防止第一顆球死亡時自己移動。
+        /// </summary>
+        public bool isAtkCastle { get; private set; } = false;
         bool isEnd = false;//球體是否正在刪除。
         #endregion
         #region 生成我方球體
@@ -120,22 +124,34 @@ namespace BigBallsWarVII
                 case BallsLevel.Large:
                     _ballProperties = new(40, 300, -30, 75);
                     break;
+                case BallsLevel.Triangle:
+                    _ballProperties = new(20, 30, -75, 25);
+                    break;
             }
             maxHp = _ballProperties.HP;
         }
         void CreateBall()
         {
             double radius = _ballProperties.Radius;//方便賦值，不然寫太長
-            _ball = ballsLevel switch
+            if (ballsLevel == BallsLevel.Triangle)
             {
-                BallsLevel.Small => new Ellipse() { Width = radius, Height = radius, Fill = Brushes.Green },
-                BallsLevel.Medium => new Ellipse() { Width = radius, Height = radius, Fill = Brushes.Blue },
-                BallsLevel.Large => new Ellipse() { Width = radius, Height = radius, Fill = Brushes.Orange },
-            };
-            SHAPE = _ball;
-            ballCanva.Children.Add(_ball);//將球載入畫布中。
-            Canvas.SetLeft(_ball, 700 - 5);//初始位置
-            Canvas.SetTop(_ball, 275 - _ball.Height);
+                //BitmapImage是WPF的圖片類，可以直接吃。Uri抓路徑，其中UriKind.Relative是相對路徑。
+                //你也可以這樣寫：Source = new BitmapImage(new Uri("pack://application:,,,/Images/triangle.png"));
+                _image = new Image() { Width = radius, Height = radius, Source = new BitmapImage(new Uri("/Images/triangle.png", UriKind.Relative)) };
+            }
+            else
+            {
+                _ball = ballsLevel switch
+                {
+                    BallsLevel.Small => new Ellipse() { Width = radius, Height = radius, Fill = Brushes.Green },
+                    BallsLevel.Medium => new Ellipse() { Width = radius, Height = radius, Fill = Brushes.Blue },
+                    BallsLevel.Large => new Ellipse() { Width = radius, Height = radius, Fill = Brushes.Orange },
+                };
+                SHAPE = _ball;
+            }
+            ballCanva.Children.Add(SHAPE);//將球載入畫布中。
+            Canvas.SetLeft(SHAPE, 700 - 5);//初始位置
+            Canvas.SetTop(SHAPE, 275 - _ball.Height);
             //血條背景
             HPBackGround = new Rectangle() { Width = radius + 5, Height = 6, Fill = Brushes.Black, Opacity = 0.7 };
             ballCanva.Children.Add(HPBackGround);//將球載入畫布中。
@@ -458,7 +474,9 @@ public enum BallsLevel//給玩家按鈕生成用的
 {
     Small,
     Medium,
-    Large
+    Large,
+    Triangle,
+    Square,
 }
 
 public struct BallStruct
