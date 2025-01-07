@@ -36,8 +36,8 @@ namespace BigBallsWarVII
         private static BallStruct[] ballsType =
         [
             new BallStruct { ATK = 10, HP = 50, SPEED = 60, Radius = 35, Color = Brushes.Green },
-            new BallStruct { ATK = 30, HP = 200, SPEED = 45, Radius = 55, Color = Brushes.Blue },
-            new BallStruct { ATK = 90, HP = 300, SPEED = 30, Radius = 75, Color = Brushes.Red },
+            new BallStruct { ATK = 30, HP = 150, SPEED = 45, Radius = 55, Color = Brushes.Blue },
+            new BallStruct { ATK = 80, HP = 400, SPEED = 30, Radius = 75, Color = Brushes.Red },
         ];
         //城堡血量專區
         public static Action RedCastleChanged;
@@ -137,12 +137,13 @@ namespace BigBallsWarVII
         }
         //處理生成邏輯
         #region 生成CD的數值們
-        private static double lastSmallBallSpawnTime, lastMediumBallSpawnTime = 0;//小球上次生成的時間
+        private static double lastSmallBallSpawnTime, lastMediumBallSpawnTime, lastLargeBallSpawnTime = 0;//小球上次生成的時間
         //小球的CD時間設定功能(毫秒)
         private static double _smallBallCDTime = 5000;
         //中球的CD時間設定功能(毫秒)
         private static double _mediumBallCDTime = 12000;
-        static double[] 指定的CD生成時間 = new double[20];//還沒用到所以用中文沒差
+        //大球的CD時間設定功能(毫秒)
+        private static double _largeBallCDTime = 30000;
         #endregion
         public static double ElapsedTime
         {
@@ -167,6 +168,13 @@ namespace BigBallsWarVII
                 Ball ball = new(ballsType[(int)type], type);
                 AddBall(ball);
                 lastMediumBallSpawnTime = elapsedTime;
+            }
+            if (elapsedTime > lastLargeBallSpawnTime + _largeBallCDTime)
+            {
+                type = BallsType.Large;
+                Ball ball = new(ballsType[(int)type], type);
+                AddBall(ball);
+                lastLargeBallSpawnTime = elapsedTime;
             }
             //如果我是城堡特殊生成(一次性生成)，我想按照每個ballsQueue下一個的CD時間去生成。
             //每個queue如果都有自己的CD時間，會怎麼執行：

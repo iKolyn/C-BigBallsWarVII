@@ -28,9 +28,9 @@ namespace BigBallsWarVII
         DispatcherTimer cashTimer = new();
         Stopwatch _stopWatch = new();
         private double elapsedTime;
-        private double smallLastTime, mediumLastTime, largeLastTime;//上次生成的時間
-        private double smallCD = 2000, mediumCD = 5000, largeCD = 12000;//冷卻時間(毫秒)
-        private bool isSmallSpawned, isMideumSpawned, isLargeSpawned;
+        private double smallLastTime, mediumLastTime, largeLastTime, triangleLastTime, squareLastTime;//上次生成的時間
+        private double smallCD = 2000, mediumCD = 6000, largeCD = 20000, triangleCD = 5000, squareCD = 30000;//冷卻時間(毫秒)
+        private bool isSmallSpawned, isMideumSpawned, isLargeSpawned, isTriangleSpawned, isSquareSpawned;
         
         public int BlueCastleHP
         { 
@@ -80,6 +80,8 @@ namespace BigBallsWarVII
             UpdateCooldownTime(smallBottonSlider, smallCD, smallLastTime, isSmallSpawned);
             UpdateCooldownTime(mediumBottonSlider, mediumCD, mediumLastTime, isMideumSpawned);
             UpdateCooldownTime(largeBottonSlider, largeCD, largeLastTime, isLargeSpawned);
+            UpdateCooldownTime(triangleBottonSlider, triangleCD, triangleLastTime, isTriangleSpawned);
+            UpdateCooldownTime(squareBottonSlider, squareCD, squareLastTime, isSquareSpawned);
             if (isSmallSpawned && elapsedTime > smallLastTime + smallCD)
             {
                 isSmallSpawned = false;
@@ -92,6 +94,14 @@ namespace BigBallsWarVII
             {
                 isLargeSpawned = false;
             }
+            if (isTriangleSpawned && elapsedTime > triangleLastTime + triangleCD)
+            {
+                isTriangleSpawned = false;
+            }
+            if (isSquareSpawned && elapsedTime > squareLastTime + squareCD)
+            {
+                isSquareSpawned = false;
+            }
         }
         /// <summary>
         /// 處理金錢增加的計時器
@@ -101,6 +111,7 @@ namespace BigBallsWarVII
             CashSystem.IncreaseCash(1);
             currentMoney.Text = CashSystem.Cash.ToString();
         }
+        #region 按鈕事件
         private void smallBotton_Click(object sender, RoutedEventArgs e)
         {
             if (isSmallSpawned) return;
@@ -140,6 +151,33 @@ namespace BigBallsWarVII
             largeLastTime = _stopWatch.ElapsedMilliseconds;
             mainCanva.Children.Add(ball);
         }
+        private void triangleBotton_Click(object sender, RoutedEventArgs e)
+        {
+            if (isTriangleSpawned) return;
+            if (CashSystem.DecreaseCash(30) == false)
+            {
+                ShowNotEnoughText();
+                return;
+            }
+            isTriangleSpawned = true;
+            Ball ball = new Ball(BallsLevel.Triangle);
+            triangleLastTime = _stopWatch.ElapsedMilliseconds;
+            mainCanva.Children.Add(ball);
+        }
+        private void squareBotton_Click(object sender, RoutedEventArgs e)
+        {
+            if (isSquareSpawned) return;
+            if (CashSystem.DecreaseCash(150) == false)
+            {
+                ShowNotEnoughText();
+                return;
+            }
+            isSquareSpawned = true;
+            Ball ball = new Ball(BallsLevel.Square);
+            squareLastTime = _stopWatch.ElapsedMilliseconds;
+            mainCanva.Children.Add(ball);
+        }
+        #endregion
         private async void ShowNotEnoughText()
         {
             isCashEnough.Text = "錢不夠！";

@@ -111,12 +111,20 @@
             <StackPanel Name="ballStackPanel" Orientation="Horizontal" Height="100" Width="780" 
                         Canvas.Right="10" Canvas.Bottom="10" FlowDirection="RightToLeft" Background="Tan" Opacity="0.9">
                 <Grid>
-                    <Button Name="largeBotton" Width="90" Height="90" Content="200$" Click="largeBotton_Click" Margin="10,0,0,0" FontSize="24"/>
+                    <Button Name="largeBotton" Width="90" Height="90" Content="250$" Click="largeBotton_Click" Margin="10,0,0,0" FontSize="24"/>
                     <Rectangle Name="largeBottonSlider" Width="0" Height="90" HorizontalAlignment="Right" Opacity="0.5" Fill="black"/>
+                </Grid>
+                <Grid>
+                    <Button Name="squareBotton" Width="90" Height="90" Content="$150" Click="squareBotton_Click" Margin="10,0,0,0" FontSize="24"/>
+                    <Rectangle Name="squareBottonSlider" Width="0" Height="90" HorizontalAlignment="Right" Opacity="0.5" Fill="black"/>
                 </Grid>
                 <Grid>
                     <Button Name="mediumBotton" Width="90" Height="90" Content="75$" Click="mediumBotton_Click" Margin="10,0,0,0" FontSize="24"/>
                     <Rectangle Name="mediumBottonSlider" Width="0" Height="90" HorizontalAlignment="Right" Opacity="0.5" Fill="black"/>
+                </Grid>
+                <Grid>
+                    <Button Name="triangleBotton" Width="90" Height="90" Content="30$" Click="triangleBotton_Click" Margin="10,0,0,0" FontSize="24"/>
+                    <Rectangle Name="triangleBottonSlider" Width="0" Height="90" HorizontalAlignment="Right" Opacity="0.5" Fill="black"/>
                 </Grid>
                 <Grid>
                     <Button Name="smallBotton" Width="90" Height="90" Content="10$" Click="smallBotton_Click" Margin="10,0,0,0" FontSize="24"/>

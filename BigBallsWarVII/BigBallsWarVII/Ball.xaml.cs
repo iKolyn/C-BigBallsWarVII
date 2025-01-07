@@ -54,6 +54,7 @@ namespace BigBallsWarVII
         }
         private Ellipse _ball;//自己的本體(球)
         private Image _image;//自己的本體(三角形圖片)
+        private Rectangle _square;
         private Rectangle HPBackGround;//血條背景
         private Rectangle HPBar;//血條
         private Rectangle CDBar;//CD條
@@ -122,10 +123,13 @@ namespace BigBallsWarVII
                     _ballProperties = new(25, 100, -45, 55);
                     break;
                 case BallsLevel.Large:
-                    _ballProperties = new(40, 300, -30, 75);
+                    _ballProperties = new(65, 300, -30, 75);
                     break;
                 case BallsLevel.Triangle:
-                    _ballProperties = new(20, 30, -75, 25);
+                    _ballProperties = new(30, 15, -100, 25);
+                    break;
+                case BallsLevel.Square:
+                    _ballProperties = new(1, 200, -15, 45);
                     break;
             }
             maxHp = _ballProperties.HP;
@@ -137,7 +141,13 @@ namespace BigBallsWarVII
             {
                 //BitmapImage是WPF的圖片類，可以直接吃。Uri抓路徑，其中UriKind.Relative是相對路徑。
                 //你也可以這樣寫：Source = new BitmapImage(new Uri("pack://application:,,,/Images/triangle.png"));
-                _image = new Image() { Width = radius, Height = radius, Source = new BitmapImage(new Uri("/Images/triangle.png", UriKind.Relative)) };
+                _image = new Image() { Width = radius, Height = radius, Source = new BitmapImage(new Uri("/Image/Triangle.png", UriKind.Relative)) };
+                SHAPE = _image;
+            }
+            else if(ballsLevel == BallsLevel.Square)
+            {
+                _square = new Rectangle() { Width = radius, Height = radius * 2, Fill = Brushes.Brown };
+                SHAPE = _square;
             }
             else
             {
@@ -149,24 +159,29 @@ namespace BigBallsWarVII
                 };
                 SHAPE = _ball;
             }
+            double height;
+            if(ballsLevel == BallsLevel.Square)
+                height = radius * 2;         
+            else       
+                height = radius;
             ballCanva.Children.Add(SHAPE);//將球載入畫布中。
             Canvas.SetLeft(SHAPE, 700 - 5);//初始位置
-            Canvas.SetTop(SHAPE, 275 - _ball.Height);
+            Canvas.SetTop(SHAPE, 275 - height);
             //血條背景
             HPBackGround = new Rectangle() { Width = radius + 5, Height = 6, Fill = Brushes.Black, Opacity = 0.7 };
             ballCanva.Children.Add(HPBackGround);//將球載入畫布中。
             Canvas.SetLeft(HPBackGround, 700 - 5);//初始位置
-            Canvas.SetTop(HPBackGround, 275 - _ball.Height - 8);
+            Canvas.SetTop(HPBackGround, 275 - height - 8);
             //血條本身
             HPBar = new Rectangle() { Width = radius + 5, Height = 5, Fill = Brushes.Red, Opacity = 0.7 };
             ballCanva.Children.Add(HPBar);//將球載入畫布中。
             Canvas.SetLeft(HPBar, 700 - 5);//初始位置
-            Canvas.SetTop(HPBar, 275 - _ball.Height - 8);
+            Canvas.SetTop(HPBar, 275 - height - 8);
             //CD條
             CDBar = new Rectangle() { Width = 0, Height = 5, Fill = Brushes.Black, Opacity = 0.5 };
             ballCanva.Children.Add(CDBar);//將球載入畫布中。
             Canvas.SetLeft(CDBar, 700 - 5);//初始位置
-            Canvas.SetTop(CDBar, 275 - _ball.Height - 15);
+            Canvas.SetTop(CDBar, 275 - height - 15);
 
             BallsManager.AddBall(this);//通知管理器增加球到自己的列表
         }
@@ -238,7 +253,10 @@ namespace BigBallsWarVII
             //依照攻擊除以特定數字來計算速度，攻擊力越高打越慢。
             //攻擊冷卻時間被限定在整數秒。
             atkCD = (int)Math.Log2(_ballProperties.ATK * 0.25) * 1000;
-            atkTimer.Interval = TimeSpan.FromSeconds((int)atkCD * 0.001);
+            if(ballsLevel != BallsLevel.Square)
+                atkTimer.Interval = TimeSpan.FromSeconds((int)atkCD * 0.001);
+            else
+                atkTimer.Interval = TimeSpan.FromSeconds(1000);//方形不會攻擊。
             atkTimer.Tick += AtkTimer_Tick;
             _stopWatch.Start();
             //單純這顆球攻擊後的冷卻時間，這是為了美觀。
@@ -252,8 +270,8 @@ namespace BigBallsWarVII
             currentTime = _stopWatch.ElapsedMilliseconds;
             double deltaTime = (currentTime - lastTime) * 0.001;
             lastTime = currentTime;
-            _newX = Canvas.GetLeft(_ball) + _ballProperties.SPEED * deltaTime;
-            Canvas.SetLeft(_ball, _newX);
+            _newX = Canvas.GetLeft(SHAPE) + _ballProperties.SPEED * deltaTime;
+            Canvas.SetLeft(SHAPE, _newX);
             Canvas.SetLeft(HPBackGround, _newX);
             Canvas.SetLeft(HPBar, _newX);
             Canvas.SetLeft(CDBar, _newX);
@@ -382,6 +400,8 @@ namespace BigBallsWarVII
         /// </summary>
         private void CDTimer_Tick(object? sender, EventArgs e)
         {
+            if (ballsLevel == BallsLevel.Square)
+                return;
             double elapsedTime = -1 * (cdWatch.ElapsedMilliseconds - endCD);
             double percent = (elapsedTime / atkCD) * (_ballProperties.Radius + 5);
             if (percent > 0)
@@ -435,7 +455,7 @@ namespace BigBallsWarVII
                     int cash = ballsType switch
                     { BallsType.Small => 10,
                         BallsType.Medium => 50,
-                        BallsType.Large => 500,
+                        BallsType.Large => 100,
                         _ => 0
                     };
                     CashSystem.IncreaseCash(cash);
