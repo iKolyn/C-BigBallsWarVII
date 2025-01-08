@@ -133,8 +133,7 @@ namespace BigBallsWarVII
             if (moneyUpgrateQuestPrice >= 450) 
             {
                 return;
-            }
-                
+            }   
             if(CashSystem.DecreaseCash(moneyUpgrateQuestPrice) == false)
             {
                 ShowNotEnoughText();
@@ -144,7 +143,7 @@ namespace BigBallsWarVII
             {
                 CashInterval ++;
                 moneyUpgrateQuestPrice = moneyUpgrateQuestPrice + 150;
-                if(moneyUpgrateQuestPrice <= 450)
+                if(moneyUpgrateQuestPrice >= 450)
                     howMuchUpgrateText.Text = "最高等級";
                 else
                     howMuchUpgrateText.Text = $"{moneyUpgrateQuestPrice}$";
