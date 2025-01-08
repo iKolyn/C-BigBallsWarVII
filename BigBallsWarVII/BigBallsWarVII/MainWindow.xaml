@@ -91,6 +91,11 @@
             </TextBlock>
             <TextBlock Name="elapsedTimeText" Canvas.Left="45" TextWrapping="Wrap" Text="TextBlock" Canvas.Top="65" FontSize="20" />
             <Label Name="gameOverLabel" Content="你贏了！" Canvas.Left="245" Canvas.Top="87" FontSize="75" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <TextBlock Name="isCashEnough" Text="錢不夠！" FontSize="30" Canvas.Left="340" Canvas.Top="51" FontFamily="Arial Black" HorizontalAlignment="Center" VerticalAlignment="Top">
+                <TextBlock.Foreground>
+                    <SolidColorBrush Color="Red"/>
+                </TextBlock.Foreground>
+            </TextBlock>
         </Canvas>
 
         <Canvas Name="mainCanva" Grid.RowSpan="2" Grid.ColumnSpan="3">
@@ -104,11 +109,7 @@
                     <SolidColorBrush Color="White"/>
                 </TextBlock.Foreground>
             </TextBlock>
-            <TextBlock Name="isCashEnough" Text="錢不夠！" FontSize="30" Canvas.Left="355" Canvas.Top="120" FontFamily="Arial Black">
-                <TextBlock.Foreground>
-                    <SolidColorBrush Color="Red"/>
-                </TextBlock.Foreground>
-            </TextBlock>
+
             <!--放按鈕的StackPanel-->
             <StackPanel Name="ballStackPanel" Orientation="Horizontal" Height="100" Width="780" 
                         Canvas.Right="10" Canvas.Bottom="10" FlowDirection="RightToLeft" Background="Tan" Opacity="0.9">
