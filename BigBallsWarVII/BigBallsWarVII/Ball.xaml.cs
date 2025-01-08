@@ -293,7 +293,6 @@ namespace BigBallsWarVII
                 if (target != null && target.ballStruct.HP <= 0)
                 {
                     target = null;
-                    Debug.WriteLine("對方被我碰到就死了");
                 }
                 moveTimer.Stop();
                 _stopWatch.Stop();
@@ -332,7 +331,6 @@ namespace BigBallsWarVII
                     }
                     if (_newX <= 115)//城堡實際在120
                     {
-                        Debug.WriteLine("碰到城堡了");
                         isAtkCastle = true;//要攻擊城堡
                         return true;//碰到城堡就攻擊城堡
                     }
@@ -380,7 +378,6 @@ namespace BigBallsWarVII
         {
             if (target != null)
             {
-                Debug.WriteLine("攻擊了，我是" + team + " 的" + ballsLevel.ToString());
                 target?.TakeDamage(this);//只要傳傷害就好。
             }
             else if (isAtkCastle)
@@ -455,7 +452,6 @@ namespace BigBallsWarVII
                 //damager.ResumeTimer();//讓攻擊者繼續移動，先保留看以後用不用得到。
                 resumeTimer.Invoke();
                 remove.Invoke();
-                Debug.WriteLine($"我是{team}，我死了");
                 if (team == Team.Red)
                 {
                     int cash = _ballsType switch

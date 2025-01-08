@@ -235,7 +235,11 @@ namespace BigBallsWarVII
                     _specialSpawnTimer.Start();
                     List<BallNode>? temp = BallQueue.GetQueueByPriority(1);//暫存待生成的球體佇列
                     if (temp != null && currentBallQueue != null)
+                    {
                         currentBallQueue.AddRange(temp);//將兩者合併
+                        Debug.WriteLine(currentBallQueue.Count);
+                    }
+                        
                 }
                 if (RedCastleHP <= MaxRedCastleHP * 0.3)//城堡20%以下
                 {
@@ -248,7 +252,10 @@ namespace BigBallsWarVII
                     _specialSpawnTimer.Start();
                     List<BallNode>? temp = BallQueue.GetQueueByPriority(2);//暫存待生成的球體佇列
                     if (temp != null && currentBallQueue != null)
+                    {
                         currentBallQueue.AddRange(temp);//將兩者合併
+                        Debug.WriteLine(currentBallQueue.Count);
+                    }
                 }
             }
         }
