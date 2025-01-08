@@ -15,7 +15,7 @@ namespace BigBallsWarVII
 {
     //How does Enemy Spwan?(Spawn Mode)
     //1.by reguler cd time
-    //2.Spawn different type of balls queue,incouding the castle's hp range.
+    //2.Spawn different type of balls queue,incouding the castle's hp range. 
     //(Remove) 3.Let Player Choose the Type of enemy balls,number of balls, and cd.
 
     //需要的東西：
@@ -122,7 +122,7 @@ namespace BigBallsWarVII
             for (int i = 0; i < 15; i++)
             {
                 int typeNumber = random.Next(0, 3);
-                BallQueue.Enqueue(new Ball(ballsType[typeNumber], (BallsType)typeNumber), random.Next(2, 6), 1);
+                BallQueue.Enqueue(new Ball(ballsType[typeNumber], (BallsType)typeNumber), random.Next(2, 6), 2);
             }
         }
         public static int BallCount
@@ -265,7 +265,7 @@ namespace BigBallsWarVII
         {
             isSpecialSpawned = true;
             //首先設定下一個球體的生成CD時間。
-            BallNode nextBaLL = BallQueue.GetNext();
+            BallNode? nextBaLL = BallQueue.GetNext();
             double nextSpawnTime = nextBaLL != null ? nextBaLL.CD : 0;
             _specialSpawnTimer.Interval = TimeSpan.FromMilliseconds(nextSpawnTime);
 
