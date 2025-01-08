@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.DirectoryServices.ActiveDirectory;
 using System.Dynamic;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace BigBallsWarVII
     {
         private BallNode? Head;//頭節點
         private BallNode? Tail;//尾節點
-        private const int MAX_BALLS = 20;//佇列最多可存放的數量
+        private const int MAX_BALLS = 15;//佇列最多可存放的數量
         public int Count { get; private set; }//球體數量
         public double cd;
         public BallQueue()
@@ -35,7 +36,7 @@ namespace BigBallsWarVII
         /// </summary>
         /// <param name="data">球體本身的資料</param>
         /// <param name="priority">優先級</param>
-        public void Enqueue(Ball data, double cd = 2, int priority = 0)
+        public void Enqueue(Ball data, double cd = 3, int priority = 0)
         {
             //如果球體數量已經達到上限，就不要再放入了。
             if (Count >= MAX_BALLS)
@@ -75,26 +76,33 @@ namespace BigBallsWarVII
         /// 將佇列中的球體取出。請使用計時器or按鈕click事件呼叫他。
         /// </summary>
         /// <returns></returns>
-        public Ball? Dequeue()
+        public BallNode? Dequeue(int priority)
         {
             if (Count <= 0)
             {
-                Console.WriteLine("佇列已空");
+                Debug.WriteLine("佇列已空");
                 return null;
             }
-            Ball data = Tail.Data;
-            Tail = Tail.Next;
-
+            if(Tail!= null && Tail.Priority != priority)
+            {
+                Debug.WriteLine("優先級不對喔");
+                return null;
+            }
+            BallNode? node = Tail;
+            //如果Tail的下一個不是null，就把Tail換掉。
+            if (Tail.Next != null)
+                Tail = Tail.Next;
+            
             if (Tail == null)
                 Head = null;
 
             Count--;
-            return data;
+            return node;
         }
         /// <summary>
         /// 獲得下一個球體是誰，一顆球都沒有就回傳null。
         /// </summary>
-        public Ball? GetNext()
+        public BallNode? GetNext()
         {
             if (Tail == null)
             {
@@ -104,7 +112,7 @@ namespace BigBallsWarVII
             else//有就回傳下一個。
             {
                 GetNextCD();
-                return Tail.Data;
+                return Tail;
             }
         }
         private double? GetNextCD()
@@ -114,7 +122,38 @@ namespace BigBallsWarVII
             else return null;//為了不讓他跳綠底才這樣寫，這個功能被呼叫的時候已經確定Tail不是null。
         }
         /// <summary>
-        /// 清空所有queue，用於重製關卡
+        /// 獲得指定優先級的球體串列，沒有就會回傳null。
+        /// <br>請一定要按照0,1,2這樣分差為1的數字增加，不然抓不到。</br>
+        /// </summary>
+        /// <param name="priority">想獲得的指定優先級球體串列</param>
+        /// <returns></returns>
+        public List<BallNode> GetQueueByPriority(int priority)
+        {
+            if (Count == 0)
+            {
+                Debug.WriteLine("佇列已空");
+                return null;
+            }
+            List<BallNode> list = new();
+            BallNode? temp = Tail;
+            //先確定有多少顆球符合指定的優先級
+            while(temp != null)
+            {
+                temp = Dequeue(priority);
+                if (temp != null)
+                    list.Add(temp);
+                else
+                    break;
+            }
+            if(list.Count == 0)
+            {
+                Debug.WriteLine("找不到指定優先級別的球體");
+            }
+
+            return list;
+        }
+        /// <summary>
+        /// 清空所有queue，用於未來不同關卡加載時重製關卡
         /// </summary>
         public void Clear()
         {

@@ -130,7 +130,12 @@ namespace BigBallsWarVII
         /// </summary>
         private void moneyUpgrateBackGround_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (moneyUpgrateQuestPrice >= 450) return;
+            if (moneyUpgrateQuestPrice >= 300) 
+            {
+                howMuchUpgrateText.Text = "最高等級";
+                return;
+            }
+                
             if(CashSystem.DecreaseCash(moneyUpgrateQuestPrice) == false)
             {
                 ShowNotEnoughText();
@@ -233,6 +238,11 @@ namespace BigBallsWarVII
         }
         void AddEnemyToCanva(Ball ball)
         {
+            //如果球已經加到主畫面上了，就別再加了。
+            if (ball.Parent != null)
+            {
+                return;
+            }
             mainCanva.Children.Add(ball);
         }
         void RedCastleChanged()

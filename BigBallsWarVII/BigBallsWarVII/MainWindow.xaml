@@ -159,7 +159,7 @@
                             <ToolTip Content="快攻三角形，超痛攻擊但馬上就死了"/>
                         </Button.ToolTip>
                     </Button>
-                    <Rectangle Name="triangleBottonSlider" Width="0" Height="90" HorizontalAlignment="Right" Opacity="0.5" Fill="black"/>
+                    <Rectangle Name="triangleBottonSlider" Width="90" Height="90" HorizontalAlignment="Right" Opacity="0.5" Fill="black" />
                     <Image Source="/Image/Triangle.png" Width="20" Height="20" 
                            Margin="48,30,37,50" IsHitTestVisible="False"/>
                 </Grid>
