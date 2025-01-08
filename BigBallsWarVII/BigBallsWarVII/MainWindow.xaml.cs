@@ -104,14 +104,46 @@ namespace BigBallsWarVII
             }
         }
         /// <summary>
+        /// 封裝用，怕CashTimer沒得到設定
+        /// </summary>
+        public int CashInterval
+        {
+            get { return _cashInterval; }
+            set
+            {
+                _cashInterval = value;
+            }
+        }
+        private int _cashInterval = 1;
+        private int moneyUpgrateQuestPrice = 150;
+        /// <summary>
         /// 處理金錢增加的計時器
         /// </summary>
         private void CashTimer_Tick(object? sender, EventArgs e)
         {
-            CashSystem.IncreaseCash(1);
+            CashSystem.IncreaseCash(CashInterval);
             currentMoney.Text = CashSystem.Cash.ToString();
         }
         #region 按鈕事件
+        /// <summary>
+        /// 金錢升級按鈕的點擊事件
+        /// </summary>
+        private void moneyUpgrateBackGround_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (moneyUpgrateQuestPrice >= 450) return;
+            if(CashSystem.DecreaseCash(moneyUpgrateQuestPrice) == false)
+            {
+                ShowNotEnoughText();
+                return;
+            }
+            else
+            {
+                CashInterval ++;
+                moneyUpgrateQuestPrice = moneyUpgrateQuestPrice + 150;
+                howMuchUpgrateText.Text = $"{moneyUpgrateQuestPrice}$";
+            }
+        }
+
         private void smallBotton_Click(object sender, RoutedEventArgs e)
         {
             if (isSmallSpawned) return;

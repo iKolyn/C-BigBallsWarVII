@@ -144,7 +144,7 @@ namespace BigBallsWarVII
                 _image = new Image() { Width = radius, Height = radius, Source = new BitmapImage(new Uri("/Image/Triangle.png", UriKind.Relative)) };
                 SHAPE = _image;
             }
-            else if(ballsLevel == BallsLevel.Square)
+            else if (ballsLevel == BallsLevel.Square)
             {
                 _square = new Rectangle() { Width = radius, Height = radius * 2, Fill = Brushes.Brown };
                 SHAPE = _square;
@@ -160,25 +160,25 @@ namespace BigBallsWarVII
                 SHAPE = _ball;
             }
             double height;
-            if(ballsLevel == BallsLevel.Square)
-                height = radius * 2;         
-            else       
+            if (ballsLevel == BallsLevel.Square)
+                height = radius * 2;
+            else
                 height = radius;
             ballCanva.Children.Add(SHAPE);//將球載入畫布中。
             Canvas.SetLeft(SHAPE, 700 - 5);//初始位置
             Canvas.SetTop(SHAPE, 275 - height);
             //血條背景
-            HPBackGround = new Rectangle() { Width = radius + 5, Height = 6, Fill = Brushes.Black, Opacity = 0.7 };
+            HPBackGround = new Rectangle() { Width = radius + 5, Height = 6, Fill = Brushes.Black,  Opacity = 0.7 };
             ballCanva.Children.Add(HPBackGround);//將球載入畫布中。
             Canvas.SetLeft(HPBackGround, 700 - 5);//初始位置
             Canvas.SetTop(HPBackGround, 275 - height - 8);
             //血條本身
-            HPBar = new Rectangle() { Width = radius + 5, Height = 5, Fill = Brushes.Red, Opacity = 0.7 };
+            HPBar = new Rectangle() { Width = radius + 5, Height = 5, Fill = Brushes.Blue, Stroke = Brushes.Black, StrokeThickness = 1, Opacity = 0.7 };
             ballCanva.Children.Add(HPBar);//將球載入畫布中。
             Canvas.SetLeft(HPBar, 700 - 5);//初始位置
             Canvas.SetTop(HPBar, 275 - height - 8);
             //CD條
-            CDBar = new Rectangle() { Width = 0, Height = 5, Fill = Brushes.Black, Opacity = 0.5 };
+            CDBar = new Rectangle() { Width = 0, Height = 5, Fill = Brushes.PapayaWhip, Stroke = Brushes.Black, StrokeThickness = 1, Opacity = 0.5 };
             ballCanva.Children.Add(CDBar);//將球載入畫布中。
             Canvas.SetLeft(CDBar, 700 - 5);//初始位置
             Canvas.SetTop(CDBar, 275 - height - 15);
@@ -222,17 +222,17 @@ namespace BigBallsWarVII
             Canvas.SetLeft(_ball, 100 - _ball.Width);//初始位置
             Canvas.SetTop(_ball, 275 - _ball.Height);
             //血條背景
-            HPBackGround = new() { Width = _ballProperties.Radius + 5, Height = 6, Fill = Brushes.Black, Opacity = 0.7 };
+            HPBackGround = new() { Width = _ballProperties.Radius + 5, Height = 6, Fill = Brushes.Black,  Opacity = 0.7 };
             ballCanva.Children.Add(HPBackGround);
             Canvas.SetLeft(HPBackGround, 100 - _ball.Width);
             Canvas.SetTop(HPBackGround, 275 - _ball.Height - 8);
             //血條本身
-            HPBar = new() { Width = _ballProperties.Radius + 5, Height = 5, Fill = Brushes.Blue, Opacity = 0.7 };
+            HPBar = new() { Width = _ballProperties.Radius + 5, Height = 5, Fill = Brushes.Red, Stroke = Brushes.Black, StrokeThickness = 1,  Opacity = 0.7 };
             ballCanva.Children.Add(HPBar);
             Canvas.SetLeft(HPBar, 100 - _ball.Width);
             Canvas.SetTop(HPBar, 275 - _ball.Height - 8);
             //CD條
-            CDBar = new Rectangle() { Width = 0, Height = 5, Fill = Brushes.Black, Opacity = 0.5 };
+            CDBar = new Rectangle() { Width = 0, Height = 5, Fill = Brushes.Black, Stroke = Brushes.White, StrokeThickness = 1, Opacity = 0.5 };
             ballCanva.Children.Add(CDBar);//將球載入畫布中。
             Canvas.SetLeft(CDBar, 100 - _ball.Width);//初始位置
             Canvas.SetTop(CDBar, 275 - _ball.Height - 15);
@@ -253,7 +253,7 @@ namespace BigBallsWarVII
             //依照攻擊除以特定數字來計算速度，攻擊力越高打越慢。
             //攻擊冷卻時間被限定在整數秒。
             atkCD = (int)Math.Log2(_ballProperties.ATK * 0.25) * 1000;
-            if(ballsLevel != BallsLevel.Square)
+            if (ballsLevel != BallsLevel.Square)
                 atkTimer.Interval = TimeSpan.FromSeconds((int)atkCD * 0.001);
             else
                 atkTimer.Interval = TimeSpan.FromSeconds(1000);//方形不會攻擊。
@@ -262,7 +262,7 @@ namespace BigBallsWarVII
             //單純這顆球攻擊後的冷卻時間，這是為了美觀。
             cdTimer.Interval = TimeSpan.FromMilliseconds(20);//50FPS
             cdTimer.Tick += CDTimer_Tick;
-            }
+        }
 
         private void MoveTimer_Tick(object? sender, EventArgs e)
         {
@@ -393,7 +393,7 @@ namespace BigBallsWarVII
             else ResumeTimer();
         }
         double endCD;
-       
+
         Stopwatch cdWatch = new();
         /// <summary>
         /// 單純的顯示攻擊者的CD時間。
@@ -450,10 +450,11 @@ namespace BigBallsWarVII
                 resumeTimer.Invoke();
                 remove.Invoke();
                 Debug.WriteLine($"我是{team}，我死了");
-                if(team == Team.Red)
+                if (team == Team.Red)
                 {
                     int cash = ballsType switch
-                    { BallsType.Small => 10,
+                    {
+                        BallsType.Small => 10,
                         BallsType.Medium => 50,
                         BallsType.Large => 100,
                         _ => 0
