@@ -29,7 +29,7 @@ namespace BigBallsWarVII
         Stopwatch _stopWatch = new();
         private double elapsedTime;
         private double smallLastTime, mediumLastTime, largeLastTime, triangleLastTime, squareLastTime;//上次生成的時間
-        private double smallCD = 2000, mediumCD = 6000, largeCD = 20000, triangleCD = 5000, squareCD = 30000;//冷卻時間(毫秒)
+        private double smallCD = 2000, mediumCD = 6000, largeCD = 18000, triangleCD = 5000, squareCD = 22000;//冷卻時間(毫秒)
         private bool isSmallSpawned, isMideumSpawned, isLargeSpawned, isTriangleSpawned, isSquareSpawned;
         
         public int BlueCastleHP
@@ -179,7 +179,7 @@ namespace BigBallsWarVII
         private void largeBotton_Click(object sender, RoutedEventArgs e)
         {
             if (isLargeSpawned) return;
-            if (CashSystem.DecreaseCash(200) == false)
+            if (CashSystem.DecreaseCash(250) == false)
             {
                 ShowNotEnoughText();
                 return;

@@ -126,7 +126,7 @@ namespace BigBallsWarVII
                     _ballProperties = new(65, 300, -30, 75);
                     break;
                 case BallsLevel.Triangle:
-                    _ballProperties = new(30, 15, -100, 25);
+                    _ballProperties = new(50, 15, -100, 25);
                     break;
                 case BallsLevel.Square:
                     _ballProperties = new(1, 200, -15, 45);
@@ -420,15 +420,9 @@ namespace BigBallsWarVII
             cdTimer.Stop();
             cdWatch.Stop();
             if (moveTimer != null)
-            {
                 moveTimer.Start();
-            }
-            else
-            {
-                //處理 moveTimer 為 null 的情況
-                Debug.WriteLine("moveTimer 尚未初始化。");
-            }
-            _stopWatch.Start();
+            if (_stopWatch != null)
+                _stopWatch.Start();
             atkTimer.Stop();
         }
         /// <summary>

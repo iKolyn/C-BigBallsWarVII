@@ -217,18 +217,18 @@ namespace BigBallsWarVII
             if (!isSpecialSpawned)
             {
                 if (RedCastleHP > MaxRedCastleHP * 0.8) return;
-                else if (RedCastleHP <= MaxRedCastleHP * 0.8)//城堡80%以下
+                else if (RedCastleHP <= MaxRedCastleHP * 0.8 && RedCastleHP > MaxRedCastleHP * 0.5)//城堡80%以下
                 {
                     _specialSpawnTimer.Start();
                     currentBallQueue = BallQueue.GetQueueByPriority(0);//儲存到待生成的球體佇列
                 }
-                else if (RedCastleHP <= MaxRedCastleHP * 0.5)//城堡50%以下
+                else if (RedCastleHP <= MaxRedCastleHP * 0.5 && RedCastleHP > MaxRedCastleHP * 0.2)//城堡50%以下
                 {
                     _specialSpawnTimer.Start();
                     List<BallNode> temp = BallQueue.GetQueueByPriority(1);//暫存待生成的球體佇列
                     currentBallQueue.AddRange(temp);//將兩者合併
                 }
-                else if (RedCastleHP <= MaxRedCastleHP * 0.5)//城堡20%以下
+                else if (RedCastleHP <= MaxRedCastleHP * 0.2)//城堡20%以下
                 {
                     isBossSpawn = true;
                     if (isBossSpawn)

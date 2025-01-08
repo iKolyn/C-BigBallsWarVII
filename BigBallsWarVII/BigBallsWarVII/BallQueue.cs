@@ -22,7 +22,7 @@ namespace BigBallsWarVII
     {
         private BallNode? Head;//頭節點
         private BallNode? Tail;//尾節點
-        private const int MAX_BALLS = 15;//佇列最多可存放的數量
+        private const int MAX_BALLS = 50;//佇列最多可存放的數量
         public int Count { get; private set; }//球體數量
         public double cd;
         public BallQueue()
@@ -44,7 +44,7 @@ namespace BigBallsWarVII
                 Console.WriteLine("佇列已經滿囉");
                 return;
             }
-            BallNode newNode = new(data,cd , priority);
+            BallNode newNode = new(data, cd, priority);
 
             //如果Head是空的，就把Head換掉。
             if (Head == null)
@@ -65,11 +65,16 @@ namespace BigBallsWarVII
                 while (current.Next != null && current.Next.Priority >= priority)
                     current = current.Next;
                 //找到了以後
-                newNode.Next= current.Next;
+                newNode.Next = current.Next;
                 current.Next = newNode;
-                if (newNode.Next == null)
-                    Tail = newNode;
             }
+
+            // 更新 Tail
+            if (newNode.Next == null)
+            {
+                Tail = newNode;
+            }
+
             Count++;
         }
         /// <summary>
