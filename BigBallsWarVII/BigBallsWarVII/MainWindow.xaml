@@ -54,9 +54,9 @@
             <Rectangle Name="enemyHPBarBackGround" Width = "120" Height="20" Canvas.Top="130" Canvas.Left="45" Fill="Black" Opacity="0.5"/>
             <Rectangle Name="enemyHPBar" Width = "120" Height="20" Canvas.Top="130" Canvas.Left="45" Fill="Red" Opacity="0.5"/>
             <TextBlock Name="enemyCastleHPText" Canvas.Left="66" Canvas.Top="132" FontSize="12" Width="84" TextAlignment="Right" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Run Name="enemyHPCurrent" Text="15000"/>
+                <Run Name="enemyHPCurrent" Text="1600"/>
                 <Run Text=" /"/>
-                <Run Name="enemyMaxHPCurrent" Text="15000"/>
+                <Run Name="enemyMaxHPCurrent" Text="1600"/>
                 <TextBlock.Foreground>
                     <SolidColorBrush Color="White"/>
                 </TextBlock.Foreground>
@@ -75,9 +75,9 @@
             <Rectangle Name="myHPBarBackGround" Width = "120" Height="20" Canvas.Top="130" Canvas.Left="635" Fill="Black" Opacity="0.5" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <Rectangle Name="myHPBar" Width = "120" Height="20" Canvas.Top="130" Canvas.Left="635" Fill="Blue" Opacity="0.5" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <TextBlock Name="myCastleText" Canvas.Right="658" Canvas.Top="132" FontSize="12" TextAlignment="Right" Canvas.Left="658" Width="84" HorizontalAlignment="Left" VerticalAlignment="Center">
-                <Run Name="myHPCurrent" Text="10000"/>
+                <Run Name="myHPCurrent" Text="1000"/>
                 <Run Text=" /"/>
-                <Run Name ="myMaxHPCurrent" Text="10000"/>
+                <Run Name ="myMaxHPCurrent" Text="1000"/>
                 <TextBlock.Foreground>
                     <SolidColorBrush Color="White"/>
                 </TextBlock.Foreground>
@@ -90,6 +90,7 @@
                 </TextBlock.Foreground>
             </TextBlock>
             <TextBlock Name="elapsedTimeText" Canvas.Left="45" TextWrapping="Wrap" Text="TextBlock" Canvas.Top="65" FontSize="20" />
+            <Label Name="gameOverLabel" Content="你贏了！" Canvas.Left="245" Canvas.Top="87" FontSize="75" HorizontalAlignment="Left" VerticalAlignment="Center"/>
         </Canvas>
 
         <Canvas Name="mainCanva" Grid.RowSpan="2" Grid.ColumnSpan="3">

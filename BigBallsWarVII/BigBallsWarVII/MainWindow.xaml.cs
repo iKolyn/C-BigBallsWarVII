@@ -31,7 +31,7 @@ namespace BigBallsWarVII
         private double smallLastTime, mediumLastTime, largeLastTime, triangleLastTime, squareLastTime;//上次生成的時間
         private double smallCD = 2000, mediumCD = 6000, largeCD = 18000, triangleCD = 5000, squareCD = 22000;//冷卻時間(毫秒)
         private bool isSmallSpawned, isMideumSpawned, isLargeSpawned, isTriangleSpawned, isSquareSpawned;
-        
+        private bool isGameOver = false;
         public int BlueCastleHP
         { 
             get { return _blueCastleHP; }
@@ -57,18 +57,21 @@ namespace BigBallsWarVII
 
             BallsManager.CountChange += ChangeCountText;
             //我的城堡血量
-            BallsManager.BlueCastleChanged += BlueCastleChanged;
             BallsManager.MaxBlueCastleHP = 1000;
             BallsManager.BlueCastleHP = BallsManager.MaxBlueCastleHP;
-            
+            BallsManager.BlueCastleChanged += BlueCastleChanged;
+
+
             EnemyBallsSpawner.addBallToCanva += AddEnemyToCanva;
             //敵方的城堡血量
-            EnemyBallsSpawner.RedCastleChanged += RedCastleChanged;
             EnemyBallsSpawner.MaxRedCastleHP = 1600;
             EnemyBallsSpawner.RedCastleHP = EnemyBallsSpawner.MaxRedCastleHP;
+            EnemyBallsSpawner.RedCastleChanged += RedCastleChanged;
+
             ChangeCountText();
 
             isCashEnough.Text = "";
+            gameOverLabel.Content = "";
         }
         /// <summary>
         /// 負責處理CD的計時器
@@ -130,6 +133,7 @@ namespace BigBallsWarVII
         /// </summary>
         private void moneyUpgrateBackGround_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            if(isGameOver) return;
             if (moneyUpgrateQuestPrice >= 450) 
             {
                 return;
@@ -152,7 +156,7 @@ namespace BigBallsWarVII
 
         private void smallBotton_Click(object sender, RoutedEventArgs e)
         {
-            if (isSmallSpawned) return;
+            if (isSmallSpawned || isGameOver) return;
             if(CashSystem.DecreaseCash(10) == false)
             {
                 ShowNotEnoughText();
@@ -165,7 +169,7 @@ namespace BigBallsWarVII
         }
         private void mediumBotton_Click(object sender, RoutedEventArgs e)
         {
-            if (isMideumSpawned) return;
+            if (isMideumSpawned || isGameOver) return;
             if (CashSystem.DecreaseCash(75) == false)
             {
                 ShowNotEnoughText();
@@ -178,7 +182,7 @@ namespace BigBallsWarVII
         }
         private void largeBotton_Click(object sender, RoutedEventArgs e)
         {
-            if (isLargeSpawned) return;
+            if (isLargeSpawned || isGameOver) return;
             if (CashSystem.DecreaseCash(250) == false)
             {
                 ShowNotEnoughText();
@@ -191,7 +195,7 @@ namespace BigBallsWarVII
         }
         private void triangleBotton_Click(object sender, RoutedEventArgs e)
         {
-            if (isTriangleSpawned) return;
+            if (isTriangleSpawned || isGameOver) return;
             if (CashSystem.DecreaseCash(30) == false)
             {
                 ShowNotEnoughText();
@@ -204,7 +208,7 @@ namespace BigBallsWarVII
         }
         private void squareBotton_Click(object sender, RoutedEventArgs e)
         {
-            if (isSquareSpawned) return;
+            if (isSquareSpawned || isGameOver) return;
             if (CashSystem.DecreaseCash(150) == false)
             {
                 ShowNotEnoughText();
@@ -218,6 +222,8 @@ namespace BigBallsWarVII
         #endregion
         private async void ShowNotEnoughText()
         {
+            if(isGameOver) return;
+
             isCashEnough.Text = "錢不夠！";
             await Task.Delay(2000);
             isCashEnough.Text = "";
@@ -251,12 +257,27 @@ namespace BigBallsWarVII
             enemyHPCurrent.Text = EnemyBallsSpawner.RedCastleHP.ToString();
             enemyMaxHPCurrent.Text = EnemyBallsSpawner.MaxRedCastleHP.ToString();
             enemyHPBar.Width = 120 * (EnemyBallsSpawner.RedCastleHP / EnemyBallsSpawner.MaxRedCastleHP);
+            if (EnemyBallsSpawner.RedCastleHP <= 0)
+            {
+                isGameOver = true;
+                EnemyBallsSpawner.isGameOver = true;
+                BallsManager.isGameOver = true;
+                gameOverLabel.Content = "你贏了！";
+            }
         }
         void BlueCastleChanged()
         {
             myMaxHPCurrent.Text = BallsManager.MaxBlueCastleHP.ToString();
             myHPCurrent.Text = BallsManager.BlueCastleHP.ToString();
             myHPBar.Width = 120 * (BallsManager.BlueCastleHP / BallsManager.MaxBlueCastleHP);
+
+            if(BallsManager.BlueCastleHP <= 0)
+            {
+                isGameOver = true;
+                EnemyBallsSpawner.isGameOver = true;
+                BallsManager.isGameOver = true;
+                gameOverLabel.Content = "你輸了！";
+            }
         }
     }
 }

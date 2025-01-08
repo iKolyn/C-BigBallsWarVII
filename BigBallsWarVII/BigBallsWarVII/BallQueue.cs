@@ -132,7 +132,7 @@ namespace BigBallsWarVII
         /// </summary>
         /// <param name="priority">想獲得的指定優先級球體串列</param>
         /// <returns></returns>
-        public List<BallNode> GetQueueByPriority(int priority)
+        public List<BallNode>? GetQueueByPriority(int priority)
         {
             if (Count == 0)
             {
@@ -140,17 +140,19 @@ namespace BigBallsWarVII
                 return null;
             }
             List<BallNode> list = new();
-            BallNode? temp = Tail;
-            //先確定有多少顆球符合指定的優先級
-            while(temp != null)
+            BallNode? current = Head;
+
+            // 遍歷佇列，找到所有符合指定優先級的球體
+            while (current != null)
             {
-                temp = Dequeue(priority);
-                if (temp != null)
-                    list.Add(temp);
-                else
-                    break;
+                if (current.Priority == priority)
+                {
+                    list.Add(current);
+                }
+                current = current.Next;
             }
-            if(list.Count == 0)
+
+            if (list.Count == 0)
             {
                 Debug.WriteLine("找不到指定優先級別的球體");
             }

@@ -52,6 +52,7 @@ namespace BigBallsWarVII
         /// 通知對方管理員第一顆球死了，讓所有對方的球可以移動。
         /// </summary>
         public static Action isFirstBallDie;
+        public static bool isGameOver = false;
         #endregion
         static BallsManager()
         {
@@ -102,7 +103,7 @@ namespace BigBallsWarVII
         {
             foreach (Ball ball in balls)
             {
-                if (!ball.isAtkCastle)
+                if (!ball.isAtkCastle || ball.balltype != BallsType.Boss)
                     ball.ResumeTimer();
             }
         }

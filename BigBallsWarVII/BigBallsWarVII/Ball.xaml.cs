@@ -47,7 +47,12 @@ namespace BigBallsWarVII
         }//給對方看的屬性
         private BallStruct _ballProperties;//包含ATK,HP,COST跟SPEED。
         private BallsLevel ballsLevel;//從按鈕生成後，選擇要生成哪種本體用的列舉。
-        private BallsType ballsType;//敵方球體的種類，用於CashManager。
+        public BallsType balltype
+        {
+            get { return _ballsType; }
+            set { _ballsType = value; }
+        }
+        private BallsType _ballsType;//敵方球體的種類，用於CashManager。
         public UIElement? SHAPE//自己的形狀，不限於球體
         {
             get; private set;
@@ -197,7 +202,7 @@ namespace BigBallsWarVII
             InitializeComponent();
             team = Team.Red;
             _ballProperties = ballStruct;
-            ballsType = level;
+            balltype = level;
             if (_ballProperties.Color == null)
             {
                 _ballProperties.Color = Brushes.Black;
@@ -421,8 +426,10 @@ namespace BigBallsWarVII
             cdWatch.Stop();
             if (moveTimer != null)
                 moveTimer.Start();
+            else EndBallsControl();
             if (_stopWatch != null)
                 _stopWatch.Start();
+            else EndBallsControl();
             atkTimer.Stop();
         }
         /// <summary>
@@ -453,11 +460,12 @@ namespace BigBallsWarVII
                 Debug.WriteLine($"我是{team}，我死了");
                 if (team == Team.Red)
                 {
-                    int cash = ballsType switch
+                    int cash = _ballsType switch
                     {
                         BallsType.Small => 10,
                         BallsType.Medium => 50,
                         BallsType.Large => 100,
+                        BallsType.Boss => 500,
                         _ => 0
                     };
                     CashSystem.IncreaseCash(cash);
