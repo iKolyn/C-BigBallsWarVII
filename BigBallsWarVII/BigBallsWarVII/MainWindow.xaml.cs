@@ -130,9 +130,8 @@ namespace BigBallsWarVII
         /// </summary>
         private void moneyUpgrateBackGround_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (moneyUpgrateQuestPrice >= 300) 
+            if (moneyUpgrateQuestPrice >= 450) 
             {
-                howMuchUpgrateText.Text = "最高等級";
                 return;
             }
                 
@@ -145,7 +144,10 @@ namespace BigBallsWarVII
             {
                 CashInterval ++;
                 moneyUpgrateQuestPrice = moneyUpgrateQuestPrice + 150;
-                howMuchUpgrateText.Text = $"{moneyUpgrateQuestPrice}$";
+                if(moneyUpgrateQuestPrice <= 450)
+                    howMuchUpgrateText.Text = "最高等級";
+                else
+                    howMuchUpgrateText.Text = $"{moneyUpgrateQuestPrice}$";
             }
         }
 
