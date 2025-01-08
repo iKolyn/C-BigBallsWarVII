@@ -263,6 +263,12 @@ namespace BigBallsWarVII
                 EnemyBallsSpawner.isGameOver = true;
                 BallsManager.isGameOver = true;
                 gameOverLabel.Content = "你贏了！";
+                GradientBrush brush = new LinearGradientBrush();
+                brush.SetCurrentValue(LinearGradientBrush.StartPointProperty, new Point(0, 0));
+                brush.SetCurrentValue(LinearGradientBrush.EndPointProperty, new Point(0, 1));
+                brush.GradientStops.Add(new GradientStop(Colors.MediumBlue, 0));
+                brush.GradientStops.Add(new GradientStop(Colors.DarkBlue, 1));
+                gameOverLabel.Foreground = brush;
             }
         }
         void BlueCastleChanged()
@@ -277,6 +283,12 @@ namespace BigBallsWarVII
                 EnemyBallsSpawner.isGameOver = true;
                 BallsManager.isGameOver = true;
                 gameOverLabel.Content = "你輸了！";
+                GradientBrush brush = new LinearGradientBrush();
+                brush.SetCurrentValue(LinearGradientBrush.StartPointProperty, new Point(0, 0));
+                brush.SetCurrentValue(LinearGradientBrush.EndPointProperty, new Point(0, 1));
+                brush.GradientStops.Add(new GradientStop(Colors.Red, 0));
+                brush.GradientStops.Add(new GradientStop(Colors.DarkRed, 1));
+                gameOverLabel.Foreground = brush;
             }
         }
     }

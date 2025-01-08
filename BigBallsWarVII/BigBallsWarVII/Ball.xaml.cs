@@ -426,10 +426,8 @@ namespace BigBallsWarVII
             cdWatch.Stop();
             if (moveTimer != null)
                 moveTimer.Start();
-            else EndBallsControl();
             if (_stopWatch != null)
                 _stopWatch.Start();
-            else EndBallsControl();
             atkTimer.Stop();
         }
         /// <summary>
@@ -475,23 +473,26 @@ namespace BigBallsWarVII
         }
         private void EndBallsControl()
         {
-            if (this.Parent is Panel parentPanel) { parentPanel.Children.Remove(this); }//在整個panel刪除
-            moveTimer.Stop();//到這邊之後會變成null。
-            _stopWatch.Stop();
-            moveTimer.Tick -= MoveTimer_Tick;
-            atkTimer.Stop();
-            atkTimer.Tick -= AtkTimer_Tick;
-            cdTimer.Stop();
-            cdTimer.Tick -= CDTimer_Tick;
-            Loaded -= BallsConrolLoaded;//退訂事件
+            if (this.Parent is Panel parentPanel) { 
+                parentPanel.Children.Remove(this);
+                moveTimer.Stop();//到這邊之後會變成null。
+                _stopWatch.Stop();
+                moveTimer.Tick -= MoveTimer_Tick;
+                atkTimer.Stop();
+                atkTimer.Tick -= AtkTimer_Tick;
+                cdTimer.Stop();
+                cdTimer.Tick -= CDTimer_Tick;
+                Loaded -= BallsConrolLoaded;//退訂事件
 
-            //確保所有資源都被釋放
-            moveTimer = null;
-            _stopWatch = null;
-            _ball = null;
-            SHAPE = null;
-            HPBackGround = null;
-            HPBar = null;
+                //確保所有資源都被釋放
+                moveTimer = null;
+                _stopWatch = null;
+                _ball = null;
+                SHAPE = null;
+                HPBackGround = null;
+                HPBar = null;
+            }//在整個panel刪除
+
         }
         enum Team
         {
