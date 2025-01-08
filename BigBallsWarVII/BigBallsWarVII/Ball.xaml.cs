@@ -419,8 +419,15 @@ namespace BigBallsWarVII
             CDBar.Width = 0;
             cdTimer.Stop();
             cdWatch.Stop();
-
-            moveTimer.Start();
+            if (moveTimer != null)
+            {
+                moveTimer.Start();
+            }
+            else
+            {
+                //處理 moveTimer 為 null 的情況
+                Debug.WriteLine("moveTimer 尚未初始化。");
+            }
             _stopWatch.Start();
             atkTimer.Stop();
         }

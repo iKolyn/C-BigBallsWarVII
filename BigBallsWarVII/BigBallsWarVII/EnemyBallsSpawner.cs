@@ -110,20 +110,19 @@ namespace BigBallsWarVII
             for (int i = 0; i < 5; i++)
             {
                 int typeNumber = random.Next(0, 2);
-                BallQueue.Enqueue(new Ball(ballsType[typeNumber], (BallsType)typeNumber), random.Next(5, 15), 0);
+                BallQueue.Enqueue(new Ball(ballsType[typeNumber], (BallsType)typeNumber), random.Next(2, 8), 0);
             }
             //城堡50%以下後生成的球，全用random。
             for (int i = 0; i < 10; i++)
             {
                 int typeNumber = random.Next(0, 3);
-                BallQueue.Enqueue(new Ball(ballsType[typeNumber], (BallsType)typeNumber), random.Next(2, 13), 1);
+                BallQueue.Enqueue(new Ball(ballsType[typeNumber], (BallsType)typeNumber), random.Next(2, 7), 1);
             }
-            //城堡20%以下後生成的球，除了Boss以外全用random。
-            BallQueue.Enqueue(new Ball(ballsType[3], BallsType.Boss), 1, 2);
-            for (int i = 0; i < 14; i++)
+            //城堡20%以下後生成的球全用random。
+            for (int i = 0; i < 15; i++)
             {
                 int typeNumber = random.Next(0, 3);
-                BallQueue.Enqueue(new Ball(ballsType[typeNumber], (BallsType)typeNumber), random.Next(2, 10), 1);
+                BallQueue.Enqueue(new Ball(ballsType[typeNumber], (BallsType)typeNumber), random.Next(2, 6), 1);
             }
         }
         public static int BallCount
@@ -185,6 +184,7 @@ namespace BigBallsWarVII
         {
             get { return _stopWatch.ElapsedMilliseconds; }
         }
+        private static bool isBossSpawn = false;
         private static void DispatcherTimer_Tick(object? sender, EventArgs e)//CD計時器 + 城堡血量狀態計時器
         {
             elapsedTime = _stopWatch.ElapsedMilliseconds;
@@ -230,6 +230,13 @@ namespace BigBallsWarVII
                 }
                 else if (RedCastleHP <= MaxRedCastleHP * 0.5)//城堡20%以下
                 {
+                    isBossSpawn = true;
+                    if (isBossSpawn)
+                    {
+                        Ball ball = new(ballsType[3], BallsType.Boss);
+                        AddBall(ball);
+                        isBossSpawn = false;
+                    }
                     _specialSpawnTimer.Start();
                     List<BallNode> temp = BallQueue.GetQueueByPriority(2);//暫存待生成的球體佇列
                     currentBallQueue.AddRange(temp);//將兩者合併
@@ -275,6 +282,7 @@ namespace BigBallsWarVII
             {
                 //如果沒有球體可以生成了，停止計時器。
                 _specialSpawnTimer.Stop();
+                isSpecialSpawned = false;
             }
         }
     }
