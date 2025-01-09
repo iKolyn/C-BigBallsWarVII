@@ -148,9 +148,9 @@ namespace BigBallsWarVII
                 CashInterval ++;
                 moneyUpgrateQuestPrice = moneyUpgrateQuestPrice + 150;
                 if(moneyUpgrateQuestPrice >= 450)
-                    howMuchUpgrateText.Text = "最高等級";
+                    howMuchUpgrateText.Text = "最高等";
                 else
-                    howMuchUpgrateText.Text = $"{moneyUpgrateQuestPrice}$";
+                    howMuchUpgrateText.Text = $"{moneyUpgrateQuestPrice}元";
             }
         }
 
@@ -234,7 +234,7 @@ namespace BigBallsWarVII
             if (isSpawned)
             {
                 double elapsed = (lastTime + cd) - now;
-                double lerp = Math.Max(0, 90 * (elapsed / cd));
+                double lerp = Math.Max(0, 100 * (elapsed / cd));
                 rect.Width = lerp;
             }
             else rect.Width = 0;

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Numerics;
 using System.Reflection.Emit;
@@ -81,7 +82,6 @@ namespace BigBallsWarVII
                 if (HPBar != null)
                 {
                     HPBar.Width = (_ballProperties.HP / maxHp) * (_ballProperties.Radius + 5);
-                    Debug.WriteLine("現在的HRBar是" + HPBar.Width + "，現在的血量是" + _ballProperties.HP);
                 }
             }
         }
@@ -315,10 +315,10 @@ namespace BigBallsWarVII
         private bool CollistionEvent()
         {
             List<Ball> enemyBalls;
+            bool isAtkEnemy = false;
             switch (team)//要通知不同管理器增加球到它們自己的列表，以及碰撞偵測需要。
             {
                 case Team.Blue://我們自己
-                    BallsManager.UpdateBallPosition(this, _newX);
                     enemyBalls = EnemyBallsSpawner.GetAllBalls();
                     foreach (var enemy in enemyBalls)
                     {
@@ -328,18 +328,18 @@ namespace BigBallsWarVII
                         {
                             //它就變成我的攻擊目標，然後回傳True碰到了。
                             target = enemy;
+                            isAtkEnemy = true;
                             isAtkCastle = false;
                             return true;
                         }
                     }
-                    if (_newX <= 115)//城堡實際在120
+                    if (_newX <= 115 && !isAtkEnemy)//城堡實際在120
                     {
                         isAtkCastle = true;//要攻擊城堡
                         return true;//碰到城堡就攻擊城堡
                     }
                     break;
                 case Team.Red://敵方
-                    EnemyBallsSpawner.UpdateEnemyBallPosition(this, _newX);
                     enemyBalls = BallsManager.GetAllBalls();
                     foreach (var enemy in enemyBalls)
                     {
@@ -350,11 +350,12 @@ namespace BigBallsWarVII
                         {
                             //它就變成我的攻擊目標，然後回傳True碰到了。
                             target = enemy;
+                            isAtkEnemy = true;
                             isAtkCastle = false;
                             return true;
                         }
                     }
-                    if (_newX >= 675 - _ballProperties.Radius)//城堡實際在680
+                    if (_newX >= 675 - _ballProperties.Radius && !isAtkEnemy)//城堡實際在680
                     {
                         isAtkCastle = true;//要攻擊城堡
                         return true;//碰到城堡就攻擊城堡
@@ -379,11 +380,7 @@ namespace BigBallsWarVII
         /// </summary>
         private void Attack()
         {
-            if (target != null)
-            {
-                target?.TakeDamage(this);//只要傳傷害就好。
-            }
-            else if (isAtkCastle)
+            if (isAtkCastle)
             {
                 switch (team)
                 {
@@ -394,6 +391,10 @@ namespace BigBallsWarVII
                         BallsManager.BlueCastleHP -= _ballProperties.ATK;
                         break;
                 }
+            }
+            else if (target != null && target.ballStruct.HP > 0)
+            {
+                target?.TakeDamage(this);//只要傳傷害就好。
             }
             else ResumeTimer();
         }
@@ -444,8 +445,8 @@ namespace BigBallsWarVII
             };
             Action resumeTimer = team switch//根據不同的隊伍，讓對方繼續移動;
             {
-                Team.Blue => () => EnemyBallsSpawner.ResumeTimer(),
-                Team.Red => () => BallsManager.ResumeTimer(),
+                Team.Blue => () => EnemyBallsSpawner.ResumeTimer(this),
+                Team.Red => () => BallsManager.ResumeTimer(this),
                 _ => () => { }
             };
             HP -= damager._ballProperties.ATK;
@@ -472,8 +473,9 @@ namespace BigBallsWarVII
         }
         private void EndBallsControl()
         {
+            Panel? parentPanel = this.Parent as Panel;
             //在整個panel刪除
-            if (this.Parent is Panel parentPanel)
+            if (parentPanel != null)
             { 
                 moveTimer.Stop();//到這邊之後會變成null。
                 _stopWatch.Stop();
@@ -483,17 +485,18 @@ namespace BigBallsWarVII
                 cdTimer.Stop();
                 cdTimer.Tick -= CDTimer_Tick;
                 Loaded -= BallsConrolLoaded;//退訂事件
+                parentPanel.Children.Remove(this);
 
                 //確保所有資源都被釋放
                 moveTimer = null;
                 _stopWatch = null;
                 _ball = null;
+                _image = null;
+                _square = null;
                 SHAPE = null;
                 HPBackGround = null;
                 HPBar = null;
-                parentPanel.Children.Remove(this);
             }
-
         }
         enum Team
         {

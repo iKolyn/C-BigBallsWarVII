@@ -13,8 +13,8 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="22*"/>
-            <RowDefinition Height="7*"/>
+            <RowDefinition Height="316*"/>
+            <RowDefinition Height="119*"/>
         </Grid.RowDefinitions>
         <Canvas Name="backGroundCanva" Grid.RowSpan="2" Grid.ColumnSpan="3">
             <Rectangle Name="Sky" Width="800" Height="433" HorizontalAlignment="Center" VerticalAlignment="Top">
@@ -100,7 +100,7 @@
 
         <Canvas Name="mainCanva" Grid.RowSpan="2" Grid.ColumnSpan="3">
             <!--所有新增出來的球都會在這裡出現。-->
-            <Rectangle Name="buttonBackground" Width="800" Height="120" Canvas.Bottom="0" Fill="Black" Opacity="0.4"/>
+            <Rectangle Name="buttonBackground" Width="800" Height="120" Canvas.Bottom="0" Fill="Black" Opacity="0.4" HorizontalAlignment="Center" Canvas.Top="302" VerticalAlignment="Top"/>
             <TextBlock Name="myMoney" FontSize="20" Canvas.Left="620" Canvas.Top="30" HorizontalAlignment="Left" VerticalAlignment="Center">
                 <Run Text="金錢 :"/> 
                 <Run Name="currentMoney" Text="5000"/>
@@ -112,18 +112,22 @@
 
             <!--放按鈕的StackPanel-->
             <StackPanel Name="ballStackPanel" Orientation="Horizontal" Height="110" Width="780" 
-                        Canvas.Right="0" Canvas.Bottom="10" FlowDirection="RightToLeft" Background="Tan" Opacity="0.9">
+                        Canvas.Right="0" Canvas.Bottom="10" FlowDirection="RightToLeft" Background="Tan" Opacity="0.9" HorizontalAlignment="Center" Canvas.Left="20" Canvas.Top="307" VerticalAlignment="Top">
                 <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="53*"/>
+                        <RowDefinition Height="57*"/>
+                    </Grid.RowDefinitions>
                     <!--大球-->
-                    <Button Name="largeBotton" Width="100" Height="100" Content="250$" Click="largeBotton_Click" Margin="0,5,0,5"  
+                    <Button Name="largeBotton" Width="100" Height="100" Content="250$" Click="largeBotton_Click" Margin="13,5,13,5"  
                             FontSize="24" Padding="1,42,1,1" ToolTipService.InitialShowDelay ="250" ToolTipService.ShowDuration="10000"
-                            ToolTipService.BetweenShowDelay="200">
+                            ToolTipService.BetweenShowDelay="200" Grid.RowSpan="2">
                         <Button.ToolTip>
                             <ToolTip Content="最菁英的球體，無可比擬的攻擊與血量"/>
                         </Button.ToolTip>
                     </Button>
                     <Ellipse Name="previewLargeBall" Width="40" Height="40" 
-                    Fill="Orange" Margin="43,15,43,55" IsHitTestVisible="False"/>
+                    Fill="Orange" Margin="43,15,43,55" IsHitTestVisible="False" Grid.RowSpan="2"/>
                 </Grid>
                 <Grid>
                     <!--正方形-->
@@ -135,7 +139,7 @@
                         </Button.ToolTip>
                     </Button>
                     <Rectangle Name="previewSquare" Width="25" Height="40" Fill="Brown" 
-                               Margin="42,10,32,50" IsHitTestVisible="False"/>
+                               Margin="38,15,38,55" IsHitTestVisible="False"/>
                 </Grid>
                 <Grid>
                     <!--中球-->
@@ -147,7 +151,7 @@
                         </Button.ToolTip>
                     </Button>
                     <Ellipse Name="previewMediumBall" Width="25" Height="25" 
-                     Fill="Blue" Margin="55,25,32,50" IsHitTestVisible="False"/>
+                     Fill="Blue" Margin="44,30,44,55" IsHitTestVisible="False"/>
                 </Grid>
                 <Grid>
                     <!--三角形-->
@@ -175,18 +179,18 @@
                 </Grid>
             </StackPanel>
             <!--region CD提示條們-->
-            <Rectangle Name="smallBottonSlider" Width="0" Height="90" Opacity="0.5" Fill="black"  Canvas.Left="262" Canvas.Top="330"/>
-            <Rectangle Name="triangleBottonSlider" Width="0" Height="90" Opacity="0.5" Fill="black" Canvas.Left="357" Canvas.Top="330" />
-            <Rectangle Name="mediumBottonSlider" Width="0" Height="90" Opacity="0.5" Fill="black" Canvas.Left="462" Canvas.Top="330"/>
-            <Rectangle Name="squareBottonSlider" Width="0" Height="90" Opacity="0.5" Fill="black" Canvas.Left="574" Canvas.Top="330"/>
-            <Rectangle Name="largeBottonSlider" Width="0" Height="90" Opacity="0.5" Fill="black" Canvas.Left="674" Canvas.Top="330"/>
+            <Rectangle Name="smallBottonSlider" Width="10" Height="100" Opacity="0.5" Fill="black"  Canvas.Left="254" Canvas.Bottom="20" HorizontalAlignment="Center" Canvas.Top="312" VerticalAlignment="Top"/>
+            <Rectangle Name="triangleBottonSlider" Width="10" Height="100" Opacity="0.5" Fill="black" Canvas.Left="360" Canvas.Bottom="20" HorizontalAlignment="Center" Canvas.Top="313" VerticalAlignment="Top" />
+            <Rectangle Name="mediumBottonSlider" Width="10" Height="100" Opacity="0.5" Fill="black" Canvas.Left="467" Canvas.Bottom="20" HorizontalAlignment="Center" Canvas.Top="313" VerticalAlignment="Top"/>
+            <Rectangle Name="squareBottonSlider" Width="10" Height="100" Opacity="0.5" Fill="black" Canvas.Left="574" Canvas.Bottom="20" HorizontalAlignment="Center" Canvas.Top="312" VerticalAlignment="Top"/>
+            <Rectangle Name="largeBottonSlider" Width="10" Height="100" Opacity="0.5" Fill="black" Canvas.Left="687" Canvas.Bottom="20" HorizontalAlignment="Center" Canvas.Top="313" VerticalAlignment="Top"/>
             <!--#endregion-->
             <Ellipse Name="moneyUpgrateBackGround" Width="187" Height="100" Fill="Black" Opacity="0.7" 
-                     HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.Top="303" Canvas.Left="11"
-                     ToolTip="每秒增加的金錢數量增加" ToolTipService.BetweenShowDelay="250" ToolTipService.ShowDuration="10000" MouseLeftButtonDown="moneyUpgrateBackGround_MouseLeftButtonDown">
+                     HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.Bottom="10" Canvas.Left="35"
+                     ToolTip="每秒增加的金錢數量增加" ToolTipService.BetweenShowDelay="250" ToolTipService.ShowDuration="10000" MouseLeftButtonDown="moneyUpgrateBackGround_MouseLeftButtonDown" Canvas.Top="309">
             </Ellipse>
-            <TextBlock Name="moneyUpgrateTitleText" Text="金錢升級" Canvas.Left="46" Canvas.Top="318" FontSize="28" FontFamily="Comic Sans MS" 
-                       RenderTransformOrigin="0.5,0.5" Width="116" HorizontalAlignment="Center" VerticalAlignment="Top" IsHitTestVisible="False">
+            <TextBlock Name="moneyUpgrateTitleText" Text="金錢升級" Canvas.Left="70" Canvas.Bottom="55" FontSize="28" FontFamily="Comic Sans MS" 
+                       RenderTransformOrigin="0.5,0.5" Width="116" HorizontalAlignment="Center" VerticalAlignment="Top" IsHitTestVisible="False" Canvas.Top="325">
                 <TextBlock.Foreground>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                         <GradientStop Color="Gold" Offset="1.0"/>
@@ -194,15 +198,13 @@
                     </LinearGradientBrush>
                 </TextBlock.Foreground>
             </TextBlock>
-            <TextBlock Name="howMuchUpgrateText" Text="150$" FontSize="24" Canvas.Left="76" Canvas.Top="353" HorizontalAlignment="Left" VerticalAlignment="Top" IsHitTestVisible="False">
+            <TextBlock x:Name="howMuchUpgrateText" FontSize="24" Canvas.Left="92" Canvas.Bottom="25" HorizontalAlignment="Left" VerticalAlignment="Top" IsHitTestVisible="False" Canvas.Top="361">
                 <TextBlock.Foreground>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                         <GradientStop Color="Gold" Offset="1.0"/>
                         <GradientStop Color="Yellow" Offset="0.0"/>
                     </LinearGradientBrush>
-                </TextBlock.Foreground>
-            </TextBlock>
-
+                </TextBlock.Foreground><Run Language="zh-tw" Text="150元"/><LineBreak/><Run Language="zh-tw"/><LineBreak/><Run/></TextBlock>
         </Canvas>
     </Grid>
     <Window.Resources>

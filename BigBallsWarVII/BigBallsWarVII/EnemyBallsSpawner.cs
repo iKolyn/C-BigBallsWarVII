@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Printing;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
@@ -80,7 +81,7 @@ namespace BigBallsWarVII
         /// 通知對方管理員第一顆球死了，讓所有對方的球可以移動。
         /// <br>***這個功能以剩下保證球攻擊後，可以開始移動。***</br>
         /// </summary>
-        public static Action isFirstBallDie;
+        public static Action<Ball> isFirstBallDie;
         #endregion
         static EnemyBallsSpawner()
         {
@@ -144,31 +145,22 @@ namespace BigBallsWarVII
         {
             balls.Remove(ball);
             FirstBall = null;
-            isFirstBallDie?.Invoke();
+            isFirstBallDie?.Invoke(_cantResumeBall);
             BallCount--;
         }
         public static List<Ball> GetAllBalls()
         {
             return balls;
         }
-        public static void UpdateEnemyBallPosition(Ball ball, double myX)
-        {   
-            if (_firstBall == null)
-            {
-                FirstBall = ball;//如果firstBall是空的，就直接取代。
-            }
-            //如果已經有第一顆球，而且我比他前面，就取代他。+1是避免過於接近而短期間互換太多次。。
-            if (_firstBall != null && _firstBall.SHAPE != null && myX > Canvas.GetLeft(_firstBall.SHAPE) + 1)
-            {
-                FirstBall = ball;
-            }
-        }
-        public static void ResumeTimer()
+
+        private static Ball _cantResumeBall;
+        public static void ResumeTimer(Ball cantResumeBall)
         {
+            _cantResumeBall = cantResumeBall;
             foreach (Ball ball in balls)
             {
                 //如果正在攻擊城堡，或者你是Boss，都不准得到firstBall擊殺獎勵(重製CD)
-                if (!ball.isAtkCastle || ball.balltype != BallsType.Boss)
+                if (!ball.isAtkCastle || ball.balltype != BallsType.Boss || ball == cantResumeBall)
                     ball.ResumeTimer();
             }
         }

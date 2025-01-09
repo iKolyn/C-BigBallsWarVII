@@ -51,7 +51,7 @@ namespace BigBallsWarVII
         /// <summary>
         /// 通知對方管理員第一顆球死了，讓所有對方的球可以移動。
         /// </summary>
-        public static Action isFirstBallDie;
+        public static Action<Ball> isFirstBallDie;
         public static bool isGameOver = false;
         #endregion
         static BallsManager()
@@ -73,6 +73,7 @@ namespace BigBallsWarVII
         {
             balls.Remove(ball);
             _firstBall = null;//移除firstBall
+            isFirstBallDie?.Invoke(_cantResumeBall);
             BallCount--;
             CountChange?.Invoke();
         }
@@ -80,30 +81,13 @@ namespace BigBallsWarVII
         {
             return balls;
         }
-        /// <summary>
-        /// 每一顆球會偵測自己跟firstBall的位置，自己比較前面，就取代firstBall。
-        /// </summary>
-        /// <param name="ball">我自己</param>
-        /// <param name="myX">我的座標</param>
-        public static void UpdateBallPosition(Ball ball, double myX)
+        private static Ball _cantResumeBall;
+        public static void ResumeTimer(Ball cantResumeBall)
         {
-            if (_firstBall == null)
-            {
-                Debug.WriteLine("第一顆球掛掉，被取代了");
-                _firstBall = ball;//如果firstBall是空的，就直接取代。
-            }
-            //如果已經有第一顆球，而且我比他前面，就取代他。-1是避免過於接近而短期間互換太多次。
-            if (_firstBall != null && _firstBall.SHAPE != null && myX < Canvas.GetLeft(_firstBall.SHAPE) - 1)
-            {
-                Debug.WriteLine("被超過了！第一顆球取代");
-                _firstBall = ball;
-            }
-        }
-        public static void ResumeTimer()
-        {
+            _cantResumeBall = cantResumeBall;
             foreach (Ball ball in balls)
             {
-                if (!ball.isAtkCastle || ball.balltype != BallsType.Boss)
+                if (!ball.isAtkCastle || ball.balltype != BallsType.Boss || ball != cantResumeBall)
                     ball.ResumeTimer();
             }
         }
