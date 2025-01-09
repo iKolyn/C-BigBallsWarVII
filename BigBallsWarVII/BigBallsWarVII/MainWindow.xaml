@@ -13,8 +13,8 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="55*"/>
-            <RowDefinition Height="32*"/>
+            <RowDefinition Height="22*"/>
+            <RowDefinition Height="7*"/>
         </Grid.RowDefinitions>
         <Canvas Name="backGroundCanva" Grid.RowSpan="2" Grid.ColumnSpan="3">
             <Rectangle Name="Sky" Width="800" Height="433" HorizontalAlignment="Center" VerticalAlignment="Top">
@@ -104,81 +104,83 @@
             <TextBlock Name="myMoney" FontSize="20" Canvas.Left="620" Canvas.Top="30" HorizontalAlignment="Left" VerticalAlignment="Center">
                 <Run Text="金錢 :"/> 
                 <Run Name="currentMoney" Text="5000"/>
-                <Run Name="isLimited" Text="(Limit)"/>
+                 <Run Text="$"/>
                 <TextBlock.Foreground>
                     <SolidColorBrush Color="White"/>
                 </TextBlock.Foreground>
             </TextBlock>
 
             <!--放按鈕的StackPanel-->
-            <StackPanel Name="ballStackPanel" Orientation="Horizontal" Height="100" Width="780" 
-                        Canvas.Right="10" Canvas.Bottom="10" FlowDirection="RightToLeft" Background="Tan" Opacity="0.9">
+            <StackPanel Name="ballStackPanel" Orientation="Horizontal" Height="110" Width="780" 
+                        Canvas.Right="0" Canvas.Bottom="10" FlowDirection="RightToLeft" Background="Tan" Opacity="0.9">
                 <Grid>
                     <!--大球-->
-                    <Button Name="largeBotton" Width="90" Height="90" Content="250$" Click="largeBotton_Click" Margin="10,0,0,0"  
+                    <Button Name="largeBotton" Width="100" Height="100" Content="250$" Click="largeBotton_Click" Margin="0,5,0,5"  
                             FontSize="24" Padding="1,42,1,1" ToolTipService.InitialShowDelay ="250" ToolTipService.ShowDuration="10000"
                             ToolTipService.BetweenShowDelay="200">
                         <Button.ToolTip>
                             <ToolTip Content="最菁英的球體，無可比擬的攻擊與血量"/>
                         </Button.ToolTip>
                     </Button>
-                    <Rectangle Name="largeBottonSlider" Width="0" Height="90" HorizontalAlignment="Right" Opacity="0.5" Fill="black"/>
                     <Ellipse Name="previewLargeBall" Width="40" Height="40" 
-                    Fill="Orange" Margin="48,10,38,50" IsHitTestVisible="False"/>
+                    Fill="Orange" Margin="43,15,43,55" IsHitTestVisible="False"/>
                 </Grid>
                 <Grid>
                     <!--正方形-->
-                    <Button Name="squareBotton" Width="90" Height="90" Content="$150" Click="squareBotton_Click" 
-                            Margin="10,0,0,0" FontSize="24" Padding="1,40,1,1" ToolTipService.InitialShowDelay ="250" ToolTipService.ShowDuration="10000"
+                    <Button Name="squareBotton" Width="100" Height="100" Content="$150" Click="squareBotton_Click" 
+                            Margin="0,5,0,5" FontSize="24" Padding="1,40,1,1" ToolTipService.InitialShowDelay ="250" ToolTipService.ShowDuration="10000"
                             ToolTipService.BetweenShowDelay="200">
                         <Button.ToolTip>
                             <ToolTip Content="如同城牆般的正方形，但不會攻擊"/>
                         </Button.ToolTip>
                     </Button>
-                    <Rectangle Name="squareBottonSlider" Width="0" Height="90" HorizontalAlignment="Right" Opacity="0.5" Fill="black"/>
                     <Rectangle Name="previewSquare" Width="25" Height="40" Fill="Brown" 
                                Margin="42,10,32,50" IsHitTestVisible="False"/>
                 </Grid>
                 <Grid>
                     <!--中球-->
-                    <Button Name="mediumBotton" Width="90" Height="90" Content="75$" Click="mediumBotton_Click" 
-                            Margin="10,0,0,0" FontSize="24" Padding="1,40,1,1" 
-                            ToolTipService.InitialShowDelay ="250" ToolTipService.ShowDuration="10000" ToolTipService.BetweenShowDelay="200">
+                    <Button Name="mediumBotton" Width="100" Height="100" Content="75$" Click="mediumBotton_Click" 
+                            Margin="0,5,0,5" FontSize="24" Padding="1,40,1,1" 
+                            ToolTipService.InitialShowDelay ="250" ToolTipService.ShowDuration="10000" ToolTipService.BetweenShowDelay="200" HorizontalAlignment="Center">
                         <Button.ToolTip>
                             <ToolTip Content="中等的球，體力與攻擊力都上升了"/>
                         </Button.ToolTip>
                     </Button>
-                    <Rectangle Name="mediumBottonSlider" Width="0" Height="90" HorizontalAlignment="Right" Opacity="0.5" Fill="black"/>
                     <Ellipse Name="previewMediumBall" Width="25" Height="25" 
-                     Fill="Blue" Margin="48,25,38,50" IsHitTestVisible="False"/>
+                     Fill="Blue" Margin="55,25,32,50" IsHitTestVisible="False"/>
                 </Grid>
                 <Grid>
                     <!--三角形-->
-                    <Button Name="triangleBotton" Width="90" Height="90" Content="30$" Click="triangleBotton_Click" Margin="10,0,0,0" 
+                    <Button Name="triangleBotton" Width="100" Height="100" Content="30$" Click="triangleBotton_Click" Margin="0,5,5,5" 
                             FontSize="24" Padding="1,40,1,1" ToolTipService.InitialShowDelay ="250" ToolTipService.ShowDuration="10000"
                             ToolTipService.BetweenShowDelay="200">
                         <Button.ToolTip>
                             <ToolTip Content="快攻三角形，超痛攻擊但馬上就死了"/>
                         </Button.ToolTip>
                     </Button>
-                    <Rectangle Name="triangleBottonSlider" Width="90" Height="90" HorizontalAlignment="Right" Opacity="0.5" Fill="black" />
                     <Image Source="/Image/Triangle.png" Width="20" Height="20" 
-                           Margin="48,30,37,50" IsHitTestVisible="False"/>
+                           Margin="42,30,43,50" IsHitTestVisible="False"/>
                 </Grid>
                 <Grid>
                     <!--小球-->
-                    <Button Name="smallBotton" Width="90" Height="90" Content="10$" Click="smallBotton_Click" Margin="10,0,0,0" 
-                            FontSize="24" Padding="1,40,1,1" ToolTipService.InitialShowDelay ="250" ToolTipService.ShowDuration="10000"
-                            ToolTipService.BetweenShowDelay="200">
+                    <Button Name="smallBotton" Width="100" Height="100" Content="10$" Click="smallBotton_Click"
+                            FontSize="24" Padding="0,40,0,0" ToolTipService.InitialShowDelay ="250" ToolTipService.ShowDuration="10000"
+                            ToolTipService.BetweenShowDelay="200" HorizontalContentAlignment="Center" Margin="0,5,0,5">
                         <Button.ToolTip>
                             <ToolTip Content="基本的小球，普通的攻擊力跟血量"/>
                         </Button.ToolTip>
                     </Button>
-                    <Rectangle Name="smallBottonSlider" Width="0" Height="90" HorizontalAlignment="Right" Opacity="0.5" Fill="black"/>
                     <Ellipse Name="previewSmallBall" Width="15" Height="15" 
-                             Fill="Green" Margin="48,35,38,50" IsHitTestVisible="False"/>
+                             Fill="Green" Margin="43,35,43,50" IsHitTestVisible="False"/>
                 </Grid>
             </StackPanel>
+            <!--region CD提示條們-->
+            <Rectangle Name="smallBottonSlider" Width="0" Height="90" Opacity="0.5" Fill="black"  Canvas.Left="262" Canvas.Top="330"/>
+            <Rectangle Name="triangleBottonSlider" Width="0" Height="90" Opacity="0.5" Fill="black" Canvas.Left="357" Canvas.Top="330" />
+            <Rectangle Name="mediumBottonSlider" Width="0" Height="90" Opacity="0.5" Fill="black" Canvas.Left="462" Canvas.Top="330"/>
+            <Rectangle Name="squareBottonSlider" Width="0" Height="90" Opacity="0.5" Fill="black" Canvas.Left="574" Canvas.Top="330"/>
+            <Rectangle Name="largeBottonSlider" Width="0" Height="90" Opacity="0.5" Fill="black" Canvas.Left="674" Canvas.Top="330"/>
+            <!--#endregion-->
             <Ellipse Name="moneyUpgrateBackGround" Width="187" Height="100" Fill="Black" Opacity="0.7" 
                      HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.Top="303" Canvas.Left="11"
                      ToolTip="每秒增加的金錢數量增加" ToolTipService.BetweenShowDelay="250" ToolTipService.ShowDuration="10000" MouseLeftButtonDown="moneyUpgrateBackGround_MouseLeftButtonDown">

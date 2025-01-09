@@ -239,7 +239,6 @@ namespace BigBallsWarVII
                         currentBallQueue.AddRange(temp);//將兩者合併
                         Debug.WriteLine(currentBallQueue.Count);
                     }
-                        
                 }
                 if (RedCastleHP <= MaxRedCastleHP * 0.3)//城堡20%以下
                 {
@@ -284,27 +283,32 @@ namespace BigBallsWarVII
                 _specialSpawnTimer.Stop();
                 return;
             }
- 
             isSpecialSpawned = true;
             //首先設定下一個球體的生成CD時間。
-            BallNode? nextBaLL = BallQueue.GetNext();
-            double nextSpawnTime = nextBaLL != null ? nextBaLL.CD : 0;
-            _specialSpawnTimer.Interval = TimeSpan.FromMilliseconds(nextSpawnTime);
+            BallNode? nextBall = BallQueue.GetNext();
+            double nextSpawnTime = nextBall != null ? nextBall.CD : 0;
+
+            //確保 Interval 不為 0
+            if (nextSpawnTime > 0)
+            {
+                _specialSpawnTimer.Interval = TimeSpan.FromMilliseconds(nextSpawnTime);
+            }
 
             //開始生成球體
             _specialCurrentTime = _stopWatch.ElapsedMilliseconds;
             //如果當前時間，到了上一次生成球體的時間 + 下一個球體的CD時間，就生成球體。
-            if (_specialCurrentTime > _specialLastTime + nextSpawnTime && nextBaLL != null)
+            if (_specialCurrentTime > _specialLastTime + nextSpawnTime && nextBall != null)
             {
-                Ball ball = nextBaLL.Data;
+                Ball ball = nextBall.Data;
                 AddBall(ball);
                 _specialLastTime = _specialCurrentTime;
             }
-            else
+
+            //如果沒有球體可以生成了，停止計時器。
+            if (nextBall == null)
             {
-                //如果沒有球體可以生成了，停止計時器。
-                _specialSpawnTimer.Stop();
                 isSpecialSpawned = false;
+                _specialSpawnTimer.Stop();
             }
         }
     }

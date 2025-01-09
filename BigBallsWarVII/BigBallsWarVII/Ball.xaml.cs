@@ -276,12 +276,8 @@ namespace BigBallsWarVII
             double deltaTime = (currentTime - lastTime) * 0.001;
             lastTime = currentTime;
             _newX = Canvas.GetLeft(SHAPE) + _ballProperties.SPEED * deltaTime;
-            Canvas.SetLeft(SHAPE, _newX);
-            Canvas.SetLeft(HPBackGround, _newX);
-            Canvas.SetLeft(HPBar, _newX);
-            Canvas.SetLeft(CDBar, _newX);
-
-            //是否碰撞
+           
+            //如果我的更新位置會出現碰撞
             if (CollistionEvent())//如果球碰到敵人就攻擊
             {
                 //開始先攻擊一次
@@ -299,6 +295,13 @@ namespace BigBallsWarVII
                 //然後再開啟攻擊計時器，依照log2(攻擊力*0.25)決定攻擊頻率。
                 atkTimer.Start();
             }
+            else//沒有碰撞就開始移動
+            {
+                Canvas.SetLeft(SHAPE, _newX);
+                Canvas.SetLeft(HPBackGround, _newX);
+                Canvas.SetLeft(HPBar, _newX);
+                Canvas.SetLeft(CDBar, _newX);
+            }           
         }
         /// <summary>
         /// 目前的攻擊目標。
@@ -458,7 +461,7 @@ namespace BigBallsWarVII
                     {
                         BallsType.Small => 10,
                         BallsType.Medium => 50,
-                        BallsType.Large => 100,
+                        BallsType.Large => 150,
                         BallsType.Boss => 500,
                         _ => 0
                     };
@@ -469,8 +472,9 @@ namespace BigBallsWarVII
         }
         private void EndBallsControl()
         {
-            if (this.Parent is Panel parentPanel) { 
-                parentPanel.Children.Remove(this);
+            //在整個panel刪除
+            if (this.Parent is Panel parentPanel)
+            { 
                 moveTimer.Stop();//到這邊之後會變成null。
                 _stopWatch.Stop();
                 moveTimer.Tick -= MoveTimer_Tick;
@@ -487,7 +491,8 @@ namespace BigBallsWarVII
                 SHAPE = null;
                 HPBackGround = null;
                 HPBar = null;
-            }//在整個panel刪除
+                parentPanel.Children.Remove(this);
+            }
 
         }
         enum Team
