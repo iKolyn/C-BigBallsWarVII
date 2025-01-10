@@ -95,11 +95,14 @@ namespace BigBallsWarVII
             }
             BallNode? node = Tail;
             //如果Tail的下一個不是null，就把Tail換掉。
-            if (Tail.Next != null)
+            if (Tail != null && Tail.Next != null)
                 Tail = Tail.Next;
             
-            if (Tail == null)
+            else 
+            {
+                Tail = null;
                 Head = null;
+            }
 
             Count--;
             return node;

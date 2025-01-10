@@ -7,24 +7,8 @@
       "RelativeMoniker": "D:0:0:{0AD2C48F-54BB-4415-8445-946A55F446DC}|BigBallsWarVII\\BigBallsWarVII.csproj|solutionrelative:bigballswarvii\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0AD2C48F-54BB-4415-8445-946A55F446DC}|BigBallsWarVII\\BigBallsWarVII.csproj|c:\\users\\stu71\\onedrive\\\u684C\u9762\\github\\c-bigballswarvii\\bigballswarvii\\bigballswarvii\\enemyballsspawner.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0AD2C48F-54BB-4415-8445-946A55F446DC}|BigBallsWarVII\\BigBallsWarVII.csproj|solutionrelative:bigballswarvii\\enemyballsspawner.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{0AD2C48F-54BB-4415-8445-946A55F446DC}|BigBallsWarVII\\BigBallsWarVII.csproj|c:\\users\\stu71\\onedrive\\\u684C\u9762\\github\\c-bigballswarvii\\bigballswarvii\\bigballswarvii\\ball.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0AD2C48F-54BB-4415-8445-946A55F446DC}|BigBallsWarVII\\BigBallsWarVII.csproj|solutionrelative:bigballswarvii\\ball.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0AD2C48F-54BB-4415-8445-946A55F446DC}|BigBallsWarVII\\BigBallsWarVII.csproj|c:\\users\\stu71\\onedrive\\\u684C\u9762\\github\\c-bigballswarvii\\bigballswarvii\\bigballswarvii\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0AD2C48F-54BB-4415-8445-946A55F446DC}|BigBallsWarVII\\BigBallsWarVII.csproj|solutionrelative:bigballswarvii\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0AD2C48F-54BB-4415-8445-946A55F446DC}|BigBallsWarVII\\BigBallsWarVII.csproj|c:\\users\\stu71\\onedrive\\\u684C\u9762\\github\\c-bigballswarvii\\bigballswarvii\\bigballswarvii\\ballscontrol.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{0AD2C48F-54BB-4415-8445-946A55F446DC}|BigBallsWarVII\\BigBallsWarVII.csproj|solutionrelative:bigballswarvii\\ballscontrol.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0AD2C48F-54BB-4415-8445-946A55F446DC}|BigBallsWarVII\\BigBallsWarVII.csproj|c:\\users\\stu71\\onedrive\\\u684C\u9762\\github\\c-bigballswarvii\\bigballswarvii\\bigballswarvii\\assemblyinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0AD2C48F-54BB-4415-8445-946A55F446DC}|BigBallsWarVII\\BigBallsWarVII.csproj|solutionrelative:bigballswarvii\\assemblyinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{0AD2C48F-54BB-4415-8445-946A55F446DC}|BigBallsWarVII\\BigBallsWarVII.csproj|c:\\users\\stu71\\onedrive\\\u684C\u9762\\github\\c-bigballswarvii\\bigballswarvii\\bigballswarvii\\ballnode.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -35,16 +19,32 @@
       "RelativeMoniker": "D:0:0:{0AD2C48F-54BB-4415-8445-946A55F446DC}|BigBallsWarVII\\BigBallsWarVII.csproj|solutionrelative:bigballswarvii\\ballsmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0AD2C48F-54BB-4415-8445-946A55F446DC}|BigBallsWarVII\\BigBallsWarVII.csproj|c:\\users\\stu71\\onedrive\\\u684C\u9762\\github\\c-bigballswarvii\\bigballswarvii\\bigballswarvii\\cashsystem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0AD2C48F-54BB-4415-8445-946A55F446DC}|BigBallsWarVII\\BigBallsWarVII.csproj|solutionrelative:bigballswarvii\\cashsystem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{0AD2C48F-54BB-4415-8445-946A55F446DC}|BigBallsWarVII\\BigBallsWarVII.csproj|c:\\users\\stu71\\onedrive\\\u684C\u9762\\github\\c-bigballswarvii\\bigballswarvii\\bigballswarvii\\ballscontrol.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{0AD2C48F-54BB-4415-8445-946A55F446DC}|BigBallsWarVII\\BigBallsWarVII.csproj|solutionrelative:bigballswarvii\\ballscontrol.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0AD2C48F-54BB-4415-8445-946A55F446DC}|BigBallsWarVII\\BigBallsWarVII.csproj|c:\\users\\stu71\\onedrive\\\u684C\u9762\\github\\c-bigballswarvii\\bigballswarvii\\bigballswarvii\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{0AD2C48F-54BB-4415-8445-946A55F446DC}|BigBallsWarVII\\BigBallsWarVII.csproj|solutionrelative:bigballswarvii\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0AD2C48F-54BB-4415-8445-946A55F446DC}|BigBallsWarVII\\BigBallsWarVII.csproj|c:\\users\\stu71\\onedrive\\\u684C\u9762\\github\\c-bigballswarvii\\bigballswarvii\\bigballswarvii\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0AD2C48F-54BB-4415-8445-946A55F446DC}|BigBallsWarVII\\BigBallsWarVII.csproj|solutionrelative:bigballswarvii\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0AD2C48F-54BB-4415-8445-946A55F446DC}|BigBallsWarVII\\BigBallsWarVII.csproj|c:\\users\\stu71\\onedrive\\\u684C\u9762\\github\\c-bigballswarvii\\bigballswarvii\\bigballswarvii\\enemyballsspawner.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0AD2C48F-54BB-4415-8445-946A55F446DC}|BigBallsWarVII\\BigBallsWarVII.csproj|solutionrelative:bigballswarvii\\enemyballsspawner.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{0AD2C48F-54BB-4415-8445-946A55F446DC}|BigBallsWarVII\\BigBallsWarVII.csproj|c:\\users\\stu71\\onedrive\\\u684C\u9762\\github\\c-bigballswarvii\\bigballswarvii\\bigballswarvii\\ballqueue.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0AD2C48F-54BB-4415-8445-946A55F446DC}|BigBallsWarVII\\BigBallsWarVII.csproj|solutionrelative:bigballswarvii\\ballqueue.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0AD2C48F-54BB-4415-8445-946A55F446DC}|BigBallsWarVII\\BigBallsWarVII.csproj|c:\\users\\stu71\\onedrive\\\u684C\u9762\\github\\c-bigballswarvii\\bigballswarvii\\bigballswarvii\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{0AD2C48F-54BB-4415-8445-946A55F446DC}|BigBallsWarVII\\BigBallsWarVII.csproj|solutionrelative:bigballswarvii\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+      "AbsoluteMoniker": "D:0:0:{0AD2C48F-54BB-4415-8445-946A55F446DC}|BigBallsWarVII\\BigBallsWarVII.csproj|c:\\users\\stu71\\onedrive\\\u684C\u9762\\github\\c-bigballswarvii\\bigballswarvii\\bigballswarvii\\cashsystem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0AD2C48F-54BB-4415-8445-946A55F446DC}|BigBallsWarVII\\BigBallsWarVII.csproj|solutionrelative:bigballswarvii\\cashsystem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0AD2C48F-54BB-4415-8445-946A55F446DC}|BigBallsWarVII\\BigBallsWarVII.csproj|c:\\users\\stu71\\onedrive\\\u684C\u9762\\github\\c-bigballswarvii\\bigballswarvii\\bigballswarvii\\assemblyinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0AD2C48F-54BB-4415-8445-946A55F446DC}|BigBallsWarVII\\BigBallsWarVII.csproj|solutionrelative:bigballswarvii\\assemblyinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -79,20 +79,32 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "MainWindow.xaml.cs",
-              "DocumentMoniker": "C:\\Users\\stu71\\OneDrive\\\u684C\u9762\\GitHub\\C-BigBallsWarVII\\BigBallsWarVII\\BigBallsWarVII\\MainWindow.xaml.cs",
-              "RelativeDocumentMoniker": "BigBallsWarVII\\MainWindow.xaml.cs",
-              "ToolTip": "C:\\Users\\stu71\\OneDrive\\\u684C\u9762\\GitHub\\C-BigBallsWarVII\\BigBallsWarVII\\BigBallsWarVII\\MainWindow.xaml.cs",
-              "RelativeToolTip": "BigBallsWarVII\\MainWindow.xaml.cs",
-              "ViewState": "AgIAAOYAAAAAAAAAAAAIwJgAAABJAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "Ball.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\stu71\\OneDrive\\\u684C\u9762\\GitHub\\C-BigBallsWarVII\\BigBallsWarVII\\BigBallsWarVII\\Ball.xaml.cs",
+              "RelativeDocumentMoniker": "BigBallsWarVII\\Ball.xaml.cs",
+              "ToolTip": "C:\\Users\\stu71\\OneDrive\\\u684C\u9762\\GitHub\\C-BigBallsWarVII\\BigBallsWarVII\\BigBallsWarVII\\Ball.xaml.cs",
+              "RelativeToolTip": "BigBallsWarVII\\Ball.xaml.cs",
+              "ViewState": "AgIAAGMAAAAAAAAAAAAAAAMBAABNAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-30T22:28:09.829Z",
+              "WhenOpened": "2024-12-31T03:08:02.42Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 8,
+              "Title": "BallQueue.cs",
+              "DocumentMoniker": "C:\\Users\\stu71\\OneDrive\\\u684C\u9762\\GitHub\\C-BigBallsWarVII\\BigBallsWarVII\\BigBallsWarVII\\BallQueue.cs",
+              "RelativeDocumentMoniker": "BigBallsWarVII\\BallQueue.cs",
+              "ToolTip": "C:\\Users\\stu71\\OneDrive\\\u684C\u9762\\GitHub\\C-BigBallsWarVII\\BigBallsWarVII\\BigBallsWarVII\\BallQueue.cs",
+              "RelativeToolTip": "BigBallsWarVII\\BallQueue.cs",
+              "ViewState": "AgIAACYAAAAAAAAAAAAAwC4AAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-01T23:10:01.544Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
               "Title": "CashSystem.cs",
               "DocumentMoniker": "C:\\Users\\stu71\\OneDrive\\\u684C\u9762\\GitHub\\C-BigBallsWarVII\\BigBallsWarVII\\BigBallsWarVII\\CashSystem.cs",
               "RelativeDocumentMoniker": "BigBallsWarVII\\CashSystem.cs",
@@ -100,64 +112,11 @@
               "RelativeToolTip": "BigBallsWarVII\\CashSystem.cs",
               "ViewState": "AgIAAAEAAAAAAAAAAAAEwBsAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-05T10:30:23.511Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "BallsManager.cs",
-              "DocumentMoniker": "C:\\Users\\stu71\\OneDrive\\\u684C\u9762\\GitHub\\C-BigBallsWarVII\\BigBallsWarVII\\BigBallsWarVII\\BallsManager.cs",
-              "RelativeDocumentMoniker": "BigBallsWarVII\\BallsManager.cs",
-              "ToolTip": "C:\\Users\\stu71\\OneDrive\\\u684C\u9762\\GitHub\\C-BigBallsWarVII\\BigBallsWarVII\\BigBallsWarVII\\BallsManager.cs",
-              "RelativeToolTip": "BigBallsWarVII\\BallsManager.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFUAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-31T10:10:36.916Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "EnemyBallsSpawner.cs",
-              "DocumentMoniker": "C:\\Users\\stu71\\OneDrive\\\u684C\u9762\\GitHub\\C-BigBallsWarVII\\BigBallsWarVII\\BigBallsWarVII\\EnemyBallsSpawner.cs",
-              "RelativeDocumentMoniker": "BigBallsWarVII\\EnemyBallsSpawner.cs",
-              "ToolTip": "C:\\Users\\stu71\\OneDrive\\\u684C\u9762\\GitHub\\C-BigBallsWarVII\\BigBallsWarVII\\BigBallsWarVII\\EnemyBallsSpawner.cs",
-              "RelativeToolTip": "BigBallsWarVII\\EnemyBallsSpawner.cs",
-              "ViewState": "AgIAANkAAAAAAAAAAAAhwO4AAAAhAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-04T03:56:02.173Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-05T10:30:23.511Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "Ball.xaml.cs",
-              "DocumentMoniker": "C:\\Users\\stu71\\OneDrive\\\u684C\u9762\\GitHub\\C-BigBallsWarVII\\BigBallsWarVII\\BigBallsWarVII\\Ball.xaml.cs",
-              "RelativeDocumentMoniker": "BigBallsWarVII\\Ball.xaml.cs",
-              "ToolTip": "C:\\Users\\stu71\\OneDrive\\\u684C\u9762\\GitHub\\C-BigBallsWarVII\\BigBallsWarVII\\BigBallsWarVII\\Ball.xaml.cs",
-              "RelativeToolTip": "BigBallsWarVII\\Ball.xaml.cs",
-              "ViewState": "AgIAAP8AAAAAAAAAAAAwwIoBAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-31T03:08:02.42Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "BallQueue.cs",
-              "DocumentMoniker": "C:\\Users\\stu71\\OneDrive\\\u684C\u9762\\GitHub\\C-BigBallsWarVII\\BigBallsWarVII\\BigBallsWarVII\\BallQueue.cs",
-              "RelativeDocumentMoniker": "BigBallsWarVII\\BallQueue.cs",
-              "ToolTip": "C:\\Users\\stu71\\OneDrive\\\u684C\u9762\\GitHub\\C-BigBallsWarVII\\BigBallsWarVII\\BigBallsWarVII\\BallQueue.cs",
-              "RelativeToolTip": "BigBallsWarVII\\BallQueue.cs",
-              "ViewState": "AgIAAFAAAAAAAAAAAAAgwI8AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-01T23:10:01.544Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
               "Title": "BallNode.cs",
               "DocumentMoniker": "C:\\Users\\stu71\\OneDrive\\\u684C\u9762\\GitHub\\C-BigBallsWarVII\\BigBallsWarVII\\BigBallsWarVII\\BallNode.cs",
               "RelativeDocumentMoniker": "BigBallsWarVII\\BallNode.cs",
@@ -166,6 +125,18 @@
               "ViewState": "AgIAAA4AAAAAAAAAAAAAwBYAAAAWAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-01-01T23:20:26.569Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "App.xaml",
+              "DocumentMoniker": "C:\\Users\\stu71\\OneDrive\\\u684C\u9762\\GitHub\\C-BigBallsWarVII\\BigBallsWarVII\\BigBallsWarVII\\App.xaml",
+              "RelativeDocumentMoniker": "BigBallsWarVII\\App.xaml",
+              "ToolTip": "C:\\Users\\stu71\\OneDrive\\\u684C\u9762\\GitHub\\C-BigBallsWarVII\\BigBallsWarVII\\BigBallsWarVII\\App.xaml",
+              "RelativeToolTip": "BigBallsWarVII\\App.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2024-12-30T22:41:03.416Z",
               "EditorCaption": ""
             },
             {
@@ -182,7 +153,44 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 3,
+              "Title": "BallsManager.cs",
+              "DocumentMoniker": "C:\\Users\\stu71\\OneDrive\\\u684C\u9762\\GitHub\\C-BigBallsWarVII\\BigBallsWarVII\\BigBallsWarVII\\BallsManager.cs",
+              "RelativeDocumentMoniker": "BigBallsWarVII\\BallsManager.cs",
+              "ToolTip": "C:\\Users\\stu71\\OneDrive\\\u684C\u9762\\GitHub\\C-BigBallsWarVII\\BigBallsWarVII\\BigBallsWarVII\\BallsManager.cs",
+              "RelativeToolTip": "BigBallsWarVII\\BallsManager.cs",
+              "ViewState": "AgIAADQAAAAAAAAAAAAkwBMAAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-31T10:10:36.916Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "MainWindow.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\stu71\\OneDrive\\\u684C\u9762\\GitHub\\C-BigBallsWarVII\\BigBallsWarVII\\BigBallsWarVII\\MainWindow.xaml.cs",
+              "RelativeDocumentMoniker": "BigBallsWarVII\\MainWindow.xaml.cs",
+              "ToolTip": "C:\\Users\\stu71\\OneDrive\\\u684C\u9762\\GitHub\\C-BigBallsWarVII\\BigBallsWarVII\\BigBallsWarVII\\MainWindow.xaml.cs",
+              "RelativeToolTip": "BigBallsWarVII\\MainWindow.xaml.cs",
+              "ViewState": "AgIAAPEAAAAAAAAAAAAqwDwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-30T22:28:09.829Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "EnemyBallsSpawner.cs",
+              "DocumentMoniker": "C:\\Users\\stu71\\OneDrive\\\u684C\u9762\\GitHub\\C-BigBallsWarVII\\BigBallsWarVII\\BigBallsWarVII\\EnemyBallsSpawner.cs",
+              "RelativeDocumentMoniker": "BigBallsWarVII\\EnemyBallsSpawner.cs",
+              "ToolTip": "C:\\Users\\stu71\\OneDrive\\\u684C\u9762\\GitHub\\C-BigBallsWarVII\\BigBallsWarVII\\BigBallsWarVII\\EnemyBallsSpawner.cs",
+              "RelativeToolTip": "BigBallsWarVII\\EnemyBallsSpawner.cs",
+              "ViewState": "AgIAABUAAAAAAAAAAAAAACAAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-04T03:56:02.173Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
               "Title": "AssemblyInfo.cs",
               "DocumentMoniker": "C:\\Users\\stu71\\OneDrive\\\u684C\u9762\\GitHub\\C-BigBallsWarVII\\BigBallsWarVII\\BigBallsWarVII\\AssemblyInfo.cs",
               "RelativeDocumentMoniker": "BigBallsWarVII\\AssemblyInfo.cs",
@@ -190,20 +198,7 @@
               "RelativeToolTip": "BigBallsWarVII\\AssemblyInfo.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-31T03:06:27.554Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "App.xaml",
-              "DocumentMoniker": "C:\\Users\\stu71\\OneDrive\\\u684C\u9762\\GitHub\\C-BigBallsWarVII\\BigBallsWarVII\\BigBallsWarVII\\App.xaml",
-              "RelativeDocumentMoniker": "BigBallsWarVII\\App.xaml",
-              "ToolTip": "C:\\Users\\stu71\\OneDrive\\\u684C\u9762\\GitHub\\C-BigBallsWarVII\\BigBallsWarVII\\BigBallsWarVII\\App.xaml",
-              "RelativeToolTip": "BigBallsWarVII\\App.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2024-12-30T22:41:03.416Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-31T03:06:27.554Z"
             }
           ]
         }

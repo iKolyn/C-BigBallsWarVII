@@ -75,7 +75,7 @@ namespace BigBallsWarVII
                 /*不要這樣寫，如果血量沒剛好扣成0，你or對方就無敵了。
                  *if(value >= 0)
                  *_ballProperties.HP = value:*/
-                if (value <= 0)
+                if (value < 0)
                     _ballProperties.HP = 0;
                 else
                     _ballProperties.HP = value;
@@ -111,18 +111,18 @@ namespace BigBallsWarVII
         public Ball(BallsLevel level)
         {
             InitializeComponent();
-            Loaded += BallsConrolLoaded;//這樣寫的話，一定會在最後才執行，不會有ATK瘋狂呼叫的問題。
             ballsLevel = level;
             team = Team.Blue;
             StartBallsControl(ballsLevel);//賦予球體數值
             CreateBall();//創造球體本身
+            Loaded += BallsConrolLoaded;//這樣寫的話，一定會在最後才執行，不會有ATK瘋狂呼叫的問題。
         }
         private void StartBallsControl(BallsLevel level)
         {
             switch (level)
             {
                 case BallsLevel.Small:
-                    _ballProperties = new(10, 50, -60, 35);
+                    _ballProperties = new(5, 50, -60, 35);
                     break;
                 case BallsLevel.Medium:
                     _ballProperties = new(25, 100, -45, 55);
@@ -257,9 +257,9 @@ namespace BigBallsWarVII
             moveTimer.Start();
             //依照攻擊除以特定數字來計算速度，攻擊力越高打越慢。
             //攻擊冷卻時間被限定在整數秒。
-            atkCD = (int)Math.Log2(_ballProperties.ATK * 0.25) * 1000;
+            atkCD = Math.Max(1, Math.Log2(_ballProperties.ATK * 0.25)) * 1000;//攻擊冷卻時間，最低就是1秒。不然攻擊10以內的都變成0幀攻擊。
             if (ballsLevel != BallsLevel.Square)
-                atkTimer.Interval = TimeSpan.FromSeconds((int)atkCD * 0.001);
+                atkTimer.Interval = TimeSpan.FromMilliseconds(atkCD);
             else
                 atkTimer.Interval = TimeSpan.FromSeconds(1000);//方形不會攻擊。
             atkTimer.Tick += AtkTimer_Tick;
@@ -282,14 +282,15 @@ namespace BigBallsWarVII
             {
                 //開始先攻擊一次
                 Attack();
-                //攻擊後就開始計算CD
-                cdTimer.Start();
-                cdWatch.Start();
-                endCD = cdWatch.ElapsedMilliseconds + atkCD;
                 if (target != null && target.ballStruct.HP <= 0)
                 {
                     target = null;
                 }
+                //攻擊後就開始計算CD
+                cdTimer.Start();
+                cdWatch.Start();
+                endCD = cdWatch.ElapsedMilliseconds + atkCD;
+               
                 moveTimer.Stop();
                 _stopWatch.Stop();
                 //然後再開啟攻擊計時器，依照log2(攻擊力*0.25)決定攻擊頻率。
@@ -314,7 +315,7 @@ namespace BigBallsWarVII
         /// <returns>回傳是否偵測到碰撞。</returns>
         private bool CollistionEvent()
         {
-            List<Ball> enemyBalls;
+            List<Ball> enemyBalls;//所有「敵對」的單位
             bool isAtkEnemy = false;
             switch (team)//要通知不同管理器增加球到它們自己的列表，以及碰撞偵測需要。
             {
@@ -380,6 +381,7 @@ namespace BigBallsWarVII
         /// </summary>
         private void Attack()
         {
+            
             if (isAtkCastle)
             {
                 switch (team)
@@ -392,12 +394,22 @@ namespace BigBallsWarVII
                         break;
                 }
             }
-            else if (target != null && target.ballStruct.HP > 0)
+            if (target == null)
+            {
+                ResumeTimer();
+            }
+            else if (target.ballStruct.HP > 0)
             {
                 target?.TakeDamage(this);//只要傳傷害就好。
             }
-            else ResumeTimer();
+            else
+            {
+                target.EndBallsControl();
+                target = null;
+                ResumeTimer();
+            }
         }
+        /// <summary>從攻擊後開始計算，直到可以再次攻擊的時間</summary>
         double endCD;
 
         Stopwatch cdWatch = new();
@@ -437,25 +449,19 @@ namespace BigBallsWarVII
         /// <param name="ballProperties">對方的數據結構體</param>
         public void TakeDamage(Ball damager)
         {
-            Action remove = team switch//根據不同的隊伍，在管理員刪除自己;
-            {
-                Team.Blue => () => BallsManager.RemoveBall(this),
-                Team.Red => () => EnemyBallsSpawner.RemoveBall(this),
-                _ => () => { }
-            };
-            Action resumeTimer = team switch//根據不同的隊伍，讓對方繼續移動;
-            {
-                Team.Blue => () => EnemyBallsSpawner.ResumeTimer(this),
-                Team.Red => () => BallsManager.ResumeTimer(this),
-                _ => () => { }
-            };
             HP -= damager._ballProperties.ATK;
             if (HP <= 0 && !isEnd)
             {
+                Action remove = team switch//根據不同的隊伍，在管理員刪除自己;
+                {
+                    Team.Blue => () => BallsManager.RemoveBall(this),
+                    Team.Red => () => EnemyBallsSpawner.RemoveBall(this),
+                    _ => () => { }
+                };
                 isEnd = true;
                 //damager.ResumeTimer();//讓攻擊者繼續移動，先保留看以後用不用得到。
-                resumeTimer.Invoke();
-                remove.Invoke();
+                remove?.Invoke();
+                //如果敵人死掉了，就獲得金錢
                 if (team == Team.Red)
                 {
                     int cash = _ballsType switch
@@ -486,6 +492,7 @@ namespace BigBallsWarVII
                 cdTimer.Tick -= CDTimer_Tick;
                 Loaded -= BallsConrolLoaded;//退訂事件
                 parentPanel.Children.Remove(this);
+                Debug.WriteLine("刪除了");
 
                 //確保所有資源都被釋放
                 moveTimer = null;
@@ -493,10 +500,10 @@ namespace BigBallsWarVII
                 _ball = null;
                 _image = null;
                 _square = null;
+            }
                 SHAPE = null;
                 HPBackGround = null;
                 HPBar = null;
-            }
         }
         enum Team
         {

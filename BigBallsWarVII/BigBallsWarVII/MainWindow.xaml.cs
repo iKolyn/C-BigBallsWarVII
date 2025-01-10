@@ -32,17 +32,7 @@ namespace BigBallsWarVII
         private double smallCD = 2000, mediumCD = 6000, largeCD = 18000, triangleCD = 5000, squareCD = 22000;//冷卻時間(毫秒)
         private bool isSmallSpawned, isMideumSpawned, isLargeSpawned, isTriangleSpawned, isSquareSpawned;
         private bool isGameOver = false;
-        public int BlueCastleHP
-        { 
-            get { return _blueCastleHP; }
-            set
-            {
-                enemyHPCurrent.Text = _blueCastleHP.ToString();
-                myHPBar.Width = 120 * (_blueCastleHP / maxBlueCastleHP);
-            } 
-        }
-        private int _blueCastleHP;
-        private int maxBlueCastleHP = 10000;
+
         #endregion
         public MainWindow()
         {
@@ -57,16 +47,17 @@ namespace BigBallsWarVII
 
             BallsManager.CountChange += ChangeCountText;
             //我的城堡血量
-            BallsManager.MaxBlueCastleHP = 1000;
+            BallsManager.MaxBlueCastleHP = 3000;
             BallsManager.BlueCastleHP = BallsManager.MaxBlueCastleHP;
             BallsManager.BlueCastleChanged += BlueCastleChanged;
-
+            BlueCastleChanged();
 
             EnemyBallsSpawner.addBallToCanva += AddEnemyToCanva;
             //敵方的城堡血量
-            EnemyBallsSpawner.MaxRedCastleHP = 1600;
+            EnemyBallsSpawner.MaxRedCastleHP = 3000;
             EnemyBallsSpawner.RedCastleHP = EnemyBallsSpawner.MaxRedCastleHP;
             EnemyBallsSpawner.RedCastleChanged += RedCastleChanged;
+            RedCastleChanged();
 
             ChangeCountText();
 
@@ -127,7 +118,7 @@ namespace BigBallsWarVII
             CashSystem.IncreaseCash(CashInterval);
             currentMoney.Text = CashSystem.Cash.ToString();
         }
-        #region 按鈕事件
+        #region 金錢 + 按鈕事件
         /// <summary>
         /// 金錢升級按鈕的點擊事件
         /// </summary>

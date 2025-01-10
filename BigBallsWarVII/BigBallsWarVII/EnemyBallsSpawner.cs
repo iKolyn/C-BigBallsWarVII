@@ -26,17 +26,11 @@ namespace BigBallsWarVII
     {
         #region 數值們
         public static List<Ball> balls;
-        public static Ball? FirstBall
-        {
-            get { return _firstBall; }
-            private set { _firstBall = value; FirstBallChangeEvent?.Invoke(); }
-        }
-        static Ball? _firstBall;
-        public static Action FirstBallChangeEvent;//顯示誰是第一顆球用的事件;
+        
         //敵人們的種類
         private static BallStruct[] ballsType =
         [
-            new BallStruct { ATK = 10, HP = 50, SPEED = 60, Radius = 35, Color = Brushes.Green },
+            new BallStruct { ATK = 5, HP = 50, SPEED = 60, Radius = 35, Color = Brushes.Green },
             new BallStruct { ATK = 30, HP = 150, SPEED = 45, Radius = 55, Color = Brushes.Blue },
             new BallStruct { ATK = 80, HP = 400, SPEED = 30, Radius = 75, Color = Brushes.Red },
             new BallStruct { ATK = 150, HP = 650, SPEED = 10, Radius = 95, Color = Brushes.Purple }
@@ -77,29 +71,22 @@ namespace BigBallsWarVII
         private static Stopwatch _stopWatch;//高精度的當前執行時間
         public static Action<Ball>? addBallToCanva;//將球體數量用委派顯示到畫布上。
         public static bool isGameOver = false;
-        /// <summary>
-        /// 通知對方管理員第一顆球死了，讓所有對方的球可以移動。
-        /// <br>***這個功能以剩下保證球攻擊後，可以開始移動。***</br>
-        /// </summary>
-        public static Action<Ball> isFirstBallDie;
         #endregion
         static EnemyBallsSpawner()
         {
             balls = [];//new的意思
             BallQueue = new();//依照城堡血量生成的佇列
-            _firstBall = null;
             _defaultSpawnTimer = new()
             {
                 Interval = TimeSpan.FromMilliseconds(16)//60FPS
             };
-            _defaultSpawnTimer.Tick += DispatcherTimer_Tick;
+            _defaultSpawnTimer.Tick += DefaultSpawnTimer;
             _defaultSpawnTimer.Start();
             _stopWatch = new();
             _stopWatch.Start();
             _specialSpawnTimer = new();
             _specialSpawnTimer.Interval = TimeSpan.FromMilliseconds(16);//一開始直接生成一次。
             _specialSpawnTimer.Tick += SpecialSpawnTimer_Tick;
-            BallsManager.isFirstBallDie += ResumeTimer;
             AllBallQueueRegister();//註冊特殊生成的Queue用的。
         }
         static Random random = new();
@@ -112,57 +99,42 @@ namespace BigBallsWarVII
             for (int i = 0; i < 5; i++)
             {
                 int typeNumber = random.Next(0, 2);
-                BallQueue.Enqueue(new Ball(ballsType[typeNumber], (BallsType)typeNumber), random.Next(2, 8), 0);
+                BallQueue.Enqueue(new Ball(ballsType[typeNumber], (BallsType)typeNumber), random.Next(1,4), 0);
             }
             //城堡50%以下後生成的球，全用random。
             for (int i = 0; i < 10; i++)
             {
                 int typeNumber = random.Next(0, 3);
-                BallQueue.Enqueue(new Ball(ballsType[typeNumber], (BallsType)typeNumber), random.Next(2, 7), 1);
+                BallQueue.Enqueue(new Ball(ballsType[typeNumber], (BallsType)typeNumber), random.Next(1,3), 1);
             }
             //城堡20%以下後生成的球全用random。
             for (int i = 0; i < 15; i++)
             {
                 int typeNumber = random.Next(0, 3);
-                BallQueue.Enqueue(new Ball(ballsType[typeNumber], (BallsType)typeNumber), random.Next(2, 6), 2);
+                BallQueue.Enqueue(new Ball(ballsType[typeNumber], (BallsType)typeNumber), 1, 2);
             }
         }
         public static int BallCount
         {
             get { return _ballCount; }
-            private set { _ballCount = value; }
+            private set { _ballCount = value;Debug.WriteLine(_ballCount); }
         }
         private static int _ballCount = 0;
         public static void AddBall(Ball ball)
         {
             balls.Add(ball);
             addBallToCanva?.Invoke(ball);
-            if (_firstBall == null)
-                _firstBall = ball;
+
             BallCount++;
         }
         public static void RemoveBall(Ball ball)
         {
             balls.Remove(ball);
-            FirstBall = null;
-            isFirstBallDie?.Invoke(_cantResumeBall);
             BallCount--;
         }
         public static List<Ball> GetAllBalls()
         {
             return balls;
-        }
-
-        private static Ball _cantResumeBall;
-        public static void ResumeTimer(Ball cantResumeBall)
-        {
-            _cantResumeBall = cantResumeBall;
-            foreach (Ball ball in balls)
-            {
-                //如果正在攻擊城堡，或者你是Boss，都不准得到firstBall擊殺獎勵(重製CD)
-                if (!ball.isAtkCastle || ball.balltype != BallsType.Boss || ball == cantResumeBall)
-                    ball.ResumeTimer();
-            }
         }
         //處理生成邏輯
         #region 生成CD的數值們
@@ -179,9 +151,9 @@ namespace BigBallsWarVII
             get { return _stopWatch.ElapsedMilliseconds; }
         }
         private static bool isBossSpawn = true;
-        private static void DispatcherTimer_Tick(object? sender, EventArgs e)//CD計時器 + 城堡血量狀態計時器
+        private static void DefaultSpawnTimer(object? sender, EventArgs e)//CD計時器 + 城堡血量狀態計時器
         {
-            if(isGameOver)
+            if (isGameOver)
             {
                 _defaultSpawnTimer.Stop();
                 return;
@@ -213,24 +185,30 @@ namespace BigBallsWarVII
             }
 
             //生成特殊狀態球的邏輯們
-            if (!isSpecialSpawned)
-            {
-                if (RedCastleHP > MaxRedCastleHP * 0.8) return;
 
+            if (RedCastleHP > MaxRedCastleHP * 0.8) return;
+            else
+            {
                 if (RedCastleHP <= MaxRedCastleHP * 0.8 && RedCastleHP > MaxRedCastleHP * 0.5)//城堡80%以下
                 {
-                    _specialSpawnTimer.Start();
+                    if (_specialSpawnTimer.IsEnabled)
+                        return;
                     currentBallQueue = BallQueue.GetQueueByPriority(0);//儲存到待生成的球體佇列
-                }
-                else if (RedCastleHP <= MaxRedCastleHP * 0.5 && RedCastleHP > MaxRedCastleHP * 0.3)//城堡50%以下
-                {
                     _specialSpawnTimer.Start();
+                }
+                if (RedCastleHP <= MaxRedCastleHP * 0.5 && RedCastleHP > MaxRedCastleHP * 0.3)//城堡50%以下
+                {
+                    if (_specialSpawnTimer.IsEnabled)
+                        return;
                     List<BallNode>? temp = BallQueue.GetQueueByPriority(1);//暫存待生成的球體佇列
-                    if (temp != null && currentBallQueue != null)
+                    if (temp != null)
                     {
+                        currentBallQueue ??= new();//如果是空的就new
                         currentBallQueue.AddRange(temp);//將兩者合併
                         Debug.WriteLine(currentBallQueue.Count);
                     }
+                    _specialSpawnTimer.Start();
+
                 }
                 if (RedCastleHP <= MaxRedCastleHP * 0.3)//城堡20%以下
                 {
@@ -240,13 +218,16 @@ namespace BigBallsWarVII
                         AddBall(ball);
                         isBossSpawn = false;
                     }
-                    _specialSpawnTimer.Start();
+                    if (_specialSpawnTimer.IsEnabled)
+                        return;
                     List<BallNode>? temp = BallQueue.GetQueueByPriority(2);//暫存待生成的球體佇列
-                    if (temp != null && currentBallQueue != null)
+                    if (temp != null)
                     {
+                        currentBallQueue ??= new();
                         currentBallQueue.AddRange(temp);//將兩者合併
                         Debug.WriteLine(currentBallQueue.Count);
                     }
+                    _specialSpawnTimer.Start();
                 }
             }
         }
@@ -275,15 +256,14 @@ namespace BigBallsWarVII
                 _specialSpawnTimer.Stop();
                 return;
             }
-            isSpecialSpawned = true;
             //首先設定下一個球體的生成CD時間。
-            BallNode? nextBall = BallQueue.GetNext();
+            BallNode? nextBall = currentBallQueue?.FirstOrDefault();//是空的就null，否則返回第一顆球。
             double nextSpawnTime = nextBall != null ? nextBall.CD : 0;
 
             //確保 Interval 不為 0
             if (nextSpawnTime > 0)
             {
-                _specialSpawnTimer.Interval = TimeSpan.FromMilliseconds(nextSpawnTime);
+                _specialSpawnTimer.Interval = TimeSpan.FromSeconds(nextSpawnTime);
             }
 
             //開始生成球體
@@ -291,15 +271,14 @@ namespace BigBallsWarVII
             //如果當前時間，到了上一次生成球體的時間 + 下一個球體的CD時間，就生成球體。
             if (_specialCurrentTime > _specialLastTime + nextSpawnTime && nextBall != null)
             {
-                Ball ball = nextBall.Data;
-                AddBall(ball);
+                AddBall(nextBall.Data);
                 _specialLastTime = _specialCurrentTime;
+                currentBallQueue?.RemoveAt(0);
             }
 
             //如果沒有球體可以生成了，停止計時器。
             if (nextBall == null)
             {
-                isSpecialSpawned = false;
                 _specialSpawnTimer.Stop();
             }
         }
