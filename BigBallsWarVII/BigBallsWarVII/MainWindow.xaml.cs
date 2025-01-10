@@ -1,5 +1,6 @@
 ﻿using System.Data;
 using System.Diagnostics;
+using System.Media;
 using System.Numerics;
 using System.Security.Policy;
 using System.Text;
@@ -32,6 +33,8 @@ namespace BigBallsWarVII
         private double smallCD = 2000, mediumCD = 6000, largeCD = 18000, triangleCD = 5000, squareCD = 22000;//冷卻時間(毫秒)
         private bool isSmallSpawned, isMideumSpawned, isLargeSpawned, isTriangleSpawned, isSquareSpawned;
         private bool isGameOver = false;
+        private MediaPlayer backgroundMusicPlayer;
+        private MediaPlayer soundEffectPlayer;
 
         #endregion
         public MainWindow()
@@ -63,6 +66,18 @@ namespace BigBallsWarVII
 
             isCashEnough.Text = "";
             gameOverLabel.Content = "";
+
+            backgroundMusicPlayer = new();
+            backgroundMusicPlayer.Open(new Uri("Resources/backGroundMusic.wav", UriKind.Relative));//使用相對路徑抓
+            //這一段是在描述，當音樂播放完畢以後充新播放。使用拉姆達表示法來執行。
+            backgroundMusicPlayer.MediaEnded += (s, e) =>
+            {
+                backgroundMusicPlayer.Position = TimeSpan.Zero;//音樂重頭播放
+                backgroundMusicPlayer.Play();//繼續播放音樂。
+            };
+            backgroundMusicPlayer.Play();
+
+            soundEffectPlayer = new();
         }
         /// <summary>
         /// 負責處理CD的計時器
@@ -142,6 +157,8 @@ namespace BigBallsWarVII
                     howMuchUpgrateText.Text = "最高等";
                 else
                     howMuchUpgrateText.Text = $"{moneyUpgrateQuestPrice}元";
+                soundEffectPlayer.Open(new Uri("Resources/moneyUpgrateSound.wav", UriKind.Relative));
+                soundEffectPlayer.Play();
             }
         }
 
@@ -157,6 +174,9 @@ namespace BigBallsWarVII
             Ball ball = new(BallsLevel.Small);
             smallLastTime = _stopWatch.ElapsedMilliseconds;
             mainCanva.Children.Add(ball);
+
+            soundEffectPlayer.Open(new Uri("Resources/clickSound.wav", UriKind.Relative));
+            soundEffectPlayer.Play();
         }
         private void mediumBotton_Click(object sender, RoutedEventArgs e)
         {
@@ -170,6 +190,9 @@ namespace BigBallsWarVII
             Ball ball = new Ball(BallsLevel.Medium);
             mediumLastTime = _stopWatch.ElapsedMilliseconds;
             mainCanva.Children.Add(ball);
+
+            soundEffectPlayer.Open(new Uri("Resources/clickSound.wav", UriKind.Relative));
+            soundEffectPlayer.Play();
         }
         private void largeBotton_Click(object sender, RoutedEventArgs e)
         {
@@ -183,6 +206,9 @@ namespace BigBallsWarVII
             Ball ball = new Ball(BallsLevel.Large);
             largeLastTime = _stopWatch.ElapsedMilliseconds;
             mainCanva.Children.Add(ball);
+
+            soundEffectPlayer.Open(new Uri("Resources/clickSound.wav", UriKind.Relative));
+            soundEffectPlayer.Play();
         }
         private void triangleBotton_Click(object sender, RoutedEventArgs e)
         {
@@ -196,6 +222,9 @@ namespace BigBallsWarVII
             Ball ball = new Ball(BallsLevel.Triangle);
             triangleLastTime = _stopWatch.ElapsedMilliseconds;
             mainCanva.Children.Add(ball);
+
+            soundEffectPlayer.Open(new Uri("Resources/clickSound.wav", UriKind.Relative));
+            soundEffectPlayer.Play();
         }
         private void squareBotton_Click(object sender, RoutedEventArgs e)
         {
@@ -209,6 +238,9 @@ namespace BigBallsWarVII
             Ball ball = new Ball(BallsLevel.Square);
             squareLastTime = _stopWatch.ElapsedMilliseconds;
             mainCanva.Children.Add(ball);
+
+            soundEffectPlayer.Open(new Uri("Resources/clickSound.wav", UriKind.Relative));
+            soundEffectPlayer.Play();
         }
         #endregion
         private async void ShowNotEnoughText()

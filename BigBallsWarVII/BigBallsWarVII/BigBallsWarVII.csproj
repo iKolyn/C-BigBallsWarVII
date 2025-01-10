@@ -12,6 +12,10 @@
     <None Remove="CloundIMG.png" />
     <None Remove="Image\CloundIMG.png" />
     <None Remove="Image\Triangle.png" />
+    <None Remove="Resources\attackSound.wav" />
+    <None Remove="Resources\backGroundMusic.wav" />
+    <None Remove="Resources\clickSound.wav" />
+    <None Remove="Resources\moneyUpgrateSound.wav" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,6 +28,18 @@
     <Resource Include="Image\Triangle.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Content Include="Resources\attackSound.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\backGroundMusic.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\clickSound.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\moneyUpgrateSound.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>
