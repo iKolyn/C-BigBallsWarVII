@@ -49,3 +49,5 @@ D:\GitHub\C-BigBallsWarVII\BigBallsWarVII\BigBallsWarVII\obj\Debug\net8.0-window
 D:\GitHub\C-BigBallsWarVII\BigBallsWarVII\BigBallsWarVII\bin\Debug\net8.0-windows\Resources\backGroundMusic.wav
 D:\GitHub\C-BigBallsWarVII\BigBallsWarVII\BigBallsWarVII\bin\Debug\net8.0-windows\Resources\clickSound.wav
 D:\GitHub\C-BigBallsWarVII\BigBallsWarVII\BigBallsWarVII\bin\Debug\net8.0-windows\Resources\moneyUpgrateSound.wav
+D:\GitHub\C-BigBallsWarVII\BigBallsWarVII\BigBallsWarVII\bin\Debug\net8.0-windows\Resources\bossSound.wav
+D:\GitHub\C-BigBallsWarVII\BigBallsWarVII\BigBallsWarVII\bin\Debug\net8.0-windows\Resources\cantDo.wav

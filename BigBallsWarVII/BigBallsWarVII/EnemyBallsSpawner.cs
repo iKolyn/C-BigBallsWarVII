@@ -30,7 +30,7 @@ namespace BigBallsWarVII
         //敵人們的種類
         private static BallStruct[] ballsType =
         [
-            new BallStruct { ATK = 5, HP = 50, SPEED = 60, Radius = 35, Color = Brushes.Green },
+            new BallStruct { ATK = 5, HP = 20, SPEED = 60, Radius = 35, Color = Brushes.Green },
             new BallStruct { ATK = 30, HP = 150, SPEED = 45, Radius = 55, Color = Brushes.Blue },
             new BallStruct { ATK = 80, HP = 400, SPEED = 30, Radius = 75, Color = Brushes.Red },
             new BallStruct { ATK = 150, HP = 650, SPEED = 10, Radius = 95, Color = Brushes.Purple }
@@ -71,6 +71,7 @@ namespace BigBallsWarVII
         private static Stopwatch _stopWatch;//高精度的當前執行時間
         public static Action<Ball>? addBallToCanva;//將球體數量用委派顯示到畫布上。
         public static bool isGameOver = false;
+        public static MediaPlayer bossSpawnSound;
         #endregion
         static EnemyBallsSpawner()
         {
@@ -88,6 +89,7 @@ namespace BigBallsWarVII
             _specialSpawnTimer.Interval = TimeSpan.FromMilliseconds(16);//一開始直接生成一次。
             _specialSpawnTimer.Tick += SpecialSpawnTimer_Tick;
             AllBallQueueRegister();//註冊特殊生成的Queue用的。
+            bossSpawnSound = new();
         }
         static Random random = new();
         /// <summary>
@@ -95,6 +97,12 @@ namespace BigBallsWarVII
         /// </summary>
         private static void AllBallQueueRegister()
         {
+            //城堡20%以下後生成的球全用random。
+            for (int i = 0; i < 15; i++)
+            {
+                int typeNumber = random.Next(0, 3);
+                BallQueue.Enqueue(new Ball(ballsType[typeNumber], (BallsType)typeNumber), 1, 2);
+            }
             //城堡80%以下後生成的球，全用random。
             for (int i = 0; i < 5; i++)
             {
@@ -107,12 +115,7 @@ namespace BigBallsWarVII
                 int typeNumber = random.Next(0, 3);
                 BallQueue.Enqueue(new Ball(ballsType[typeNumber], (BallsType)typeNumber), random.Next(1,3), 1);
             }
-            //城堡20%以下後生成的球全用random。
-            for (int i = 0; i < 15; i++)
-            {
-                int typeNumber = random.Next(0, 3);
-                BallQueue.Enqueue(new Ball(ballsType[typeNumber], (BallsType)typeNumber), 1, 2);
-            }
+            
         }
         public static int BallCount
         {
@@ -195,6 +198,11 @@ namespace BigBallsWarVII
                         return;
                     currentBallQueue = BallQueue.GetQueueByPriority(0);//儲存到待生成的球體佇列
                     _specialSpawnTimer.Start();
+                    if(currentBallQueue != null)
+                    {
+                        Debug.WriteLine("現在的球體數量是：" + currentBallQueue.Count);
+                        Debug.WriteLine("如果是5，代表有乖乖地從優先級0開始算。");
+                    }
                 }
                 if (RedCastleHP <= MaxRedCastleHP * 0.5 && RedCastleHP > MaxRedCastleHP * 0.3)//城堡50%以下
                 {
@@ -205,10 +213,11 @@ namespace BigBallsWarVII
                     {
                         currentBallQueue ??= new();//如果是空的就new
                         currentBallQueue.AddRange(temp);//將兩者合併
-                        Debug.WriteLine(currentBallQueue.Count);
+                        Debug.WriteLine("現在的球體數量是：" + currentBallQueue.Count);
+                        Debug.WriteLine("如果是15，代表優先級1的都被彈出，並與當前queue合併。");
                     }
                     _specialSpawnTimer.Start();
-
+                    
                 }
                 if (RedCastleHP <= MaxRedCastleHP * 0.3)//城堡20%以下
                 {
@@ -217,6 +226,8 @@ namespace BigBallsWarVII
                         Ball ball = new(ballsType[3], BallsType.Boss);
                         AddBall(ball);
                         isBossSpawn = false;
+                        bossSpawnSound.Open(new Uri("Resources/bossSound.wav", UriKind.Relative));
+                        bossSpawnSound.Play();
                     }
                     if (_specialSpawnTimer.IsEnabled)
                         return;
@@ -225,7 +236,8 @@ namespace BigBallsWarVII
                     {
                         currentBallQueue ??= new();
                         currentBallQueue.AddRange(temp);//將兩者合併
-                        Debug.WriteLine(currentBallQueue.Count);
+                        Debug.WriteLine("現在的球體數量是：" + currentBallQueue.Count);
+                        Debug.WriteLine("如果是30，代表優先級2的都被彈出，並與當前queue合併。");
                     }
                     _specialSpawnTimer.Start();
                 }

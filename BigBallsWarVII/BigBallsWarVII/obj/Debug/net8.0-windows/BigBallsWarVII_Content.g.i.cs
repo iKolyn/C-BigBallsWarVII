@@ -10,7 +10,9 @@
 
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("resources/attacksound.wav")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("resources/backgroundmusic.wav")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("resources/cantdo.wav")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("resources/clicksound.wav")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("resources/moneyupgratesound.wav")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("resources/bosssound.wav")]
 
 

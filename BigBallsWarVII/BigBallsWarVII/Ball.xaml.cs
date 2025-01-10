@@ -102,6 +102,8 @@ namespace BigBallsWarVII
         /// </summary>
         public bool isAtkCastle { get; private set; } = false;
         bool isEnd = false;//球體是否正在刪除。
+
+        MediaPlayer atkSound;
         #endregion
         #region 生成我方球體
         /// <summary>
@@ -122,7 +124,7 @@ namespace BigBallsWarVII
             switch (level)
             {
                 case BallsLevel.Small:
-                    _ballProperties = new(5, 50, -60, 35);
+                    _ballProperties = new(5, 25, -60, 35);
                     break;
                 case BallsLevel.Medium:
                     _ballProperties = new(25, 100, -45, 55);
@@ -267,6 +269,7 @@ namespace BigBallsWarVII
             //單純這顆球攻擊後的冷卻時間，這是為了美觀。
             cdTimer.Interval = TimeSpan.FromMilliseconds(20);//50FPS
             cdTimer.Tick += CDTimer_Tick;
+            atkSound = new();
         }
 
         private void MoveTimer_Tick(object? sender, EventArgs e)
@@ -393,6 +396,8 @@ namespace BigBallsWarVII
                         BallsManager.BlueCastleHP -= _ballProperties.ATK;
                         break;
                 }
+                atkSound.Open(new Uri("Resources/attackSound.wav", UriKind.Relative));
+                atkSound.Play();
             }
             if (target == null)
             {
@@ -401,6 +406,8 @@ namespace BigBallsWarVII
             else if (target.ballStruct.HP > 0)
             {
                 target?.TakeDamage(this);//只要傳傷害就好。
+                atkSound.Open(new Uri("Resources/attackSound.wav", UriKind.Relative));
+                atkSound.Play();
             }
             else
             {

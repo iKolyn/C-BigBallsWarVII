@@ -32,6 +32,7 @@ namespace BigBallsWarVII
         private double smallLastTime, mediumLastTime, largeLastTime, triangleLastTime, squareLastTime;//上次生成的時間
         private double smallCD = 2000, mediumCD = 6000, largeCD = 18000, triangleCD = 5000, squareCD = 22000;//冷卻時間(毫秒)
         private bool isSmallSpawned, isMideumSpawned, isLargeSpawned, isTriangleSpawned, isSquareSpawned;
+        private bool isMyBallLimit = false;
         private bool isGameOver = false;
         private MediaPlayer backgroundMusicPlayer;
         private MediaPlayer soundEffectPlayer;
@@ -91,6 +92,22 @@ namespace BigBallsWarVII
             UpdateCooldownTime(largeBottonSlider, largeCD, largeLastTime, isLargeSpawned);
             UpdateCooldownTime(triangleBottonSlider, triangleCD, triangleLastTime, isTriangleSpawned);
             UpdateCooldownTime(squareBottonSlider, squareCD, squareLastTime, isSquareSpawned);
+            if(BallsManager.BallCount >= 12)
+            {
+                if (!isMyBallLimit)
+                {
+                    isMyBallLimit = true;
+                    myBallsCount.Foreground = Brushes.Red;
+                }
+            }
+            else
+            {
+                if (isMyBallLimit)
+                {
+                    isMyBallLimit = false;
+                    myBallsCount.Foreground = Brushes.White;
+                }
+            }
             if (isSmallSpawned && elapsedTime > smallLastTime + smallCD)
             {
                 isSmallSpawned = false;
@@ -164,8 +181,13 @@ namespace BigBallsWarVII
 
         private void smallBotton_Click(object sender, RoutedEventArgs e)
         {
-            if (isSmallSpawned || isGameOver) return;
-            if(CashSystem.DecreaseCash(10) == false)
+            if (isSmallSpawned || isMyBallLimit || isGameOver)
+            {
+                soundEffectPlayer.Open(new Uri("Resources/cantDo.wav", UriKind.Relative));
+                soundEffectPlayer.Play();
+                return;
+            }
+            if (CashSystem.DecreaseCash(10) == false)
             {
                 ShowNotEnoughText();
                 return;
@@ -180,7 +202,12 @@ namespace BigBallsWarVII
         }
         private void mediumBotton_Click(object sender, RoutedEventArgs e)
         {
-            if (isMideumSpawned || isGameOver) return;
+            if (isMideumSpawned || isMyBallLimit || isGameOver)
+            {
+                soundEffectPlayer.Open(new Uri("Resources/cantDo.wav", UriKind.Relative));
+                soundEffectPlayer.Play();
+                return;
+            }
             if (CashSystem.DecreaseCash(75) == false)
             {
                 ShowNotEnoughText();
@@ -196,7 +223,12 @@ namespace BigBallsWarVII
         }
         private void largeBotton_Click(object sender, RoutedEventArgs e)
         {
-            if (isLargeSpawned || isGameOver) return;
+            if (isLargeSpawned || isMyBallLimit || isGameOver)
+            {
+                soundEffectPlayer.Open(new Uri("Resources/cantDo.wav", UriKind.Relative));
+                soundEffectPlayer.Play();
+                return;
+            }
             if (CashSystem.DecreaseCash(250) == false)
             {
                 ShowNotEnoughText();
@@ -212,7 +244,12 @@ namespace BigBallsWarVII
         }
         private void triangleBotton_Click(object sender, RoutedEventArgs e)
         {
-            if (isTriangleSpawned || isGameOver) return;
+            if (isTriangleSpawned || isMyBallLimit || isGameOver)
+            {
+                soundEffectPlayer.Open(new Uri("Resources/cantDo.wav", UriKind.Relative));
+                soundEffectPlayer.Play();
+                return;
+            }
             if (CashSystem.DecreaseCash(30) == false)
             {
                 ShowNotEnoughText();
@@ -228,7 +265,12 @@ namespace BigBallsWarVII
         }
         private void squareBotton_Click(object sender, RoutedEventArgs e)
         {
-            if (isSquareSpawned || isGameOver) return;
+            if (isSquareSpawned || isMyBallLimit || isGameOver)
+            {
+                soundEffectPlayer.Open(new Uri("Resources/cantDo.wav", UriKind.Relative));
+                soundEffectPlayer.Play();
+                return;
+            }
             if (CashSystem.DecreaseCash(150) == false)
             {
                 ShowNotEnoughText();
@@ -247,6 +289,8 @@ namespace BigBallsWarVII
         {
             if(isGameOver) return;
 
+            soundEffectPlayer.Open(new Uri("Resources/cantDo.wav", UriKind.Relative));
+            soundEffectPlayer.Play();
             isCashEnough.Text = "錢不夠！";
             await Task.Delay(2000);
             isCashEnough.Text = "";
