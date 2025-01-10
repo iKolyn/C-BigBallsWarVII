@@ -51,3 +51,10 @@ D:\GitHub\C-BigBallsWarVII\BigBallsWarVII\BigBallsWarVII\bin\Debug\net8.0-window
 D:\GitHub\C-BigBallsWarVII\BigBallsWarVII\BigBallsWarVII\bin\Debug\net8.0-windows\Resources\moneyUpgrateSound.wav
 D:\GitHub\C-BigBallsWarVII\BigBallsWarVII\BigBallsWarVII\bin\Debug\net8.0-windows\Resources\bossSound.wav
 D:\GitHub\C-BigBallsWarVII\BigBallsWarVII\BigBallsWarVII\bin\Debug\net8.0-windows\Resources\cantDo.wav
+C:\Users\stu71\OneDrive\桌面\GitHub\C-BigBallsWarVII\BigBallsWarVII\BigBallsWarVII\bin\Debug\net8.0-windows\Resources\attackSound.wav
+C:\Users\stu71\OneDrive\桌面\GitHub\C-BigBallsWarVII\BigBallsWarVII\BigBallsWarVII\bin\Debug\net8.0-windows\Resources\backGroundMusic.wav
+C:\Users\stu71\OneDrive\桌面\GitHub\C-BigBallsWarVII\BigBallsWarVII\BigBallsWarVII\bin\Debug\net8.0-windows\Resources\cantDo.wav
+C:\Users\stu71\OneDrive\桌面\GitHub\C-BigBallsWarVII\BigBallsWarVII\BigBallsWarVII\bin\Debug\net8.0-windows\Resources\clickSound.wav
+C:\Users\stu71\OneDrive\桌面\GitHub\C-BigBallsWarVII\BigBallsWarVII\BigBallsWarVII\bin\Debug\net8.0-windows\Resources\moneyUpgrateSound.wav
+C:\Users\stu71\OneDrive\桌面\GitHub\C-BigBallsWarVII\BigBallsWarVII\BigBallsWarVII\bin\Debug\net8.0-windows\Resources\bossSound.wav
+C:\Users\stu71\OneDrive\桌面\GitHub\C-BigBallsWarVII\BigBallsWarVII\BigBallsWarVII\obj\Debug\net8.0-windows\BigBallsWarVII_Content.g.cs

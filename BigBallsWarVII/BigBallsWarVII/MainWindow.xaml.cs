@@ -105,7 +105,7 @@ namespace BigBallsWarVII
                 if (isMyBallLimit)
                 {
                     isMyBallLimit = false;
-                    myBallsCount.Foreground = Brushes.White;
+                    myBallsCount.Foreground = Brushes.Aquamarine;
                 }
             }
             if (isSmallSpawned && elapsedTime > smallLastTime + smallCD)
@@ -141,7 +141,7 @@ namespace BigBallsWarVII
             }
         }
         private int _cashInterval = 1;
-        private int moneyUpgrateQuestPrice = 150;
+        private int moneyUpgrateQuestPrice = 200;
         /// <summary>
         /// 處理金錢增加的計時器
         /// </summary>
@@ -157,7 +157,7 @@ namespace BigBallsWarVII
         private void moneyUpgrateBackGround_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if(isGameOver) return;
-            if (moneyUpgrateQuestPrice >= 450) 
+            if (moneyUpgrateQuestPrice >= 600) 
             {
                 return;
             }   
@@ -169,8 +169,8 @@ namespace BigBallsWarVII
             else
             {
                 CashInterval ++;
-                moneyUpgrateQuestPrice = moneyUpgrateQuestPrice + 150;
-                if(moneyUpgrateQuestPrice >= 450)
+                moneyUpgrateQuestPrice = moneyUpgrateQuestPrice + 200;
+                if(moneyUpgrateQuestPrice >= 600)
                     howMuchUpgrateText.Text = "最高等";
                 else
                     howMuchUpgrateText.Text = $"{moneyUpgrateQuestPrice}元";
