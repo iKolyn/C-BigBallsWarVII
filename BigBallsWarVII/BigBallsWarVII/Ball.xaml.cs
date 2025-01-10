@@ -383,8 +383,7 @@ namespace BigBallsWarVII
         /// <br>獨立Attack出來是因為，我碰觸的第一幀要攻擊一次。</br>
         /// </summary>
         private void Attack()
-        {
-            
+        {        
             if (isAtkCastle)
             {
                 switch (team)
@@ -399,6 +398,7 @@ namespace BigBallsWarVII
                 atkSound.Open(new Uri("Resources/attackSound.wav", UriKind.Relative));
                 atkSound.Play();
             }
+
             if (target == null)
             {
                 ResumeTimer();
@@ -446,6 +446,8 @@ namespace BigBallsWarVII
             cdWatch.Stop();
             if (moveTimer != null)
                 moveTimer.Start();
+            else
+                EndBallsControl();
             if (_stopWatch != null)
                 _stopWatch.Start();
             atkTimer.Stop();
@@ -456,6 +458,7 @@ namespace BigBallsWarVII
         /// <param name="ballProperties">對方的數據結構體</param>
         public void TakeDamage(Ball damager)
         {
+            if (isEnd) return;
             HP -= damager._ballProperties.ATK;
             if (HP <= 0 && !isEnd)
             {
@@ -511,6 +514,7 @@ namespace BigBallsWarVII
                 SHAPE = null;
                 HPBackGround = null;
                 HPBar = null;
+            isEnd = false;
         }
         enum Team
         {

@@ -67,6 +67,7 @@ namespace BigBallsWarVII
 
             isCashEnough.Text = "";
             gameOverLabel.Content = "";
+            isGameOverMask.Visibility = Visibility.Hidden;
 
             backgroundMusicPlayer = new();
             backgroundMusicPlayer.Open(new Uri("Resources/backGroundMusic.wav", UriKind.Relative));//使用相對路徑抓
@@ -92,7 +93,7 @@ namespace BigBallsWarVII
             UpdateCooldownTime(largeBottonSlider, largeCD, largeLastTime, isLargeSpawned);
             UpdateCooldownTime(triangleBottonSlider, triangleCD, triangleLastTime, isTriangleSpawned);
             UpdateCooldownTime(squareBottonSlider, squareCD, squareLastTime, isSquareSpawned);
-            if(BallsManager.BallCount >= 12)
+            if(BallsManager.BallCount >= 100)
             {
                 if (!isMyBallLimit)
                 {
@@ -329,7 +330,8 @@ namespace BigBallsWarVII
                 isGameOver = true;
                 EnemyBallsSpawner.isGameOver = true;
                 BallsManager.isGameOver = true;
-                gameOverLabel.Content = "你贏了！";
+                gameOverLabel.Content = "全勝！";
+                isGameOverMask.Visibility = Visibility.Visible;
                 GradientBrush brush = new LinearGradientBrush();
                 brush.SetCurrentValue(LinearGradientBrush.StartPointProperty, new Point(0, 0));
                 brush.SetCurrentValue(LinearGradientBrush.EndPointProperty, new Point(0, 1));
@@ -349,7 +351,8 @@ namespace BigBallsWarVII
                 isGameOver = true;
                 EnemyBallsSpawner.isGameOver = true;
                 BallsManager.isGameOver = true;
-                gameOverLabel.Content = "你輸了！";
+                gameOverLabel.Content = "慘敗！";
+                isGameOverMask.Visibility = Visibility.Visible;
                 GradientBrush brush = new LinearGradientBrush();
                 brush.SetCurrentValue(LinearGradientBrush.StartPointProperty, new Point(0, 0));
                 brush.SetCurrentValue(LinearGradientBrush.EndPointProperty, new Point(0, 1));

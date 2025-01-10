@@ -97,6 +97,13 @@ namespace BigBallsWarVII
         /// </summary>
         private static void AllBallQueueRegister()
         {
+            
+            //城堡50%以下後生成的球，全用random。
+            for (int i = 0; i < 10; i++)
+            {
+                int typeNumber = random.Next(0, 3);
+                BallQueue.Enqueue(new Ball(ballsType[typeNumber], (BallsType)typeNumber), random.Next(1,3), 1);
+            }
             //城堡20%以下後生成的球全用random。
             for (int i = 0; i < 15; i++)
             {
@@ -107,15 +114,8 @@ namespace BigBallsWarVII
             for (int i = 0; i < 5; i++)
             {
                 int typeNumber = random.Next(0, 2);
-                BallQueue.Enqueue(new Ball(ballsType[typeNumber], (BallsType)typeNumber), random.Next(1,4), 0);
+                BallQueue.Enqueue(new Ball(ballsType[typeNumber], (BallsType)typeNumber), random.Next(1, 4), 0);
             }
-            //城堡50%以下後生成的球，全用random。
-            for (int i = 0; i < 10; i++)
-            {
-                int typeNumber = random.Next(0, 3);
-                BallQueue.Enqueue(new Ball(ballsType[typeNumber], (BallsType)typeNumber), random.Next(1,3), 1);
-            }
-            
         }
         public static int BallCount
         {
@@ -255,12 +255,7 @@ namespace BigBallsWarVII
         //如果我的血量低於80以下，第一次生成。如果在這個過程馬上又低於50以下，繼續生成。
         生成方式就是直接彈出所有相對應優先級的球體陣列。第一次五顆，第二次十顆，最後一次十五顆。*/
         private static List<BallNode>? currentBallQueue = new();
-        private static bool isSpecialSpawned = false;
-        /// <summary>
-        /// 封裝用，讓SpecialSpawnTimer可以及時的收到要丟出哪個優先級的list。
-        /// </summary>
-        private static int spawnLevel { get; set; }
-        private static int _spawnLevel = 0;
+
         private static void SpecialSpawnTimer_Tick(object? sender, EventArgs e)
         {
             if (isGameOver)
@@ -270,14 +265,17 @@ namespace BigBallsWarVII
             }
             //首先設定下一個球體的生成CD時間。
             BallNode? nextBall = currentBallQueue?.FirstOrDefault();//是空的就null，否則返回第一顆球。
+            if (nextBall != null)
+            {
+                return;
+            }
             double nextSpawnTime = nextBall != null ? nextBall.CD : 0;
 
             //確保 Interval 不為 0
-            if (nextSpawnTime > 0)
-            {
-                _specialSpawnTimer.Interval = TimeSpan.FromSeconds(nextSpawnTime);
-            }
-
+            if (nextSpawnTime > 0)            
+                _specialSpawnTimer.Interval = TimeSpan.FromSeconds(nextSpawnTime);      
+            else
+                return;
             //開始生成球體
             _specialCurrentTime = _stopWatch.ElapsedMilliseconds;
             //如果當前時間，到了上一次生成球體的時間 + 下一個球體的CD時間，就生成球體。
