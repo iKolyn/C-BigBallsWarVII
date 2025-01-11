@@ -8,7 +8,7 @@ namespace BigBallsWarVII
 {
     public static class CashSystem
     {
-        private static int _cash = 3000;
+        private static int _cash = 0;
         private const int limitCash = 5000;
         public static int Cash // 顯示金額
         {

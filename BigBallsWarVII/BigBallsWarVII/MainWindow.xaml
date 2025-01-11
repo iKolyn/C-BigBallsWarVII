@@ -205,7 +205,7 @@
                         <GradientStop Color="Gold" Offset="1.0"/>
                         <GradientStop Color="Yellow" Offset="0.0"/>
                     </LinearGradientBrush>
-                </TextBlock.Foreground><Run Language="zh-tw" Text="150元"/><LineBreak/><Run Language="zh-tw"/><LineBreak/><Run/></TextBlock>
+                </TextBlock.Foreground><Run Language="zh-tw" Text="200元"/><LineBreak/><Run Language="zh-tw"/><LineBreak/><Run/></TextBlock>
         </Canvas>
     </Grid>
     <Window.Resources>

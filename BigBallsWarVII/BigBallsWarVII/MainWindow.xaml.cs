@@ -93,7 +93,7 @@ namespace BigBallsWarVII
             UpdateCooldownTime(largeBottonSlider, largeCD, largeLastTime, isLargeSpawned);
             UpdateCooldownTime(triangleBottonSlider, triangleCD, triangleLastTime, isTriangleSpawned);
             UpdateCooldownTime(squareBottonSlider, squareCD, squareLastTime, isSquareSpawned);
-            if(BallsManager.BallCount >= 100)
+            if(BallsManager.BallCount >= 15)
             {
                 if (!isMyBallLimit)
                 {
