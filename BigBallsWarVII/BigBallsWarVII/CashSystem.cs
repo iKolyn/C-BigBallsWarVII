@@ -35,5 +35,10 @@ namespace BigBallsWarVII
             }
             _cash += value;
         }
+
+        public static void Reset()
+        {
+            _cash = 0;
+        }
     }
 }

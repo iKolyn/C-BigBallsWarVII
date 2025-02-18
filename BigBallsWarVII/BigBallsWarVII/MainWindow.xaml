@@ -84,25 +84,32 @@
             </TextBlock>
             <!--#endregion-->
             <Ellipse Name="moneyBackGround" Width="277" Height="200" Fill="Black" Opacity="0.7" HorizontalAlignment="Left" Canvas.Left="557" VerticalAlignment="Center" Canvas.Top="-90"/>
-            <TextBlock Name="myBallsCount" Text="100" FontSize="20" Canvas.Left="700" Canvas.Top="60">
+            <TextBlock Name="myBallsCount" Text="100" FontSize="20" Canvas.Left="605" Canvas.Top="60" HorizontalAlignment="Left" VerticalAlignment="Center" Width="175">
                 <TextBlock.Foreground>
                     <SolidColorBrush Color="Aquamarine" Opacity="1"/>
                 </TextBlock.Foreground>
             </TextBlock>
-            <TextBlock Name="elapsedTimeText" Canvas.Left="45" TextWrapping="Wrap" Text="TextBlock" Canvas.Top="65" FontSize="20" />
-            <Rectangle Name="isGameOverMask" Width=" 800" Height=" 250" Fill="Black" Opacity="0.3" HorizontalAlignment="Center" Canvas.Top="51" VerticalAlignment="Top"/>
+            <Rectangle Name="isGameOverMask" Width=" 800" Height=" 250" Fill="Black" Opacity="0.3" HorizontalAlignment="Left" Canvas.Top="51" VerticalAlignment="Center"/>
             <Label Name="gameOverLabel" Content="你贏了！" Canvas.Left="245" Canvas.Top="87" FontSize="75" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <TextBlock Name="isCashEnough" Text="錢不夠！" FontSize="30" Canvas.Left="340" Canvas.Top="51" FontFamily="Arial Black" HorizontalAlignment="Center" VerticalAlignment="Top">
                 <TextBlock.Foreground>
                     <SolidColorBrush Color="Red"/>
                 </TextBlock.Foreground>
             </TextBlock>
+            <Grid Name="gameStartBox" HorizontalAlignment="Left" VerticalAlignment="Center" Height="239" Canvas.Left="220" Canvas.Top="84">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0*"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Label Name="Title" Content="球球大戰爭！" FontSize="55" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Margin="10,0,0,0"/>
+                <Button Name="startButton" Content="開始遊戲" FontSize="30" Click="StartButton_Click" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,151,0,0" Grid.Column="1"/>
+            </Grid>
         </Canvas>
 
         <Canvas Name="mainCanva" Grid.RowSpan="2" Grid.ColumnSpan="3">
             <!--所有新增出來的球都會在這裡出現。-->
             <Rectangle Name="buttonBackground" Width="800" Height="120" Canvas.Bottom="0" Fill="Black" Opacity="0.4" HorizontalAlignment="Center" Canvas.Top="302" VerticalAlignment="Top"/>
-            <TextBlock Name="myMoney" FontSize="20" Canvas.Left="620" Canvas.Top="30" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <TextBlock Name="myMoney" FontSize="20" Canvas.Left="650" Canvas.Top="29" HorizontalAlignment="Left" VerticalAlignment="Center">
                 <Run Text="金錢 :"/> 
                 <Run Name="currentMoney" Text="5000"/>
                  <Run Text="$"/>
@@ -199,13 +206,14 @@
                     </LinearGradientBrush>
                 </TextBlock.Foreground>
             </TextBlock>
-            <TextBlock x:Name="howMuchUpgrateText" FontSize="24" Canvas.Left="92" Canvas.Bottom="25" HorizontalAlignment="Left" VerticalAlignment="Top" IsHitTestVisible="False" Canvas.Top="361">
+            <TextBlock x:Name="UpgrateText" FontSize="24" Canvas.Left="92" Canvas.Bottom="25" HorizontalAlignment="Left" VerticalAlignment="Top" IsHitTestVisible="False" Canvas.Top="361">
                 <TextBlock.Foreground>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                         <GradientStop Color="Gold" Offset="1.0"/>
                         <GradientStop Color="Yellow" Offset="0.0"/>
                     </LinearGradientBrush>
-                </TextBlock.Foreground><Run Language="zh-tw" Text="200元"/><LineBreak/><Run Language="zh-tw"/><LineBreak/><Run/></TextBlock>
+                </TextBlock.Foreground><Run Name="howMuchUpgrateText" Language="zh-tw" Text="200元"/><LineBreak/><Run Language="zh-tw"/><LineBreak/><Run/></TextBlock>
+            <Button Name ="restartButton" Content="重新開始" Canvas.Left="334" Canvas.Top="276" FontSize="30" Click="RestartButton_Click" HorizontalAlignment="Center" VerticalAlignment="Top"/>
         </Canvas>
     </Grid>
     <Window.Resources>

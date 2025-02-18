@@ -65,5 +65,14 @@ namespace BigBallsWarVII
         {
             return balls;
         }
+        public static void Reset()
+        {
+            foreach (var ball in balls)
+            {
+                ball?.EndBallsControl();
+            }
+            balls.Clear();
+            BallCount = 0;
+        }
     }
 }

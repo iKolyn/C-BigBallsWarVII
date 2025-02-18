@@ -397,6 +397,7 @@ namespace BigBallsWarVII
                 }
                 atkSound.Open(new Uri("Resources/attackSound.wav", UriKind.Relative));
                 atkSound.Play();
+                return;
             }
 
             if (target == null)
@@ -487,7 +488,7 @@ namespace BigBallsWarVII
                 EndBallsControl();
             }
         }
-        private void EndBallsControl()
+        public void EndBallsControl()
         {
             Panel? parentPanel = this.Parent as Panel;
             //在整個panel刪除
@@ -502,7 +503,6 @@ namespace BigBallsWarVII
                 cdTimer.Tick -= CDTimer_Tick;
                 Loaded -= BallsConrolLoaded;//退訂事件
                 parentPanel.Children.Remove(this);
-                Debug.WriteLine("刪除了");
 
                 //確保所有資源都被釋放
                 moveTimer = null;

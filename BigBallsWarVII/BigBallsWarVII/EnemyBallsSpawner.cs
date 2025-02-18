@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Printing;
 using System.Reflection.Metadata;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -76,6 +77,17 @@ namespace BigBallsWarVII
         #endregion
         static EnemyBallsSpawner()
         {
+            bossSpawnSound = new();
+            Start();
+        }
+
+        public static void Start()
+        {
+            for (int i = 0; i < balls?.Count; i++)
+            {
+                balls[i]?.EndBallsControl();
+            }
+            BallQueue?.Clear();//清空所有球體，用於重置關卡。
             balls = [];//new的意思
             BallQueue = new();//依照城堡血量生成的佇列
             _defaultSpawnTimer = new()
@@ -84,14 +96,33 @@ namespace BigBallsWarVII
             };
             _defaultSpawnTimer.Tick += DefaultSpawnTimer;
             _defaultSpawnTimer.Start();
+            _smallBallCDTime = 5000;
+            _mediumBallCDTime = 12000;
+            _largeBallCDTime = 30000;
+
             _stopWatch = new();
             _stopWatch.Start();
-            _specialSpawnTimer = new();
-            _specialSpawnTimer.Interval = TimeSpan.FromMilliseconds(16);//一開始直接生成一次。
+            _specialSpawnTimer = new()
+            {
+                Interval = TimeSpan.FromMilliseconds(16)//一開始直接生成一次。
+            };
             _specialSpawnTimer.Tick += SpecialSpawnTimer_Tick;
+            //不要開啟_specialSpawnTimer，因為ballQueue還沒東西，會拋出找不到參考。
             AllBallQueueRegister();//註冊特殊生成的Queue用的。
-            bossSpawnSound = new();
         }
+
+        public static void Reset()
+        {
+            //退訂所有事件
+            Debug.WriteLine("退訂所有事件。");
+            _defaultSpawnTimer.Tick -= DefaultSpawnTimer;
+            _specialSpawnTimer.Tick -= SpecialSpawnTimer_Tick;
+            lastSmallBallSpawnTime = lastMediumBallSpawnTime = lastLargeBallSpawnTime = 0;
+            level1SpecialSpawn = level2SpecialSpawn = level3SpecialSpawn = false;
+            isBossSpawn = true;
+            Start();
+        }
+
         static Random random = new();
         /// <summary>
         /// 註冊特殊生成的Queue用的。
@@ -126,6 +157,7 @@ namespace BigBallsWarVII
         private static int _ballCount = 0;
         public static void AddBall(Ball ball)
         {
+            Debug.WriteLine("生成了一個敵方球體。");
             balls.Add(ball);
             addBallToCanva?.Invoke(ball);
 
@@ -143,17 +175,13 @@ namespace BigBallsWarVII
         //處理生成邏輯
         #region 生成CD的數值們
         private static double lastSmallBallSpawnTime, lastMediumBallSpawnTime, lastLargeBallSpawnTime = 0;//小球上次生成的時間
-        //小球的CD時間設定功能(毫秒)
-        private static double _smallBallCDTime = 5000;
-        //中球的CD時間設定功能(毫秒)
-        private static double _mediumBallCDTime = 12000;
-        //大球的CD時間設定功能(毫秒)
-        private static double _largeBallCDTime = 30000;
+        //小中大球的CD生成時間
+        private static double _smallBallCDTime, _mediumBallCDTime, _largeBallCDTime;
         #endregion
-        public static double ElapsedTime
-        {
-            get { return _stopWatch.ElapsedMilliseconds; }
-        }
+        //public static double ElapsedTime
+        //{
+        //    get { return _stopWatch.ElapsedMilliseconds; }
+        //}
         private static bool isBossSpawn = true;
         private static bool level1SpecialSpawn, level2SpecialSpawn, level3SpecialSpawn = false;
         private static void DefaultSpawnTimer(object? sender, EventArgs e)//CD計時器 + 城堡血量狀態計時器
@@ -161,6 +189,7 @@ namespace BigBallsWarVII
             if (isGameOver)
             {
                 _defaultSpawnTimer.Stop();
+                Debug.WriteLine("遊戲結束，生成計時器停止。");
                 return;
             }
             elapsedTime = _stopWatch.ElapsedMilliseconds;
@@ -260,15 +289,14 @@ namespace BigBallsWarVII
         //在來需要城堡血量偵測器。
         //如果我的血量低於80以下，第一次生成。如果在這個過程馬上又低於50以下，繼續生成。
         生成方式就是直接彈出所有相對應優先級的球體陣列。第一次五顆，第二次十顆，最後一次十五顆。*/
-        private static bool isSpecialSpawn = false;
         private static void SpecialSpawnTimer_Tick(object? sender, EventArgs e)
         {
-            Debug.WriteLine("特殊生成計時器啟動。");
             if (isGameOver)
             {
                 _specialSpawnTimer.Stop();
                 return;
             }
+            
             //首先設定下一個球體的生成CD時間。
             BallNode nextBall = currentBallQueue[0];//是空的就null，否則返回第一顆球。
             if (currentBallQueue[0] == null)

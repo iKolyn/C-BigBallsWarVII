@@ -170,7 +170,7 @@ namespace BigBallsWarVII
             Head = null;
             Tail = null;
             Count = 0;
-            Console.WriteLine("佇列已清空");
+            Debug.WriteLine("佇列已清空");
         }
     }
 }
