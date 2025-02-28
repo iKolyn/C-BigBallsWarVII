@@ -1,0 +1,12 @@
+C:\Users\stu71\OneDrive\桌面\BigBallWarVll\Resources\BigBallsWarVII_icon.ico
+C:\Users\stu71\OneDrive\桌面\BigBallWarVll\Resources\attackSound.wav
+C:\Users\stu71\OneDrive\桌面\BigBallWarVll\Resources\backGroundMusic.wav
+C:\Users\stu71\OneDrive\桌面\BigBallWarVll\Resources\cantDo.wav
+C:\Users\stu71\OneDrive\桌面\BigBallWarVll\Resources\clickSound.wav
+C:\Users\stu71\OneDrive\桌面\BigBallWarVll\Resources\moneyUpgrateSound.wav
+C:\Users\stu71\OneDrive\桌面\BigBallWarVll\Resources\bossSound.wav
+C:\Users\stu71\OneDrive\桌面\BigBallWarVll\BigBallsWarVII.exe
+C:\Users\stu71\OneDrive\桌面\BigBallWarVll\BigBallsWarVII.dll
+C:\Users\stu71\OneDrive\桌面\BigBallWarVll\BigBallsWarVII.deps.json
+C:\Users\stu71\OneDrive\桌面\BigBallWarVll\BigBallsWarVII.runtimeconfig.json
+C:\Users\stu71\OneDrive\桌面\BigBallWarVll\BigBallsWarVII.pdb

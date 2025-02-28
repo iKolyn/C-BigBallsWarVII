@@ -6,10 +6,12 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Resources\BigBallsWarVII_icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="CloundIMG.png" />
+    <None Remove="Image\BigBallsWarVII_icon.ico" />
     <None Remove="Image\CloundIMG.png" />
     <None Remove="Image\Triangle.png" />
     <None Remove="Resources\attackSound.wav" />
@@ -30,6 +32,9 @@
     <Resource Include="Image\Triangle.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Content Include="Resources\BigBallsWarVII_icon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\attackSound.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

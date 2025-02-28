@@ -71,6 +71,7 @@ namespace BigBallsWarVII
             _stopWatch.Start();
             cashTimer.Start();
             CashInterval = 1;
+            moneyUpgrateQuestPrice = 200;
 
             //我的城堡血量
             BallsManager.isGameOver = false;

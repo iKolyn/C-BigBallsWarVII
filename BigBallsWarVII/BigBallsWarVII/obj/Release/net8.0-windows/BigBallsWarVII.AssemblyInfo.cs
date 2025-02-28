@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BigBallsWarVII")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cc4f997084d644b30ce76d7d70fa28a209027fdc")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e2d39e32599542bf78ad5a0d6ce015ac2b2c2b44")]
 [assembly: System.Reflection.AssemblyProductAttribute("BigBallsWarVII")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BigBallsWarVII")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

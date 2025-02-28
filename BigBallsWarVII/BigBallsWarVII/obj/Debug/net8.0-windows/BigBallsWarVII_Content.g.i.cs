@@ -8,6 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("resources/bigballswarvii_icon.ico")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("resources/attacksound.wav")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("resources/backgroundmusic.wav")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("resources/cantdo.wav")]
